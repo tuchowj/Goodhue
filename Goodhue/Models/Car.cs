@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Data.Entity;
 
 namespace Goodhue.Models
@@ -17,11 +14,11 @@ namespace Goodhue.Models
         //TODO: mileage and date put in service?
 
         //changing
-        public string location { get; set; }
+        public string Location { get; set; }
         public int Odometer { get; set; }
         public int OilChangeMiles { get; set; }
         public DateTime LastReservation { get; set; }
-        //TODO: comments?
+        //TODO: tire rotation and comments?
     }
 
     public class CarDBContext : DbContext
