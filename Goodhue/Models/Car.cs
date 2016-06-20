@@ -18,7 +18,7 @@ namespace Goodhue.Models
         public int Odometer { get; set; }
         public int OilChangeMiles { get; set; }
         public DateTime LastReservation { get; set; }
-        //TODO: tire rotation and comments?
+        //TODO: tire rotation, comments, availability?
     }
 
     public class CarDBContext : DbContext
