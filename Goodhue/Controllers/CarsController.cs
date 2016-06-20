@@ -19,8 +19,7 @@ namespace Goodhue.Controllers
         [AllowAnonymous]
         public ActionResult Index()
         {
-            ViewBag.Admin = "jonahg@redwingignite.org";
-            return View(db.Cars.ToList());
+            return RedirectToAction("Index", "Home");
         }
 
         // GET: Cars/Details/5
