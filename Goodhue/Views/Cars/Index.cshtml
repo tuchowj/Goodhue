@@ -2,15 +2,19 @@
 @model IEnumerable<Goodhue.Models.Car>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Home";
 }
 
-<h2>Index</h2>
+<div class="jumbotron">
+    <h1>Goodhue County Car Share</h1>
+</div>
+
+<h2>Available Cars</h2>
 @if (User.Identity.GetUserName() == ViewBag.Admin)
 {
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+    <p>
+        @Html.ActionLink("Create New", "Create",  "Cars")
+    </p>
 }
 <table class="table">
     <tr>
@@ -41,46 +45,47 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Make)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Model)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Color)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Year)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Location)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Odometer)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.OilChangeMiles)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LastReservation)
-        </td>
-        <td>
-            @if (User.Identity.GetUserName() == ViewBag.Admin)
-            {
-                @Html.ActionLink("Edit", "Edit", new { id=item.ID })
-                <span>|</span>
-            }
-            @Html.ActionLink("Details", "Details", new { id=item.ID })
-            @if (User.Identity.GetUserName() == ViewBag.Admin)
-            {
-                <span>|</span>
-                @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-            }
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Make)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Model)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Color)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Year)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Location)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Odometer)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OilChangeMiles)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastReservation)
+            </td>
+            <td>
+                @if (User.Identity.GetUserName() == ViewBag.Admin)
+                {
+                    @Html.ActionLink("Edit", "Edit", "Cars", new { id = item.ID }, null)
+                    <span>|</span>
+                }
+                @Html.ActionLink("Details", "Details", "Cars", new { id = item.ID }, null)
+                @if (User.Identity.GetUserName() == ViewBag.Admin)
+                {
+                    <span>|</span>
+                    @Html.ActionLink("Delete", "Delete", "Cars", new { id = item.ID }, null)
+                }
+            </td>
+        </tr>
+    }
 
 </table>

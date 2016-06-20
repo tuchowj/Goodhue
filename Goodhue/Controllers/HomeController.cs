@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Goodhue.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,9 +9,12 @@ namespace Goodhue.Controllers
 {
     public class HomeController : Controller
     {
+        private CarDBContext db = new CarDBContext();
+
         public ActionResult Index()
         {
-            return View();
+            ViewBag.Admin = "jonahg@redwingignite.org";
+            return View(db.Cars.ToList());
         }
 
         public ActionResult About()
