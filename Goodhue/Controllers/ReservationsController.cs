@@ -13,7 +13,9 @@ namespace Goodhue.Controllers
     [Authorize]
     public class ReservationsController : Controller
     {
+        private static Car car;
         private ReservationDBContext db = new ReservationDBContext();
+        private CarDBContext carDb = new CarDBContext();
 
         // GET: Reservations
         [AllowAnonymous]
@@ -39,8 +41,18 @@ namespace Goodhue.Controllers
         }
 
         // GET: Reservations/Create
-        public ActionResult Create()
+        public ActionResult Create(int? id)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            car = carDb.Cars.Find(id);
+            if (car == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.Car = car;
             return View();
         }
 

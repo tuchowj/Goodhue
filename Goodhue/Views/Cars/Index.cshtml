@@ -73,7 +73,7 @@
                 @Html.DisplayFor(modelItem => item.LastReservation)
             </td>
             <td>
-                @Html.ActionLink("Checkout", "Create", "Reservations") |
+                @Html.ActionLink("Checkout", "Create", "Reservations", new { id = item.ID }, null) |
                 @if (User.Identity.GetUserName() == ViewBag.Admin)
                 {
                     @Html.ActionLink("Edit", "Edit", "Cars", new { id = item.ID }, null)
