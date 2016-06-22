@@ -13,8 +13,7 @@ namespace Goodhue.Controllers
 
         public ActionResult Index()
         {
-            ViewBag.Admin = "jonahg@redwingignite.org";
-            return View(db.Cars.ToList());
+            return RedirectToAction("Index", "Cars");
         }
 
         public ActionResult About()

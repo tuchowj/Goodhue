@@ -13,7 +13,7 @@
 @if (User.Identity.GetUserName() == ViewBag.Admin)
 {
     <p>
-        @Html.ActionLink("Create New", "Create",  "Cars")
+        @Html.ActionLink("Create New", "Create", "Cars")
     </p>
 }
 <table class="table">
@@ -73,6 +73,7 @@
                 @Html.DisplayFor(modelItem => item.LastReservation)
             </td>
             <td>
+                @Html.ActionLink("Checkout", "Create", "Reservations") |
                 @if (User.Identity.GetUserName() == ViewBag.Admin)
                 {
                     @Html.ActionLink("Edit", "Edit", "Cars", new { id = item.ID }, null)

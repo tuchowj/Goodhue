@@ -10,20 +10,19 @@ using Goodhue.Models;
 
 namespace Goodhue.Controllers
 {
-    [Authorize (Users="jonahg@redwingignite.org")]
-    public class CarsController : Controller
+    [Authorize]
+    public class ReservationsController : Controller
     {
-        private CarDBContext db = new CarDBContext();
+        private ReservationDBContext db = new ReservationDBContext();
 
-        // GET: Cars
+        // GET: Reservations
         [AllowAnonymous]
         public ActionResult Index()
         {
-            ViewBag.Admin = "jonahg@redwingignite.org";
-            return View(db.Cars.ToList());
+            return View(db.Reservations.ToList());
         }
 
-        // GET: Cars/Details/5
+        // GET: Reservations/Details/5
         [AllowAnonymous]
         public ActionResult Details(int? id)
         {
@@ -31,90 +30,90 @@ namespace Goodhue.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Car car = db.Cars.Find(id);
-            if (car == null)
+            Reservation reservation = db.Reservations.Find(id);
+            if (reservation == null)
             {
                 return HttpNotFound();
             }
-            return View(car);
+            return View(reservation);
         }
 
-        // GET: Cars/Create
+        // GET: Reservations/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Cars/Create
+        // POST: Reservations/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Make,Model,Color,Year,Location,Odometer,OilChangeMiles,LastReservation")] Car car)
+        public ActionResult Create([Bind(Include = "ID,StartDate,EndDate,Destination,Department")] Reservation reservation)
         {
             if (ModelState.IsValid)
             {
-                db.Cars.Add(car);
+                db.Reservations.Add(reservation);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(car);
+            return View(reservation);
         }
 
-        // GET: Cars/Edit/5
+        // GET: Reservations/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Car car = db.Cars.Find(id);
-            if (car == null)
+            Reservation reservation = db.Reservations.Find(id);
+            if (reservation == null)
             {
                 return HttpNotFound();
             }
-            return View(car);
+            return View(reservation);
         }
 
-        // POST: Cars/Edit/5
+        // POST: Reservations/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Make,Model,Color,Year,Location,Odometer,OilChangeMiles,LastReservation")] Car car)
+        public ActionResult Edit([Bind(Include = "ID,StartDate,EndDate,Destination,Department")] Reservation reservation)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(car).State = EntityState.Modified;
+                db.Entry(reservation).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(car);
+            return View(reservation);
         }
 
-        // GET: Cars/Delete/5
+        // GET: Reservations/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Car car = db.Cars.Find(id);
-            if (car == null)
+            Reservation reservation = db.Reservations.Find(id);
+            if (reservation == null)
             {
                 return HttpNotFound();
             }
-            return View(car);
+            return View(reservation);
         }
 
-        // POST: Cars/Delete/5
+        // POST: Reservations/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Car car = db.Cars.Find(id);
-            db.Cars.Remove(car);
+            Reservation reservation = db.Reservations.Find(id);
+            db.Reservations.Remove(reservation);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
