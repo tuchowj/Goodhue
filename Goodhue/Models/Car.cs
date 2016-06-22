@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 
 namespace Goodhue.Models
@@ -22,7 +23,11 @@ namespace Goodhue.Models
         //changing
         public string Location { get; set; }
         public int Odometer { get; set; }
+        [Display(Name = "Miles to Oil Change")]
         public int OilChangeMiles { get; set; }
+        [Display(Name = "Last Reservation")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime LastReservation { get; set; }
         //TODO: tire rotation, comments, availability?
 
