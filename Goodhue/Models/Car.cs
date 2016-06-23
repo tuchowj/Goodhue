@@ -27,7 +27,7 @@ namespace Goodhue.Models
         public int OilChangeMiles { get; set; }
         [Display(Name = "Last Reservation")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:g}", ApplyFormatInEditMode = true)]
         public DateTime LastReservation { get; set; }
         //TODO: tire rotation, comments, availability?
 
