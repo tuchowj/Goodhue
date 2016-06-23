@@ -4,7 +4,6 @@
     ViewBag.Title = "Create";
 }
 
-<h2>Create</h2>
 
 
 @using (Html.BeginForm()) 
@@ -12,7 +11,7 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Reservation: @ViewBag.Car.Make @ViewBag.Car.Model @ViewBag.Car.Color @ViewBag.Car.Year</h4>
+        <h2>Checkout: @ViewBag.Car.Make @ViewBag.Car.Model @ViewBag.Car.Color @ViewBag.Car.Year</h2>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
