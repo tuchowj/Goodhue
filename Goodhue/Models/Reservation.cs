@@ -9,13 +9,16 @@ namespace Goodhue.Models
 {
     public class Reservation
     {
-        public Reservation() { }
+        //public Reservation() { }
 
         public int ID { get; set; }
+        public string Username { get; set; }
+
         [Display(Name = "Start Date")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:g}", ApplyFormatInEditMode = true)]
         public DateTime StartDate { get; set; }
+        
         [Display(Name = "End Date")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:g}", ApplyFormatInEditMode = true)]
@@ -23,7 +26,7 @@ namespace Goodhue.Models
         public string Destination { get; set; }
         public string Department { get; set; }
 
-        public virtual Car Car { get; set; }
+        public int CarId { get; set; }
     }
     public class ReservationDBContext : DbContext
     {

@@ -1,18 +1,18 @@
 ﻿@model IEnumerable<Goodhue.Models.Reservation>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Reservations";
 }
 
-<h2>Index</h2>
+<h2>Reservations</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
             Car ID
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Username)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.StartDate)
@@ -32,7 +32,10 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Car.ID)
+            @Html.DisplayFor(modelItem => item.CarId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Username)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.StartDate)
@@ -47,7 +50,7 @@
             @Html.DisplayFor(modelItem => item.Department)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+            @*@Html.ActionLink("Edit", "Edit", new { id=item.ID }) |*@
             @Html.ActionLink("Details", "Details", new { id=item.ID }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.ID })
         </td>

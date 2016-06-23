@@ -7,10 +7,10 @@ namespace Goodhue.Models
 {
     public class Car
     {
-        public Car()
-        {
-            Reservations = new List<Reservation>();
-        }
+        //public Car()
+        //{
+        //    Reservations = new List<Reservation>();
+        //}
 
         //unchanging
         public int ID { get; set; }
@@ -31,7 +31,7 @@ namespace Goodhue.Models
         public DateTime LastReservation { get; set; }
         //TODO: tire rotation, comments, availability?
 
-        public virtual ICollection<Reservation> Reservations { get; set; }
+        //public virtual ICollection<Reservation> Reservations { get; set; }
     }
 
     public class CarDBContext : DbContext
