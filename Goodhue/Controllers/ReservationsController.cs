@@ -70,6 +70,8 @@ namespace Goodhue.Controllers
                 reservation.Username = User.Identity.Name;
                 db.Reservations.Add(reservation);
                 db.SaveChanges();
+                //Car car = carDb.Cars.Find(checkoutCarId);
+                //ViewBag.Car = car;
                 return RedirectToAction("Index");
             }
 
