@@ -13,7 +13,7 @@ namespace Goodhue.Controllers
     [Authorize]
     public class ReservationsController : Controller
     {
-        private static int badProgramming;
+        private static int checkoutCarId;
         private ReservationDBContext db = new ReservationDBContext();
         private CarDBContext carDb = new CarDBContext();
 
@@ -47,7 +47,7 @@ namespace Goodhue.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            badProgramming = (int)id;
+            checkoutCarId = (int)id;
             Car car = carDb.Cars.Find(id);
             if (car == null)
             {
@@ -66,7 +66,7 @@ namespace Goodhue.Controllers
         {
             if (ModelState.IsValid)
             {
-                reservation.CarId = badProgramming;
+                reservation.CarId = checkoutCarId;
                 reservation.Username = User.Identity.Name;
                 db.Reservations.Add(reservation);
                 db.SaveChanges();
@@ -118,6 +118,10 @@ namespace Goodhue.Controllers
             if (reservation == null)
             {
                 return HttpNotFound();
+            }
+            if (reservation.Username != User.Identity.Name)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
             }
             return View(reservation);
         }
