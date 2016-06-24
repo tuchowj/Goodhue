@@ -121,7 +121,7 @@ namespace Goodhue.Controllers
             {
                 return HttpNotFound();
             }
-            if (reservation.Username != User.Identity.Name)
+            if (User.Identity.Name != Constants.ADMIN && User.Identity.Name != reservation.Username)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
             }

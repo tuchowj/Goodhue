@@ -10,7 +10,7 @@ using Goodhue.Models;
 
 namespace Goodhue.Controllers
 {
-    [Authorize (Users="jonahg@redwingignite.org")]
+    [Authorize (Users=Constants.ADMIN)]
     public class CarsController : Controller
     {
         private CarDBContext db = new CarDBContext();
@@ -19,7 +19,7 @@ namespace Goodhue.Controllers
         [AllowAnonymous]
         public ActionResult Index()
         {
-            ViewBag.Admin = "jonahg@redwingignite.org";
+            ViewBag.Admin = Constants.ADMIN;
             return View(db.Cars.ToList());
         }
 
