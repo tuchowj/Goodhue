@@ -79,7 +79,7 @@
                     @Html.ActionLink("Edit", "Edit", "Cars", new { id = item.ID }, null)
                     <span>|</span>
                 }
-                @Html.ActionLink("Details", "Details", "Cars", new { id = item.ID }, null)
+                @Html.ActionLink("Schedule", "Schedule", "Reservations", new { id = item.ID }, null)
                 @if (User.Identity.GetUserName() == ViewBag.Admin)
                 {
                     <span>|</span>

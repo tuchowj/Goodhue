@@ -1,0 +1,63 @@
+﻿@model IEnumerable<Goodhue.Models.Reservation>
+
+@{
+    ViewBag.Title = "Schedule";
+}
+
+<h2>Schedule: @ViewBag.Car.Make @ViewBag.Car.Model @ViewBag.Car.Color @ViewBag.Car.Year</h2>
+
+<table class="table sortable">
+    <tr>
+        <th>
+            Car ID
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Username)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StartDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EndDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Destination)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Department)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        if (item.CarId == ViewBag.CarId)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CarId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Username)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Destination)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Department)
+                </td>
+                <td>
+                    @*@Html.ActionLink("Edit", "Edit", new { id=item.ID }) |*@
+                    @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                    @Html.ActionLink("Return", "Delete", new { id = item.ID })
+                </td>
+            </tr>
+        }
+    }
+</table>

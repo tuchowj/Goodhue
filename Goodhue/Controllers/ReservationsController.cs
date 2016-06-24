@@ -24,6 +24,24 @@ namespace Goodhue.Controllers
             return View(db.Reservations.ToList());
         }
 
+        // GET: Reservations
+        [AllowAnonymous]
+        public ActionResult Schedule(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ViewBag.CarId = (int) id;
+            Car car = carDb.Cars.Find(id);
+            if (car == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.Car = car;
+            return View(db.Reservations.ToList());
+        }
+
         // GET: Reservations/Details/5
         [AllowAnonymous]
         public ActionResult Details(int? id)
