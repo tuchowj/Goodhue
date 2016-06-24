@@ -23,7 +23,11 @@ namespace Goodhue.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:g}", ApplyFormatInEditMode = true)]
         public DateTime EndDate { get; set; }
+
+        [Required]
         public string Destination { get; set; }
+
+        [Required]
         public string Department { get; set; }
 
         public int CarId { get; set; }
