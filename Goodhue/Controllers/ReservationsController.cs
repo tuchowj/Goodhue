@@ -32,7 +32,6 @@ namespace Goodhue.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ViewBag.CarId = (int) id;
             Car car = carDb.Cars.Find(id);
             if (car == null)
             {
