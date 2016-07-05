@@ -127,8 +127,9 @@ namespace Goodhue.Controllers
         //}
 
         // GET: Reservations/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(int? id, int? carId)
         {
+            //Delete Reservation
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -142,18 +143,35 @@ namespace Goodhue.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
             }
-            return View(reservation);
+
+            //Edit Car Info
+            if (carId == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Car car = carDb.Cars.Find(carId);
+            if (car == null)
+            {
+                return HttpNotFound();
+            }
+            return View(car);
         }
 
         // POST: Reservations/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int id, [Bind(Include = "ID,Make,Model,Color,Year,Location,Odometer,OilChangeMiles,LastReservation")] Car car)
         {
-            Reservation reservation = db.Reservations.Find(id);
-            db.Reservations.Remove(reservation);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                carDb.Entry(car).State = EntityState.Modified;
+                carDb.SaveChanges();
+                Reservation reservation = db.Reservations.Find(id);
+                db.Reservations.Remove(reservation);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(car);
         }
 
         protected override void Dispose(bool disposing)

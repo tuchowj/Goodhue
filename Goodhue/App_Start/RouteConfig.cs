@@ -18,6 +18,11 @@ namespace Goodhue
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+            routes.MapRoute(
+                name: "Checkout",
+                url: "Reservations/Delete/{id}/{carId}",
+                defaults: new { controller = "Reservations", action = "Delete", id = UrlParameter.Optional, carId = UrlParameter.Optional }
+            );
         }
     }
 }
