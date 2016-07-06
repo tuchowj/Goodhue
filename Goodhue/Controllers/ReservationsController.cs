@@ -165,6 +165,7 @@ namespace Goodhue.Controllers
         {
             if (ModelState.IsValid)
             {
+                car.LastReservation = DateTime.Now;
                 carDb.Entry(car).State = EntityState.Modified;
                 carDb.SaveChanges();
                 return RedirectToAction("Index");
