@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Goodhue.Models;
+using System.Data.Entity.Infrastructure;
 
 namespace Goodhue.Controllers
 {
@@ -126,10 +127,10 @@ namespace Goodhue.Controllers
         //    return View(reservation);
         //}
 
-        // GET: Reservations/Delete/5
+        // GET: Reservations/Delete/5?carID=2
         public ActionResult Delete(int? id, int? carId)
         {
-            //Delete Reservation
+            ////Delete Reservation
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -157,7 +158,7 @@ namespace Goodhue.Controllers
             return View(car);
         }
 
-        // POST: Reservations/Delete/5
+        // POST: Reservations/Delete/5?carId=2
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id, [Bind(Include = "ID,Make,Model,Color,Year,Location,Odometer,OilChangeMiles,LastReservation")] Car car)
@@ -166,9 +167,6 @@ namespace Goodhue.Controllers
             {
                 carDb.Entry(car).State = EntityState.Modified;
                 carDb.SaveChanges();
-                Reservation reservation = db.Reservations.Find(id);
-                db.Reservations.Remove(reservation);
-                db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(car);
