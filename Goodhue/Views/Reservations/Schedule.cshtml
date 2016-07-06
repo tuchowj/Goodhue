@@ -32,7 +32,7 @@
 
     @foreach (var item in Model)
     {
-        if (item.CarId == ViewBag.Car.ID)
+        if (item.IsActive && item.CarId == ViewBag.Car.ID)
         {
             <tr>
                 <td>

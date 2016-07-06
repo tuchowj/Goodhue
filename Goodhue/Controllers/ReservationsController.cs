@@ -23,6 +23,7 @@ namespace Goodhue.Controllers
         [AllowAnonymous]
         public ActionResult Index()
         {
+            ViewBag.Admin = Constants.ADMIN;
             return View(db.Reservations.ToList());
         }
 
@@ -161,7 +162,7 @@ namespace Goodhue.Controllers
             return View(car);
         }
 
-        // POST: Reservations/Delete/5?carId=2
+        // POST: Reservations/Return/5?carId=2
         [HttpPost, ActionName("Return")]
         [ValidateAntiForgeryToken]
         public ActionResult ReturnConfirmed(int id, [Bind(Include = "ID,Make,Model,Color,Year,Location,Odometer,OilChangeMiles,LastReservation")] Car car)
@@ -177,7 +178,14 @@ namespace Goodhue.Controllers
 
                 //Edit Car Info
                 car.OilChangeMiles = car.OilChangeMiles + oldOdometer - car.Odometer;
-                car.LastReservation = DateTime.Now;
+                if (DateTime.Now < reservation.EndDate)
+                {
+                    car.LastReservation = DateTime.Now;
+                }
+                else
+                {
+                    car.LastReservation = reservation.EndDate;
+                }                
                 carDb.Entry(car).State = EntityState.Modified;
                 carDb.SaveChanges();
 

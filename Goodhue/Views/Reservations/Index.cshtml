@@ -1,10 +1,11 @@
-﻿@model IEnumerable<Goodhue.Models.Reservation>
+﻿@using Microsoft.AspNet.Identity
+@model IEnumerable<Goodhue.Models.Reservation>
 
 @{
     ViewBag.Title = "Reservations";
 }
 
-<h2>Reservations</h2>
+<h2>Active Reservations</h2>
 
 <table class="table sortable">
     <tr>
@@ -30,31 +31,90 @@
     </tr>
 
 @foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.CarId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Username)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.StartDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EndDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Destination)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Department)
-        </td>
-        <td>
-            @*@Html.ActionLink("Edit", "Edit", new { id=item.ID }) |*@
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Return", "Return", new { id=item.ID, carId=item.CarId })
-        </td>
-    </tr>
+    if (item.IsActive) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CarId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Username)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Destination)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Department)
+            </td>
+            <td>
+                @*@Html.ActionLink("Edit", "Edit", new { id=item.ID }) |*@
+                @Html.ActionLink("Details", "Details", new { id=item.ID })
+            </td>
+        </tr>
+    }
 }
-
 </table>
+
+@if (User.Identity.GetUserName() == ViewBag.Admin) {
+    <h2>Reservations to be Charged</h2>
+    <table class="table sortable">
+        <tr>
+            <th>
+                Car ID
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Username)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Destination)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Department)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            if (!item.IsActive)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CarId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Username)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Destination)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Department)
+                    </td>
+                    <td>
+                        @*@Html.ActionLink("Edit", "Edit", new { id=item.ID }) |*@
+                        @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                        @Html.ActionLink("Return", "Return", new { id = item.ID, carId = item.CarId })
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+}
