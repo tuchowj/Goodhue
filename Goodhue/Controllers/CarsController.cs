@@ -50,10 +50,12 @@ namespace Goodhue.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Make,Model,Color,Year,Location,Odometer,OilChangeMiles,LastReservation")] Car car)
+        public ActionResult Create([Bind(Include = "ID,Make,Model,Color,Year,Location,Odometer,OilChangeMiles")] Car car)
         {
             if (ModelState.IsValid)
             {
+                car.LastReservation = DateTime.Now;
+                car.IsAvailable = true;
                 db.Cars.Add(car);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -82,7 +84,7 @@ namespace Goodhue.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Make,Model,Color,Year,Location,Odometer,OilChangeMiles,LastReservation")] Car car)
+        public ActionResult Edit([Bind(Include = "ID,Make,Model,Color,Year,Location,Odometer,OilChangeMiles,LastReservation,IsAvailable")] Car car)
         {
             if (ModelState.IsValid)
             {

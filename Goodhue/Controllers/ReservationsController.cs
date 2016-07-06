@@ -15,6 +15,7 @@ namespace Goodhue.Controllers
     public class ReservationsController : Controller
     {
         private static int checkoutCarId;
+        private static int oldOdometer;
         private ReservationDBContext db = new ReservationDBContext();
         private CarDBContext carDb = new CarDBContext();
 
@@ -86,6 +87,7 @@ namespace Goodhue.Controllers
             {
                 reservation.CarId = checkoutCarId;
                 reservation.Username = User.Identity.Name;
+                reservation.IsActive = true;
                 db.Reservations.Add(reservation);
                 db.SaveChanges();
                 //Car car = carDb.Cars.Find(checkoutCarId);
@@ -127,10 +129,10 @@ namespace Goodhue.Controllers
         //    return View(reservation);
         //}
 
-        // GET: Reservations/Delete/5?carID=2
-        public ActionResult Delete(int? id, int? carId)
+        // GET: Reservations/Return/5?carID=2
+        public ActionResult Return(int? id, int? carId)
         {
-            ////Delete Reservation
+            //Deactivate Reservation
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -155,19 +157,30 @@ namespace Goodhue.Controllers
             {
                 return HttpNotFound();
             }
+            oldOdometer = car.Odometer;
             return View(car);
         }
 
         // POST: Reservations/Delete/5?carId=2
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("Return")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id, [Bind(Include = "ID,Make,Model,Color,Year,Location,Odometer,OilChangeMiles,LastReservation")] Car car)
+        public ActionResult ReturnConfirmed(int id, [Bind(Include = "ID,Make,Model,Color,Year,Location,Odometer,OilChangeMiles,LastReservation")] Car car)
         {
             if (ModelState.IsValid)
             {
+                //Deactivate Reservation
+                Reservation reservation = db.Reservations.Find(id);
+
+                reservation.IsActive = false;
+                db.Entry(reservation).State = EntityState.Modified;
+                db.SaveChanges();
+
+                //Edit Car Info
+                car.OilChangeMiles = car.OilChangeMiles + oldOdometer - car.Odometer;
                 car.LastReservation = DateTime.Now;
                 carDb.Entry(car).State = EntityState.Modified;
                 carDb.SaveChanges();
+
                 return RedirectToAction("Index");
             }
             return View(car);

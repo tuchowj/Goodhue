@@ -31,6 +31,8 @@ namespace Goodhue.Models
         public string Department { get; set; }
 
         public int CarId { get; set; }
+
+        public bool IsActive { get; set; }
     }
     public class ReservationDBContext : DbContext
     {

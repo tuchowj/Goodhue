@@ -29,7 +29,9 @@ namespace Goodhue.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:g}", ApplyFormatInEditMode = true)]
         public DateTime LastReservation { get; set; }
-        //TODO: tire rotation, comments, availability?
+        [Display(Name = "Available?")]
+        public bool IsAvailable { get; set; }
+        //TODO: comments, availability?
 
         //public virtual ICollection<Reservation> Reservations { get; set; }
     }

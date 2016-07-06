@@ -238,7 +238,7 @@
     <Content Include="Views\Cars\Edit.cshtml" />
     <Content Include="Views\Cars\Index.cshtml" />
     <Content Include="Views\Reservations\Create.cshtml" />
-    <Content Include="Views\Reservations\Delete.cshtml" />
+    <Content Include="Views\Reservations\Return.cshtml" />
     <Content Include="Views\Reservations\Details.cshtml" />
     <Content Include="Views\Reservations\Edit.cshtml" />
     <Content Include="Views\Reservations\Index.cshtml" />
