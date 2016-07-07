@@ -14,6 +14,7 @@ namespace Goodhue.Controllers
     public class CarsController : Controller
     {
         private CarDBContext db = new CarDBContext();
+        private ReservationDBContext reservationDb = new ReservationDBContext();
 
         // GET: Cars
         [AllowAnonymous]
@@ -115,9 +116,22 @@ namespace Goodhue.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            //Delete Car
             Car car = db.Cars.Find(id);
             db.Cars.Remove(car);
             db.SaveChanges();
+
+            //Delete Associated Reservations
+            List<Reservation> reservations = reservationDb.Reservations.ToList();
+            foreach (Reservation reservation in reservations)
+            {
+                if (reservation.CarId == id)
+                {
+                    reservationDb.Reservations.Remove(reservation);
+                }
+            }
+            reservationDb.SaveChanges();
+            
             return RedirectToAction("Index");
         }
 

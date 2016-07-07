@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Goodhue.Models;
 using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Core.Objects;
 
 namespace Goodhue.Controllers
 {
@@ -167,16 +168,16 @@ namespace Goodhue.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ReturnConfirmed(int id, [Bind(Include = "ID,Make,Model,Color,Year,Location,Odometer,OilChangeMiles,LastReservation")] Car car)
         {
+            //Deactivate Reservation
+            Reservation reservation = db.Reservations.Find(id);
+
+            reservation.IsActive = false;
+            db.Entry(reservation).State = EntityState.Modified;
+            db.SaveChanges();
+
+            //Edit Car Info
             if (ModelState.IsValid)
             {
-                //Deactivate Reservation
-                Reservation reservation = db.Reservations.Find(id);
-
-                reservation.IsActive = false;
-                db.Entry(reservation).State = EntityState.Modified;
-                db.SaveChanges();
-
-                //Edit Car Info
                 car.OilChangeMiles = car.OilChangeMiles + oldOdometer - car.Odometer;
                 if (DateTime.Now < reservation.EndDate)
                 {
@@ -185,9 +186,30 @@ namespace Goodhue.Controllers
                 else
                 {
                     car.LastReservation = reservation.EndDate;
-                }                
+                }
                 carDb.Entry(car).State = EntityState.Modified;
-                carDb.SaveChanges();
+
+                bool saveFailed;
+                do
+                {
+                    saveFailed = false;
+                    try
+                    {
+                        carDb.SaveChanges();
+                    }
+                    catch (DbUpdateConcurrencyException ex)
+                    {
+                        saveFailed = true;
+
+                        // Update original values from the database 
+                        var objContext = ((IObjectContextAdapter)carDb).ObjectContext;
+                        var entry = ex.Entries.Single();
+                        entry.Reload(); //***** DELETE THIS ********************************************
+                        //objContext.Refresh(RefreshMode.ClientWins, entry.Entity); 
+                        //entry.OriginalValues.SetValues(entry.GetDatabaseValues());
+                    }
+
+                } while (saveFailed);
 
                 return RedirectToAction("Index");
             }
