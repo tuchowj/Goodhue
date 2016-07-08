@@ -83,7 +83,7 @@ namespace Goodhue.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,StartDate,EndDate,Destination,Department")] Reservation reservation)
+        public ActionResult Create([Bind(Include = "ID,StartDate,EndDate,Destination,Department,Charge")] Reservation reservation)
         {
             if (ModelState.IsValid)
             {
@@ -93,6 +93,10 @@ namespace Goodhue.Controllers
                 db.Reservations.Add(reservation);
                 db.SaveChanges();
                 //Car car = carDb.Cars.Find(checkoutCarId);
+                //car.IsAvailable = false;
+                //carDb.Entry(car).State = EntityState.Modified;
+                //carDb.SaveChanges();
+
                 //ViewBag.Car = car;
                 return RedirectToAction("Index");
             }
@@ -166,12 +170,13 @@ namespace Goodhue.Controllers
         // POST: Reservations/Return/5?carId=2
         [HttpPost, ActionName("Return")]
         [ValidateAntiForgeryToken]
-        public ActionResult ReturnConfirmed(int id, [Bind(Include = "ID,Make,Model,Color,Year,Location,Odometer,OilChangeMiles,LastReservation")] Car car)
+        public ActionResult ReturnConfirmed(int id, [Bind(Include = "ID,Make,Model,Color,Year,Location,Odometer,OilChangeMiles,LastReservation,IsAvailable")] Car car)
         {
             //Deactivate Reservation
             Reservation reservation = db.Reservations.Find(id);
 
             reservation.IsActive = false;
+            reservation.Charge = Constants.GAS_PRICE * (oldOdometer - car.Odometer);
             db.Entry(reservation).State = EntityState.Modified;
             db.SaveChanges();
 
@@ -188,7 +193,7 @@ namespace Goodhue.Controllers
                     car.LastReservation = reservation.EndDate;
                 }
                 carDb.Entry(car).State = EntityState.Modified;
-
+                
                 bool saveFailed;
                 do
                 {

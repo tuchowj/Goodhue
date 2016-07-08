@@ -83,6 +83,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Department)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Charge)
+            </th>
             <th></th>
         </tr>
 
@@ -108,6 +111,9 @@
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Department)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Charge)
                     </td>
                     <td>
                         @*@Html.ActionLink("Edit", "Edit", new { id=item.ID }) |*@
