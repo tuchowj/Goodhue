@@ -30,8 +30,7 @@ namespace Goodhue.Models
         [Required]
         public string Department { get; set; }
 
-        [DataType(DataType.Currency)]
-        public double Charge { get; set; }
+        public int Miles { get; set; }
 
         public int CarId { get; set; }
 

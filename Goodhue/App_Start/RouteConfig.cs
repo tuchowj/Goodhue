@@ -14,15 +14,17 @@ namespace Goodhue
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                name: "Return",
+                url: "Reservations/Return/{carId}/{reservationId}",
+                defaults: new { controller = "Reservations", action = "Return", carId = UrlParameter.Optional, reservationId = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
-            routes.MapRoute(
-                name: "Return",
-                url: "Reservations/Return/{id}/{carId}",
-                defaults: new { controller = "Reservations", action = "Delete", id = UrlParameter.Optional, carId = UrlParameter.Optional }
-            );
+            
         }
     }
 }

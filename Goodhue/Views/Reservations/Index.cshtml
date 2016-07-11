@@ -54,7 +54,7 @@
             <td>
                 @*@Html.ActionLink("Edit", "Edit", new { id=item.ID }) |*@
                 @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-                @Html.ActionLink("Return", "Return", new { id = item.ID, carId = item.CarId })
+                @Html.ActionLink("Return", "Return", new { carId = item.CarId, reservationId = item.ID })
             </td>
         </tr>
     }
@@ -84,7 +84,7 @@
                 @Html.DisplayNameFor(model => model.Department)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Charge)
+                @Html.DisplayNameFor(model => model.Miles)
             </th>
             <th></th>
         </tr>
@@ -113,7 +113,7 @@
                         @Html.DisplayFor(modelItem => item.Department)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Charge)
+                        @Html.DisplayFor(modelItem => item.Miles)
                     </td>
                     <td>
                         @*@Html.ActionLink("Edit", "Edit", new { id=item.ID }) |*@

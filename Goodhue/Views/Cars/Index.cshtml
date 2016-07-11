@@ -33,15 +33,18 @@
         <th>
             @Html.DisplayNameFor(model => model.Location)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Odometer)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.OilChangeMiles)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LastReservation)
-        </th>
+        @if (User.Identity.GetUserName() == ViewBag.Admin)
+        {
+            <th>
+                @Html.DisplayNameFor(model => model.Odometer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OilChangeMiles)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastReservation)
+            </th>
+        }
         <th></th>
     </tr>
 
@@ -65,19 +68,23 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Location)
                 </td>
+                @if (User.Identity.GetUserName() == ViewBag.Admin)
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Odometer)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OilChangeMiles)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastReservation)
+                    </td>
+                }
                 <td>
-                    @Html.DisplayFor(modelItem => item.Odometer)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.OilChangeMiles)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LastReservation)
-                </td>
-                <td>
-                    @Html.ActionLink("Schedule", "Schedule", "Reservations", new { id = item.ID }, null) |
-                    @Html.ActionLink("Details", "Details", "Cars", new { id = item.ID }, null) |
-                    @Html.ActionLink("Checkout", "Create", "Reservations", new { id = item.ID }, null)
+                    @Html.ActionLink("Checkout", "Create", "Reservations", new { id = item.ID }, null) |
+                    @Html.ActionLink("Reservations", "Schedule", "Reservations", new { id = item.ID }, null)
+                    @*@Html.ActionLink("Details", "Details", "Cars", new { id = item.ID }, null) |*@
+                    
                     @if (User.Identity.GetUserName() == ViewBag.Admin)
                     {
                         <span>|</span>

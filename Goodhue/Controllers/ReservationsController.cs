@@ -17,6 +17,7 @@ namespace Goodhue.Controllers
     {
         private static int checkoutCarId;
         private static int oldOdometer;
+        private static Reservation returnReservation;
         private ReservationDBContext db = new ReservationDBContext();
         private CarDBContext carDb = new CarDBContext();
 
@@ -83,7 +84,7 @@ namespace Goodhue.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,StartDate,EndDate,Destination,Department,Charge")] Reservation reservation)
+        public ActionResult Create([Bind(Include = "ID,StartDate,EndDate,Destination,Department,Miles")] Reservation reservation)
         {
             if (ModelState.IsValid)
             {
@@ -135,15 +136,15 @@ namespace Goodhue.Controllers
         //    return View(reservation);
         //}
 
-        // GET: Reservations/Return/5?carID=2
-        public ActionResult Return(int? id, int? carId)
+        // GET: Reservations/Return/5?id=2
+        public ActionResult Return(int? carId, int? reservationId)
         {
             //Deactivate Reservation
-            if (id == null)
+            if (reservationId == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Reservation reservation = db.Reservations.Find(id);
+            Reservation reservation = db.Reservations.Find(reservationId);
             if (reservation == null)
             {
                 return HttpNotFound();
@@ -152,6 +153,7 @@ namespace Goodhue.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
             }
+            returnReservation = reservation;
 
             //Edit Car Info
             if (carId == null)
@@ -170,30 +172,30 @@ namespace Goodhue.Controllers
         // POST: Reservations/Return/5?carId=2
         [HttpPost, ActionName("Return")]
         [ValidateAntiForgeryToken]
-        public ActionResult ReturnConfirmed(int id, [Bind(Include = "ID,Make,Model,Color,Year,Location,Odometer,OilChangeMiles,LastReservation,IsAvailable")] Car car)
+        public ActionResult ReturnConfirmed([Bind(Include = "ID,Make,Model,Color,Year,Location,Odometer,OilChangeMiles,LastReservation,IsAvailable")] Car car)
         {
             //Deactivate Reservation
-            Reservation reservation = db.Reservations.Find(id);
 
-            reservation.IsActive = false;
-            reservation.Charge = Constants.GAS_PRICE * (oldOdometer - car.Odometer);
-            db.Entry(reservation).State = EntityState.Modified;
+            returnReservation.IsActive = false;
+            //reservation.Charge = Constants.GAS_PRICE * (oldOdometer - car.Odometer);
+            returnReservation.Miles = car.Odometer - oldOdometer;
+            db.Entry(returnReservation).State = EntityState.Modified;
             db.SaveChanges();
 
             //Edit Car Info
             if (ModelState.IsValid)
             {
                 car.OilChangeMiles = car.OilChangeMiles + oldOdometer - car.Odometer;
-                if (DateTime.Now < reservation.EndDate)
+                if (DateTime.Now < returnReservation.EndDate)
                 {
                     car.LastReservation = DateTime.Now;
                 }
                 else
                 {
-                    car.LastReservation = reservation.EndDate;
+                    car.LastReservation = returnReservation.EndDate;
                 }
                 carDb.Entry(car).State = EntityState.Modified;
-                
+
                 bool saveFailed;
                 do
                 {
@@ -206,12 +208,13 @@ namespace Goodhue.Controllers
                     {
                         saveFailed = true;
 
-                        // Update original values from the database 
+                        //// Update original values from the database 
                         var objContext = ((IObjectContextAdapter)carDb).ObjectContext;
                         var entry = ex.Entries.Single();
-                        entry.Reload(); //***** DELETE THIS ********************************************
-                        //objContext.Refresh(RefreshMode.ClientWins, entry.Entity); 
+                        //entry.Reload(); //***** DELETE THIS ********************************************
                         //entry.OriginalValues.SetValues(entry.GetDatabaseValues());
+                        objContext.Refresh(RefreshMode.ClientWins, entry.Entity);
+                        
                     }
 
                 } while (saveFailed);
@@ -222,6 +225,7 @@ namespace Goodhue.Controllers
         }
 
         // GET: Reservations/Delete/5
+        [Authorize (Users=Constants.ADMIN)]
         public ActionResult Delete(int? id)
         {
             if (id == null)
