@@ -51,7 +51,7 @@ namespace Goodhue.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Make,Model,Color,Year,Location,Odometer,OilChangeMiles")] Car car)
+        public ActionResult Create([Bind(Include = "ID,CountyID,Description,Location,Odometer,OilChangeMiles")] Car car)
         {
             if (ModelState.IsValid)
             {
@@ -85,7 +85,7 @@ namespace Goodhue.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Make,Model,Color,Year,Location,Odometer,OilChangeMiles,LastReservation,IsAvailable")] Car car)
+        public ActionResult Edit([Bind(Include = "ID,CountyID,Description,Location,Odometer,OilChangeMiles,LastReservation,IsAvailable")] Car car)
         {
             if (ModelState.IsValid)
             {

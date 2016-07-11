@@ -9,7 +9,7 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h2>Checkout: @ViewBag.Car.Make @ViewBag.Car.Model @ViewBag.Car.Color @ViewBag.Car.Year</h2>
+        <h2>Checkout: @ViewBag.Car.Description</h2>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">

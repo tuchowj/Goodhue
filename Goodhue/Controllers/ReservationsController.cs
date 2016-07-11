@@ -172,10 +172,9 @@ namespace Goodhue.Controllers
         // POST: Reservations/Return/5?carId=2
         [HttpPost, ActionName("Return")]
         [ValidateAntiForgeryToken]
-        public ActionResult ReturnConfirmed([Bind(Include = "ID,Make,Model,Color,Year,Location,Odometer,OilChangeMiles,LastReservation,IsAvailable")] Car car)
+        public ActionResult ReturnConfirmed([Bind(Include = "ID,CountyID,Description,Location,Odometer,OilChangeMiles,isAvailable")] Car car)
         {
             //Deactivate Reservation
-
             returnReservation.IsActive = false;
             //reservation.Charge = Constants.GAS_PRICE * (oldOdometer - car.Odometer);
             returnReservation.Miles = car.Odometer - oldOdometer;

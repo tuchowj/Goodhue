@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 
@@ -14,11 +13,9 @@ namespace Goodhue.Models
 
         //unchanging
         public int ID { get; set; }
-        public string Make { get; set; }
-        public string Model { get; set; }
-        public string Color { get; set; }
-        public int Year { get; set; }
-        //TODO: mileage and date put in service?
+        [Display(Name = "ID")]
+        public int CountyID { get; set; }
+        public string Description { get; set; }
 
         //changing
         public string Location { get; set; }
