@@ -25,6 +25,10 @@
             <div class="col-md-10">
                 @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+                @if (ViewBag.HasScheduleConflict)
+                {
+                    <p>Schedule Conflict -- Please Choose a Different Time.</p>
+                }
             </div>
         </div>
 
@@ -43,20 +47,6 @@
                 @Html.ValidationMessageFor(model => model.Department, "", new { @class = "text-danger" })
             </div>
         </div>
-
-        @*<div class="form-group">
-            <div class="col-md-10">
-                @Html.Editor("startHour") <br />
-                @Html.ValidationMessage("startHour", "must input integer", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-10">
-                @Html.Editor("endHour") <br />
-                @Html.ValidationMessage("endHour", "must input integer", new { @class = "text-danger" })
-            </div>
-        </div>*@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">

@@ -62,7 +62,7 @@ namespace Goodhue.Controllers
             return View(reservation);
         }
 
-        // GET: Reservations/Create
+        // GET: Reservations/Create/2
         public ActionResult Create(int? id)
         {
             if (id == null)
@@ -76,32 +76,44 @@ namespace Goodhue.Controllers
                 return HttpNotFound();
             }
             ViewBag.Car = car;
+            ViewBag.HasScheduleConflict = false;
             return View();
         }
 
-        // POST: Reservations/Create
+        // POST: Reservations/Create/2
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,StartDate,EndDate,Destination,Department,Miles")] Reservation reservation)
+        public ActionResult Create([Bind(Include = "ID,StartDate,EndDate,Destination,Department,Miles,CarID,IsActive")] Reservation reservation)
         {
+            Car car = carDb.Cars.Find(checkoutCarId);
             if (ModelState.IsValid)
             {
+                List<Reservation> reservations = db.Reservations.ToList();
+                foreach (Reservation res in reservations)
+                {
+                    if (checkoutCarId == res.CarId && res.IsActive)
+                    {
+                        if ((reservation.StartDate >= res.StartDate && reservation.StartDate <= res.EndDate) ||
+                            (reservation.EndDate >= res.StartDate && reservation.EndDate <= res.EndDate) ||
+                            (reservation.StartDate <= res.StartDate && reservation.EndDate >= res.EndDate))
+                        {
+                            ViewBag.Car = car;
+                            ViewBag.HasScheduleConflict = true;
+                            return View(reservation);
+                        }
+                    }
+                }
                 reservation.CarId = checkoutCarId;
                 reservation.Username = User.Identity.Name;
                 reservation.IsActive = true;
                 db.Reservations.Add(reservation);
                 db.SaveChanges();
-                //Car car = carDb.Cars.Find(checkoutCarId);
-                //car.IsAvailable = false;
-                //carDb.Entry(car).State = EntityState.Modified;
-                //carDb.SaveChanges();
-
-                //ViewBag.Car = car;
                 return RedirectToAction("Index");
             }
-
+            ViewBag.Car = car;
+            ViewBag.HasScheduleConflcit = false;
             return View(reservation);
         }
 

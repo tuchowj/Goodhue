@@ -125,7 +125,7 @@ namespace Goodhue.Controllers
             List<Reservation> reservations = reservationDb.Reservations.ToList();
             foreach (Reservation reservation in reservations)
             {
-                if (reservation.CarId == id)
+                if (reservation.CarId == id && reservation.IsActive)
                 {
                     reservationDb.Reservations.Remove(reservation);
                 }
