@@ -69,8 +69,7 @@
                     </td>
                 }
                 <td>
-                    @Html.ActionLink("Checkout", "Create", "Reservations", new { id = item.ID }, null) |
-                    @Html.ActionLink("Reservations", "Schedule", "Reservations", new { id = item.ID }, null)
+                    @Html.ActionLink("Select", "Schedule", "Reservations", new { id = item.ID }, null)
                     @*@Html.ActionLink("Details", "Details", "Cars", new { id = item.ID }, null) |*@
                     
                     @if (User.Identity.GetUserName() == ViewBag.Admin)

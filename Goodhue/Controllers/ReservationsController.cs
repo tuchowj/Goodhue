@@ -90,13 +90,19 @@ namespace Goodhue.Controllers
             Car car = carDb.Cars.Find(checkoutCarId);
             if (ModelState.IsValid)
             {
+                if ((reservation.StartDate > reservation.EndDate) || (reservation.StartDate < DateTime.Today))
+                {
+                    ViewBag.Car = car;
+                    ViewBag.HasScheduleConflict = true;
+                    return View(reservation);
+                }
                 List<Reservation> reservations = db.Reservations.ToList();
                 foreach (Reservation res in reservations)
                 {
                     if (checkoutCarId == res.CarId && res.IsActive)
                     {
-                        if ((reservation.StartDate >= res.StartDate && reservation.StartDate <= res.EndDate) ||
-                            (reservation.EndDate >= res.StartDate && reservation.EndDate <= res.EndDate) ||
+                        if ((reservation.StartDate >= res.StartDate && reservation.StartDate < res.EndDate) ||
+                            (reservation.EndDate > res.StartDate && reservation.EndDate <= res.EndDate) ||
                             (reservation.StartDate <= res.StartDate && reservation.EndDate >= res.EndDate))
                         {
                             ViewBag.Car = car;
@@ -225,7 +231,6 @@ namespace Goodhue.Controllers
                         //entry.Reload(); //***** DELETE THIS ********************************************
                         //entry.OriginalValues.SetValues(entry.GetDatabaseValues());
                         objContext.Refresh(RefreshMode.ClientWins, entry.Entity);
-                        
                     }
 
                 } while (saveFailed);
