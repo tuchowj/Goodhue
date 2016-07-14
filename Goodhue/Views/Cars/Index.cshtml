@@ -35,10 +35,10 @@
             <th>
                 @Html.DisplayNameFor(model => model.OilChangeMiles)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LastReservation)
-            </th>
         }
+        <th>
+            @Html.DisplayNameFor(model => model.LastReservation)
+        </th>
         <th></th>
     </tr>
 
@@ -64,10 +64,10 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.OilChangeMiles)
                     </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.LastReservation)
-                    </td>
                 }
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastReservation)
+                </td>
                 <td>
                     @Html.ActionLink("Select", "Schedule", "Reservations", new { id = item.ID }, null)
                     @*@Html.ActionLink("Details", "Details", "Cars", new { id = item.ID }, null) |*@

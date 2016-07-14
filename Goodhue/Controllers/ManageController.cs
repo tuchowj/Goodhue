@@ -297,15 +297,15 @@ namespace Goodhue.Controllers
             });
         }
 
-        //
-        // POST: /Manage/LinkLogin
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult LinkLogin(string provider)
-        {
-            // Request a redirect to the external login provider to link a login for the current user
-            return new AccountController.ChallengeResult(provider, Url.Action("LinkLoginCallback", "Manage"), User.Identity.GetUserId());
-        }
+        ////
+        //// POST: /Manage/LinkLogin
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult LinkLogin(string provider)
+        //{
+        //    // Request a redirect to the external login provider to link a login for the current user
+        //    return new AccountController.ChallengeResult(provider, Url.Action("LinkLoginCallback", "Manage"), User.Identity.GetUserId());
+        //}
 
         //
         // GET: /Manage/LinkLoginCallback
@@ -318,6 +318,12 @@ namespace Goodhue.Controllers
             }
             var result = await UserManager.AddLoginAsync(User.Identity.GetUserId(), loginInfo.Login);
             return result.Succeeded ? RedirectToAction("ManageLogins") : RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
+        }
+
+        //GET: /Manage/Roles
+        public ActionResult Roles()
+        {
+            return View();
         }
 
         protected override void Dispose(bool disposing)
