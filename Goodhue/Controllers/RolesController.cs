@@ -97,7 +97,7 @@ namespace MVCInBuiltFeatures.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult RoleAddToUser(string UserName, string RoleName)
+        public ActionResult AddRoleToUser(string UserName, string RoleName)
         {
             ApplicationUser user = context.Users.Where(u => u.UserName.Equals(UserName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
             var account = new AccountController();
@@ -119,8 +119,8 @@ namespace MVCInBuiltFeatures.Controllers
             if (!string.IsNullOrWhiteSpace(UserName))
             {
                 ApplicationUser user = context.Users.Where(u => u.UserName.Equals(UserName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
-                var account = new AccountController();
 
+                var account = new AccountController();
                 ViewBag.RolesForThisUser = account.UserManager.GetRoles(user.Id);
 
                 // prepopulate roles for the view dropdown

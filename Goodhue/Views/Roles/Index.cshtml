@@ -12,7 +12,7 @@
     {
         <p>
             <strong>@role.Name | </strong>
-            <span onclick="return confirm('Are you sure you want to delete?')"><a href="/Roles/Delete?RoleName=@role.Name" class="delLink" style="color:red;">Delete</a></span> |
+            <span onclick="return confirm('Are you sure you want to delete this role?')"><a href="/Roles/Delete?RoleName=@role.Name" class="delLink" style="color:red;">Delete</a></span> |
             @Html.ActionLink("Edit", "Edit", new { roleName = @role.Name })
         </p>
     }

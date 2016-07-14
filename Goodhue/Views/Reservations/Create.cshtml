@@ -19,7 +19,7 @@
                 @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
                 @if (ViewBag.HasScheduleConflict)
                 {
-                    <p>Schedule Conflict -- Please Choose a Different Time.</p>
+                    <p class="text-danger field-validation-error">Schedule Conflict -- Please Choose a Different Time.</p>
                 }
             </div>
         </div>
@@ -31,7 +31,7 @@
                 @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
                 @if (ViewBag.HasScheduleConflict)
                 {
-                    <p>Schedule Conflict -- Please Choose a Different Time.</p>
+                    <p class="text-danger field-validation-error">Schedule Conflict -- Please Choose a Different Time.</p>
                 }
             </div>
         </div>

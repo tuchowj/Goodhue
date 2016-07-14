@@ -10,7 +10,7 @@ using Goodhue.Models;
 
 namespace Goodhue.Controllers
 {
-    [Authorize (Roles="admin")]
+    [Authorize (Roles="Admin")]
     public class CarsController : Controller
     {
         private CarDBContext db = new CarDBContext();

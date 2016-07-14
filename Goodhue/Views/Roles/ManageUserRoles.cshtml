@@ -6,17 +6,16 @@
 @Html.ActionLink("Create New Role", "Create") | @Html.ActionLink("Manage User Role", "ManageUserRoles")
 <hr />
 
-<h2>Role Add to User</h2>
+<h3>Add Role to User</h3>
 
-@using (Html.BeginForm("RoleAddToUser", "Roles"))
+@using (Html.BeginForm("AddRoleToUser", "Roles"))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
     <p>
-        Username : @Html.TextBox("UserName")
+        Email : @Html.TextBox("Email")
         Role Name: @Html.DropDownList("RoleName", (IEnumerable<SelectListItem>)ViewBag.Roles, "Select ...")
-
     </p>
 
     <input type="submit" value="Save" />
@@ -34,12 +33,12 @@
 
 @if (ViewBag.RolesForThisUser != null)
 {
-    <div style="background-color:yellow;">
-        <h3>Roles for this user </h3>
+    <div style="background-color:lightgray;">
+        <h4>Roles for this user </h4>
         <ol>
-            @foreach (string s in ViewBag.RolesForThisUser)
+            @foreach (string role in ViewBag.RolesForThisUser)
             {
-                <li>@s</li>
+                <li>@role</li>
             }
         </ol>
     </div>
@@ -48,7 +47,7 @@
 <hr />
 <h3>Delete A User from a Role</h3>
 
-@using (Html.BeginForm("DeleteRoleForUser", "Roles"))
+@using (Html.BeginForm("DeleteRoleFromUser", "Roles"))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
@@ -56,8 +55,7 @@
     <p>
         Username : @Html.TextBox("UserName")
         Role Name: @Html.DropDownList("RoleName", (IEnumerable<SelectListItem>)ViewBag.Roles, "Select ...")
-
     </p>
 
-    <input type="submit" value="Delete this user from Role" />
+    <input type="submit" value="Delete this user from role" />
 }
