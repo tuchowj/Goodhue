@@ -24,6 +24,32 @@ namespace Goodhue.Controllers
             return View(db.Cars.ToList());
         }
 
+        [AllowAnonymous]
+        [HttpPost]
+        public ActionResult Index(DateTime? startDate, DateTime? endDate)
+        {
+            if (startDate == null || endDate == null)
+            {
+                return RedirectToAction("Index");
+            }
+            List<Car> availableCars = db.Cars.ToList();
+            List<Reservation> reservations = reservationDb.Reservations.ToList();
+            foreach (Reservation res in reservations)
+            {
+                if (res.IsActive)
+                {
+                    if ((startDate >= res.StartDate && startDate < res.EndDate) ||
+                        (endDate > res.StartDate && endDate <= res.EndDate) ||
+                        (startDate <= res.StartDate && endDate >= res.EndDate))
+                    {
+                        Car badCar = db.Cars.Find(res.CarId);
+                        availableCars.Remove(badCar);
+                    }
+                }
+            }
+            return View(availableCars);
+        }
+
         // GET: Cars/Details/5
         [AllowAnonymous]
         public ActionResult Details(int? id)
@@ -101,6 +127,7 @@ namespace Goodhue.Controllers
         {
             if (id == null)
             {
+          
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Car car = db.Cars.Find(id);

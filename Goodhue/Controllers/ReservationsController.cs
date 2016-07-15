@@ -154,7 +154,7 @@ namespace Goodhue.Controllers
         //    return View(reservation);
         //}
 
-        // GET: Reservations/Return/5?id=2
+        // GET: Reservations/Return/5/2
         public ActionResult Return(int? carId, int? reservationId)
         {
             //Deactivate Reservation
