@@ -25,6 +25,13 @@
         </div>
 
         <div class="form-group">
+            <label class="control-label col-md-2">Start Hour</label>
+            <div class="col-md-10">
+                <input class="form-control text-box single-line" data-val="true" id="startHour" name="startHour" type="time" value="">
+            </div>
+        </div>
+
+        <div class="form-group">
             @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
@@ -33,6 +40,13 @@
                 {
                     <p class="text-danger field-validation-error">Schedule Conflict -- Please Choose a Different Time.</p>
                 }
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">End Hour</label>
+            <div class="col-md-10">
+                <input class="form-control text-box single-line" data-val="true" id="endHour" name="endHour" type="time" value="">
             </div>
         </div>
 

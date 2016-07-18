@@ -85,11 +85,21 @@ namespace Goodhue.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,StartDate,EndDate,Destination,Department,Miles,CarID,IsActive")] Reservation reservation)
+        public ActionResult Create([Bind(Include = "ID,StartDate,EndDate,Destination,Department,Miles,CarID,IsActive")] Reservation reservation, TimeSpan? startHour, TimeSpan? endHour)
         {
             Car car = carDb.Cars.Find(checkoutCarId);
             if (ModelState.IsValid)
             {
+                if (!startHour.HasValue)
+                {
+                    startHour = TimeSpan.Zero;
+                }
+                if (!endHour.HasValue)
+                {
+                    endHour = TimeSpan.Zero;
+                }
+                reservation.StartDate = reservation.StartDate.Add((TimeSpan) startHour);
+                reservation.EndDate = reservation.EndDate.Add((TimeSpan) endHour);
                 if ((reservation.StartDate > reservation.EndDate) || (reservation.StartDate < DateTime.Today))
                 {
                     ViewBag.Car = car;
@@ -119,7 +129,7 @@ namespace Goodhue.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.Car = car;
-            ViewBag.HasScheduleConflcit = false;
+            ViewBag.HasScheduleConflict = false;
             return View(reservation);
         }
 
