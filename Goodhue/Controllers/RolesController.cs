@@ -10,6 +10,7 @@ using Goodhue.Controllers;
 
 namespace MVCInBuiltFeatures.Controllers
 {
+    [Authorize (Roles="Admin")]
     public class RolesController : Controller
     {
         ApplicationDbContext context = new ApplicationDbContext();
@@ -18,8 +19,7 @@ namespace MVCInBuiltFeatures.Controllers
         // GET: /Roles/
         public ActionResult Index()
         {
-            var roles = context.Roles.ToList();
-            return View(roles);
+            return RedirectToAction("ManageUserRoles");
         }
 
         //
@@ -97,15 +97,22 @@ namespace MVCInBuiltFeatures.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddRoleToUser(string UserName, string RoleName)
+        public ActionResult AddRoleToUser(string Email, string RoleName)
         {
-            ApplicationUser user = context.Users.Where(u => u.UserName.Equals(UserName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+            ApplicationUser user = context.Users.Where(u => u.Email.Equals(Email, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
             var account = new AccountController();
-            account.UserManager.AddToRole(user.Id, RoleName);
+            if (user == null)
+            {
+
+            }
+            else
+            {
+                account.UserManager.AddToRole(user.Id, RoleName);
+            }
 
             ViewBag.ResultMessage = "Role created successfully !";
 
-            // prepopulat roles for the view dropdown
+            // prepopulate roles for the view dropdown
             var list = context.Roles.OrderBy(r => r.Name).ToList().Select(rr => new SelectListItem { Value = rr.Name.ToString(), Text = rr.Name }).ToList();
             ViewBag.Roles = list;
 
@@ -114,11 +121,17 @@ namespace MVCInBuiltFeatures.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult GetRoles(string UserName)
+        public ActionResult GetRoles(string Email)
         {
-            if (!string.IsNullOrWhiteSpace(UserName))
+            if (!string.IsNullOrWhiteSpace(Email))
             {
-                ApplicationUser user = context.Users.Where(u => u.UserName.Equals(UserName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+                ApplicationUser user = context.Users.Where(u => u.Email.Equals(Email, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+
+                if (user == null)
+                {
+                    ViewBag.Roles = null;
+                    return View("ManageUserRoles");
+                }
 
                 var account = new AccountController();
                 ViewBag.RolesForThisUser = account.UserManager.GetRoles(user.Id);
@@ -133,10 +146,16 @@ namespace MVCInBuiltFeatures.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteRoleForUser(string UserName, string RoleName)
+        public ActionResult DeleteRoleFromUser(string Email, string RoleName)
         {
             var account = new AccountController();
-            ApplicationUser user = context.Users.Where(u => u.UserName.Equals(UserName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+            ApplicationUser user = context.Users.Where(u => u.Email.Equals(Email, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+
+            if (user == null)
+            {
+                ViewBag.Roles = null;
+                return View("ManageUserRoles");
+            }
 
             if (account.UserManager.IsInRole(user.Id, RoleName))
             {

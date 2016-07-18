@@ -14,10 +14,10 @@
         <div class="col-sm-3"><h2>Find Available Car:</h2></div>
         <div class="col-sm-3"><strong>Start Date</strong><input class="form-control text-box single-line" data-val="true" data-val-required="The Start Date field is required." id="StartDate" name="StartDate" type="date" value=""></div>
         <div class="col-sm-3"><strong>End Date</strong><input class="form-control text-box single-line" data-val="true" data-val-required="The End Date field is required." id="EndDate" name="EndDate" type="date" value=""></div>
-        <div class="col-sm-1"><br /><input class="btn btn-default" type="submit" value="Search" /></div>
+        <div class="col-sm-1"><br /><input class="btn btn-primary" type="submit" value="Search" /></div>
     </form>
 </div>
-@if (User.Identity.GetUserName() == ViewBag.Admin)
+@if (User.IsInRole("Admin"))
 {
     <p>
         @Html.ActionLink("Create New", "Create", "Cars")
@@ -34,7 +34,7 @@
         <th>
             @Html.DisplayNameFor(model => model.Location)
         </th>
-        @if (User.Identity.GetUserName() == ViewBag.Admin)
+        @if (User.IsInRole("Admin"))
         {
             <th>
                 @Html.DisplayNameFor(model => model.Odometer)
@@ -63,7 +63,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Location)
                 </td>
-                @if (User.Identity.GetUserName() == ViewBag.Admin)
+                @if (User.IsInRole("Admin"))
                 {
                     <td>
                         @Html.DisplayFor(modelItem => item.Odometer)
@@ -76,17 +76,17 @@
                     @Html.DisplayFor(modelItem => item.LastReservation)
                 </td>
                 <td>
-                    @Html.ActionLink("Select", "Schedule", "Reservations", new { id = item.ID }, null)
+                    @Html.ActionLink("Select", "Schedule", "Reservations", new { id = item.ID }, new { @class = "btn btn-primary btn-sm" })
                     @*@Html.ActionLink("Details", "Details", "Cars", new { id = item.ID }, null) |*@
                     
-                    @if (User.Identity.GetUserName() == ViewBag.Admin)
+                    @if (User.IsInRole("Admin"))
                     {
                         <span>|</span>
                         @Html.ActionLink("Edit", "Edit", "Cars", new { id = item.ID }, null)
                     
                     }
                 
-                    @if (User.Identity.GetUserName() == ViewBag.Admin)
+                    @if (User.IsInRole("Admin"))
                     {
                         <span>|</span>
                         @Html.ActionLink("Delete", "Delete", "Cars", new { id = item.ID }, null)
@@ -97,7 +97,7 @@
     }
 
 </table>
-@if (User.Identity.GetUserName() == ViewBag.Admin)
+@if (User.IsInRole("Admin"))
 {
     <h2>Unavailable Cars</h2>
     <table class="table sortable">
@@ -150,14 +150,14 @@
                         @*@Html.ActionLink("Schedule", "Schedule", "Reservations", new { id = item.ID }, null) |*@
                         @Html.ActionLink("Details", "Details", "Cars", new { id = item.ID }, null)
                         @*@Html.ActionLink("Checkout", "Create", "Reservations", new { id = item.ID }, null)*@
-                        @if (User.Identity.GetUserName() == ViewBag.Admin)
+                        @if (User.IsInRole("Admin"))
                         {
                             <span>|</span>
                             @Html.ActionLink("Edit", "Edit", "Cars", new { id = item.ID }, null)
 
                         }
 
-                        @if (User.Identity.GetUserName() == ViewBag.Admin)
+                        @if (User.IsInRole("Admin"))
                         {
                             <span>|</span>
                             @Html.ActionLink("Delete", "Delete", "Cars", new { id = item.ID }, null)

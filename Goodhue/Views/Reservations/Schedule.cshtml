@@ -5,7 +5,7 @@
 }
 <div class="row">
     <h2 class="col-sm-10">Schedule: @ViewBag.Car.Description</h2>
-    <h2 class="col-sm-2">@Html.ActionLink("Checkout", "Create", "Reservations", new { id = ViewBag.Car.ID }, null)</h2>
+    <h2 class="col-sm-2">@Html.ActionLink("Checkout", "Create", "Reservations", new { id = ViewBag.Car.ID }, new { @class = "btn btn-primary"})</h2>
 </div>
 <table class="table sortable">
     <tr>
@@ -49,8 +49,7 @@
                 </td>
                 <td>
                     @*@Html.ActionLink("Edit", "Edit", new { id=item.ID }) |*@
-                    @Html.ActionLink("Details", "Details", new { id = item.ID }) |
-                    @Html.ActionLink("Return", "Return", new { id = item.CarId, reservationId = item.ID, })
+                    @Html.ActionLink("Return", "Return", new { id = item.CarId, reservationId = item.ID }, new { @class = "btn btn-primary btn-sm" })
                 </td>
             </tr>
         }

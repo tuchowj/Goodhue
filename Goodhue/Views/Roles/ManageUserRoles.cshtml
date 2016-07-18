@@ -3,32 +3,16 @@
 }
 
 <h2>Manage User Roles</h2>
-@Html.ActionLink("Create New Role", "Create") | @Html.ActionLink("Manage User Role", "ManageUserRoles")
 <hr />
 
-<h3>Add Role to User</h3>
-
-@using (Html.BeginForm("AddRoleToUser", "Roles"))
-{
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
-
-    <p>
-        Email : @Html.TextBox("Email")
-        Role Name: @Html.DropDownList("RoleName", (IEnumerable<SelectListItem>)ViewBag.Roles, "Select ...")
-    </p>
-
-    <input type="submit" value="Save" />
-}
-<hr />
 <h3>Get Roles for a User</h3>
 @using (Html.BeginForm("GetRoles", "Roles"))
 {
     @Html.AntiForgeryToken()
     <p>
-        Username : @Html.TextBox("UserName")
-        <input type="submit" value="Get Roles for this User" />
+        Email : @Html.TextBox("Email")
     </p>
+    <input class="btn btn-primary" type="submit" value="Get Roles for this User" />
 }
 
 @if (ViewBag.RolesForThisUser != null)
@@ -45,6 +29,29 @@
 }
 
 <hr />
+
+<h3>Add Role to User</h3>
+
+@using (Html.BeginForm("AddRoleToUser", "Roles"))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <p>
+        Email : @Html.TextBox("Email")
+        @if (ViewBag.Roles != null) {
+            <div>Role Name: @Html.DropDownList("RoleName", (IEnumerable<SelectListItem>)ViewBag.Roles, "Select ...")</div>
+        }
+        else
+        {
+            <div class="text-danger field-validation-error">No roles found</div>
+        }
+    </p>
+
+    <input class="btn btn-primary" type="submit" value="Save" />
+}
+<hr />
+
 <h3>Delete A User from a Role</h3>
 
 @using (Html.BeginForm("DeleteRoleFromUser", "Roles"))
@@ -53,9 +60,16 @@
     @Html.ValidationSummary(true)
 
     <p>
-        Username : @Html.TextBox("UserName")
-        Role Name: @Html.DropDownList("RoleName", (IEnumerable<SelectListItem>)ViewBag.Roles, "Select ...")
+        Email : @Html.TextBox("Email")
+        @if (ViewBag.Roles != null)
+        {
+            <div>Role Name: @Html.DropDownList("RoleName", (IEnumerable<SelectListItem>)ViewBag.Roles, "Select ...")</div>
+        }
+        else
+        {
+            <div class="text-danger field-validation-error">No roles found</div>
+        }
     </p>
 
-    <input type="submit" value="Delete this user from role" />
+    <input class="btn btn-primary" type="submit" value="Delete this user from role" />
 }

@@ -43,7 +43,7 @@ namespace Goodhue.Controllers
                 return HttpNotFound();
             }
             ViewBag.Car = car;
-            return View(db.Reservations.ToList());
+            return View(db.Reservations.OrderBy(r=>r.StartDate).ToList());
         }
 
         // GET: Reservations/Details/5
@@ -177,7 +177,8 @@ namespace Goodhue.Controllers
             {
                 return HttpNotFound();
             }
-            if (User.Identity.Name != Constants.ADMIN && User.Identity.Name != reservation.Username)
+            //Only Admin can return other user's reservations
+            if (!User.IsInRole("Admin") && User.Identity.Name != reservation.Username)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
             }
@@ -251,7 +252,7 @@ namespace Goodhue.Controllers
         }
 
         // GET: Reservations/Delete/5
-        [Authorize (Users=Constants.ADMIN)]
+        [Authorize (Roles="Admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)

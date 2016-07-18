@@ -53,15 +53,14 @@
             </td>
             <td>
                 @*@Html.ActionLink("Edit", "Edit", new { id=item.ID }) |*@
-                @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-                @Html.ActionLink("Return", "Return", new { carId = item.CarId, reservationId = item.ID })
+                @Html.ActionLink("Return", "Return", new { carId = item.CarId, reservationId = item.ID }, new { @class = "btn btn-primary btn-sm" })
             </td>
         </tr>
     }
 }
 </table>
 
-@if (User.Identity.GetUserName() == ViewBag.Admin) {
+@if (User.IsInRole("Admin")) {
     <h2>Reservations to be Charged</h2>
     <table class="table sortable">
         <tr>
