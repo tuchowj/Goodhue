@@ -22,10 +22,10 @@ namespace Goodhue.Models
         public int Odometer { get; set; }
         [Display(Name = "Miles to Oil Change")]
         public int OilChangeMiles { get; set; }
-        [Display(Name = "Last Reservation")]
+        [Display(Name = "Next Reservation")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:g}", ApplyFormatInEditMode = true)]
-        public DateTime LastReservation { get; set; }
+        public DateTime? NextReservation { get; set; }
         [Display(Name = "Available?")]
         public bool IsAvailable { get; set; }
         //TODO: comments, availability?

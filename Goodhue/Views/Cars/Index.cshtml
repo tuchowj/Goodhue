@@ -44,7 +44,7 @@
             </th>
         }
         <th>
-            @Html.DisplayNameFor(model => model.LastReservation)
+            @Html.DisplayNameFor(model => model.NextReservation)
         </th>
         <th></th>
     </tr>
@@ -73,7 +73,7 @@
                     </td>
                 }
                 <td>
-                    @Html.DisplayFor(modelItem => item.LastReservation)
+                    @Html.DisplayFor(modelItem => item.NextReservation)
                 </td>
                 <td>
                     @Html.ActionLink("Select", "Schedule", "Reservations", new { id = item.ID }, new { @class = "btn btn-primary btn-sm" })
@@ -118,7 +118,7 @@
                 @Html.DisplayNameFor(model => model.OilChangeMiles)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LastReservation)
+                @Html.DisplayNameFor(model => model.NextReservation)
             </th>
             <th></th>
         </tr>
@@ -144,7 +144,7 @@
                         @Html.DisplayFor(modelItem => item.OilChangeMiles)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.LastReservation)
+                        @Html.DisplayFor(modelItem => item.NextReservation)
                     </td>
                     <td>
                         @*@Html.ActionLink("Schedule", "Schedule", "Reservations", new { id = item.ID }, null) |*@

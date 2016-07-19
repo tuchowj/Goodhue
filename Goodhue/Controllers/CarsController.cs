@@ -20,8 +20,18 @@ namespace Goodhue.Controllers
         [AllowAnonymous]
         public ActionResult Index()
         {
-            ViewBag.Admin = Constants.ADMIN;
-            return View(db.Cars.ToList());
+            List<Car> cars = db.Cars.ToList();
+            foreach (Car car in cars) {
+                //list of active reservations for each car
+                List<Reservation> reservations = reservationDb.Reservations.Where(r => r.CarId == car.ID).Where(r => r.IsActive).ToList();
+                if (reservations.Count >= 1)
+                {
+                    car.NextReservation = reservations.Where(r => r.StartDate > DateTime.Now).Min(r => r.StartDate);
+                }
+                
+                
+            }
+            return View(cars);
         }
 
         [AllowAnonymous]
@@ -81,7 +91,7 @@ namespace Goodhue.Controllers
         {
             if (ModelState.IsValid)
             {
-                car.LastReservation = DateTime.Now;
+                car.NextReservation = null;
                 car.IsAvailable = true;
                 db.Cars.Add(car);
                 db.SaveChanges();
@@ -111,7 +121,7 @@ namespace Goodhue.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,CountyID,Description,Location,Odometer,OilChangeMiles,LastReservation,IsAvailable")] Car car)
+        public ActionResult Edit([Bind(Include = "ID,CountyID,Description,Location,Odometer,OilChangeMiles,NextReservation,IsAvailable")] Car car)
         {
             if (ModelState.IsValid)
             {

@@ -54,6 +54,10 @@
             <td>
                 @*@Html.ActionLink("Edit", "Edit", new { id=item.ID }) |*@
                 @Html.ActionLink("Return", "Return", new { carId = item.CarId, reservationId = item.ID }, new { @class = "btn btn-primary btn-sm" })
+                @if (User.IsInRole("Admin")) {
+                    <span>|</span>
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                }
             </td>
         </tr>
     }

@@ -25,7 +25,6 @@ namespace Goodhue.Controllers
         [Authorize (Roles="Admin")]
         public ActionResult Index()
         {
-            ViewBag.Admin = Constants.ADMIN;
             return View(db.Reservations.ToList());
         }
 
@@ -106,19 +105,17 @@ namespace Goodhue.Controllers
                     ViewBag.HasScheduleConflict = true;
                     return View(reservation);
                 }
-                List<Reservation> reservations = db.Reservations.ToList();
+                List<Reservation> reservations = db.Reservations.Where(r => r.CarId == checkoutCarId).Where(r => r.IsActive).ToList();
                 foreach (Reservation res in reservations)
                 {
-                    if (checkoutCarId == res.CarId && res.IsActive)
+                    //check for double booking
+                    if ((reservation.StartDate >= res.StartDate && reservation.StartDate < res.EndDate) ||
+                        (reservation.EndDate > res.StartDate && reservation.EndDate <= res.EndDate) ||
+                        (reservation.StartDate <= res.StartDate && reservation.EndDate >= res.EndDate))
                     {
-                        if ((reservation.StartDate >= res.StartDate && reservation.StartDate < res.EndDate) ||
-                            (reservation.EndDate > res.StartDate && reservation.EndDate <= res.EndDate) ||
-                            (reservation.StartDate <= res.StartDate && reservation.EndDate >= res.EndDate))
-                        {
-                            ViewBag.Car = car;
-                            ViewBag.HasScheduleConflict = true;
-                            return View(reservation);
-                        }
+                        ViewBag.Car = car;
+                        ViewBag.HasScheduleConflict = true;
+                        return View(reservation);
                     }
                 }
                 reservation.CarId = checkoutCarId;
@@ -222,14 +219,6 @@ namespace Goodhue.Controllers
             if (ModelState.IsValid)
             {
                 car.OilChangeMiles = car.OilChangeMiles + oldOdometer - car.Odometer;
-                if (DateTime.Now < returnReservation.EndDate)
-                {
-                    car.LastReservation = DateTime.Now;
-                }
-                else
-                {
-                    car.LastReservation = returnReservation.EndDate;
-                }
                 carDb.Entry(car).State = EntityState.Modified;
 
                 bool saveFailed;
