@@ -22,7 +22,7 @@ namespace Goodhue.Controllers
         private CarDBContext carDb = new CarDBContext();
 
         // GET: Reservations
-        [AllowAnonymous]
+        [Authorize (Roles="Admin")]
         public ActionResult Index()
         {
             ViewBag.Admin = Constants.ADMIN;
@@ -122,11 +122,18 @@ namespace Goodhue.Controllers
                     }
                 }
                 reservation.CarId = checkoutCarId;
-                reservation.Username = User.Identity.Name;
+                if (User.IsInRole("Maintenance"))
+                {
+                    reservation.Username = "Maintenance";
+                }
+                else
+                {
+                    reservation.Username = User.Identity.Name;
+                }
                 reservation.IsActive = true;
                 db.Reservations.Add(reservation);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index","Cars");
             }
             ViewBag.Car = car;
             ViewBag.HasScheduleConflict = false;
@@ -178,7 +185,8 @@ namespace Goodhue.Controllers
                 return HttpNotFound();
             }
             //Only Admin can return other user's reservations
-            if (!User.IsInRole("Admin") && User.Identity.Name != reservation.Username)
+            if (!User.IsInRole("Admin") && User.Identity.Name != reservation.Username &&
+                !(User.IsInRole("Maintenance") && reservation.Username == "Maintenance"))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
             }
@@ -246,7 +254,7 @@ namespace Goodhue.Controllers
 
                 } while (saveFailed);
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Index","Cars");
             }
             return View(car);
         }
