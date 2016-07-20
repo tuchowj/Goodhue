@@ -26,6 +26,8 @@ namespace Goodhue.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:g}", ApplyFormatInEditMode = true)]
         public DateTime? NextReservation { get; set; }
+        [Display(Name = "Next Reserved By")]
+        public string NextUser { get; set; }
         [Display(Name = "Available?")]
         public bool IsAvailable { get; set; }
         //TODO: comments, availability?

@@ -23,10 +23,13 @@ namespace Goodhue.Controllers
             List<Car> cars = db.Cars.ToList();
             foreach (Car car in cars) {
                 //list of active reservations for each car
-                List<Reservation> reservations = reservationDb.Reservations.Where(r => r.CarId == car.ID).Where(r => r.IsActive).ToList();
+                List<Reservation> reservations = reservationDb.Reservations.Where(r => r.CarId == car.ID).Where(r => r.IsActive).Where(r => r.StartDate > DateTime.Now).ToList();
                 if (reservations.Count >= 1)
                 {
-                    car.NextReservation = reservations.Where(r => r.StartDate > DateTime.Now).Min(r => r.StartDate);
+                    //note: this operation's runtime can most likely be improved if necessary
+                    Reservation nextRes = reservations.OrderBy(r => r.StartDate).First();
+                    car.NextReservation = nextRes.StartDate;
+                    car.NextUser = nextRes.Username;
                 }
                 
                 
@@ -121,7 +124,7 @@ namespace Goodhue.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,CountyID,Description,Location,Odometer,OilChangeMiles,NextReservation,IsAvailable")] Car car)
+        public ActionResult Edit([Bind(Include = "ID,CountyID,Description,Location,Odometer,OilChangeMiles,NextReservation,NextUser,IsAvailable")] Car car)
         {
             if (ModelState.IsValid)
             {
