@@ -23,7 +23,7 @@ namespace Goodhue.Controllers
             List<Car> cars = db.Cars.ToList();
             foreach (Car car in cars) {
                 //list of active reservations for each car
-                List<Reservation> reservations = reservationDb.Reservations.Where(r => r.CarId == car.ID).Where(r => r.IsActive).Where(r => r.StartDate > DateTime.Now).ToList();
+                List<Reservation> reservations = reservationDb.Reservations.Where(r => r.CarId == car.ID).Where(r => r.IsActive).Where(r => r.EndDate > DateTime.Now).ToList();
                 if (reservations.Count >= 1)
                 {
                     //note: this operation's runtime can most likely be improved if necessary
@@ -31,8 +31,6 @@ namespace Goodhue.Controllers
                     car.NextReservation = nextRes.StartDate;
                     car.NextUser = nextRes.Username;
                 }
-                
-                
             }
             return View(cars);
         }
