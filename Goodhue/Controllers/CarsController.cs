@@ -21,17 +21,7 @@ namespace Goodhue.Controllers
         public ActionResult Index()
         {
             List<Car> cars = db.Cars.ToList();
-            foreach (Car car in cars) {
-                //list of active reservations for each car
-                List<Reservation> reservations = reservationDb.Reservations.Where(r => r.CarId == car.ID).Where(r => r.IsActive).Where(r => r.EndDate > DateTime.Now).ToList();
-                if (reservations.Count >= 1)
-                {
-                    //note: this operation's runtime can most likely be improved if necessary
-                    Reservation nextRes = reservations.OrderBy(r => r.StartDate).First();
-                    car.NextReservation = nextRes.StartDate;
-                    car.NextUser = nextRes.Username;
-                }
-            }
+            setNextReservations(cars);
             return View(cars);
         }
 
@@ -58,7 +48,24 @@ namespace Goodhue.Controllers
                     }
                 }
             }
+            setNextReservations(availableCars);
             return View(availableCars);
+        }
+
+        private void setNextReservations(List<Car> cars)
+        {
+            foreach (Car car in cars)
+            {
+                //list of active reservations for each car
+                List<Reservation> reservations = reservationDb.Reservations.Where(r => r.CarId == car.ID).Where(r => r.IsActive).Where(r => r.EndDate > DateTime.Now).ToList();
+                if (reservations.Count >= 1)
+                {
+                    //note: this operation's runtime can most likely be improved if necessary
+                    Reservation nextRes = reservations.OrderBy(r => r.StartDate).First();
+                    car.NextReservation = nextRes.StartDate;
+                    car.NextUser = nextRes.Username;
+                }
+            }
         }
 
         // GET: Cars/Details/5
