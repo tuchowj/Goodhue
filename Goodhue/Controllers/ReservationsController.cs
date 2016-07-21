@@ -203,14 +203,13 @@ namespace Goodhue.Controllers
             return View(car);
         }
 
-        // POST: Reservations/Return/5?carId=2
+        // POST: Reservations/Return/5/2
         [HttpPost, ActionName("Return")]
         [ValidateAntiForgeryToken]
         public ActionResult ReturnConfirmed([Bind(Include = "ID,CountyID,Description,Location,Odometer,OilChangeMiles,isAvailable")] Car car)
         {
             //Deactivate Reservation
             returnReservation.IsActive = false;
-            //reservation.Charge = Constants.GAS_PRICE * (oldOdometer - car.Odometer);
             returnReservation.Miles = car.Odometer - oldOdometer;
             db.Entry(returnReservation).State = EntityState.Modified;
             db.SaveChanges();
@@ -233,11 +232,9 @@ namespace Goodhue.Controllers
                     {
                         saveFailed = true;
 
-                        //// Update original values from the database 
+                        // Update original values from the database 
                         var objContext = ((IObjectContextAdapter)carDb).ObjectContext;
                         var entry = ex.Entries.Single();
-                        //entry.Reload(); //***** DELETE THIS ********************************************
-                        //entry.OriginalValues.SetValues(entry.GetDatabaseValues());
                         objContext.Refresh(RefreshMode.ClientWins, entry.Entity);
                     }
 
@@ -265,12 +262,35 @@ namespace Goodhue.Controllers
         }
 
         // POST: Reservations/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             Reservation reservation = db.Reservations.Find(id);
             db.Reservations.Remove(reservation);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        // GET: Reservations/DeleteAll
+        [Authorize(Roles = "Admin")]
+        public ActionResult DeleteAll()
+        {
+            return View();
+        }
+
+        // POST: Reservations/DeleteAll
+        [Authorize(Roles = "Admin")]
+        [HttpPost, ActionName("DeleteAll")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed()
+        {
+            List<Reservation> badReservations = db.Reservations.Where(r => !r.IsActive).ToList();
+            foreach (Reservation reservation in badReservations)
+            {
+                db.Reservations.Remove(reservation);
+            }
             db.SaveChanges();
             return RedirectToAction("Index");
         }

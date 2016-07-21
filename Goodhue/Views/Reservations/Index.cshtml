@@ -66,6 +66,7 @@
 
 @if (User.IsInRole("Admin")) {
     <h2>Reservations to be Charged</h2>
+    @Html.ActionLink("Delete All Inactive Reservations", "DeleteAll")
     <table class="table sortable">
         <tr>
             <th>
