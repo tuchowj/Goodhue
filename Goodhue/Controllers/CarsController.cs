@@ -29,10 +29,21 @@ namespace Goodhue.Controllers
         [HttpPost]
         public ActionResult Index(DateTime? startDate, DateTime? endDate)
         {
-            if (startDate == null || endDate == null)
+            if (startDate == null && endDate == null)
             {
                 return RedirectToAction("Index");
             }
+            else if (endDate == null) //(and startDate implicitly isn't null)
+            {
+                DateTime start = (DateTime) startDate;
+                endDate = start.AddDays(1);
+            }
+            else if (startDate == null) //(and endDate implicitly isn't null)
+            {
+                DateTime end = (DateTime) endDate;
+                startDate = end.AddDays(-1);
+            }
+
             List<Car> availableCars = db.Cars.ToList();
             List<Reservation> reservations = reservationDb.Reservations.ToList();
             foreach (Reservation res in reservations)
