@@ -84,7 +84,7 @@ namespace Goodhue.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,StartDate,EndDate,Destination,Department,Miles,CarID,IsActive")] Reservation reservation, TimeSpan? startHour, TimeSpan? endHour)
+        public ActionResult Create([Bind(Include = "ID,StartDate,EndDate,Destination,Department,Miles,TankFilled,CarID,IsActive")] Reservation reservation, TimeSpan? startHour, TimeSpan? endHour)
         {
             Car car = carDb.Cars.Find(checkoutCarId);
             if (ModelState.IsValid)
@@ -206,11 +206,12 @@ namespace Goodhue.Controllers
         // POST: Reservations/Return/5/2
         [HttpPost, ActionName("Return")]
         [ValidateAntiForgeryToken]
-        public ActionResult ReturnConfirmed([Bind(Include = "ID,CountyID,Description,Location,Odometer,OilChangeMiles,isAvailable")] Car car)
+        public ActionResult ReturnConfirmed(int? carId, int? reservationId, [Bind(Include = "ID,CountyID,Description,Location,ImageURL,Odometer,OilChangeMiles,IsAvailable")] Car car, bool tankFilled)
         {
             //Deactivate Reservation
             returnReservation.IsActive = false;
             returnReservation.Miles = car.Odometer - oldOdometer;
+            returnReservation.TankFilled = tankFilled;
             db.Entry(returnReservation).State = EntityState.Modified;
             db.SaveChanges();
 

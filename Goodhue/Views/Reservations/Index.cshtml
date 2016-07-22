@@ -88,6 +88,9 @@
                 @Html.DisplayNameFor(model => model.Department)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.TankFilled)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Miles)
             </th>
             <th></th>
@@ -115,6 +118,9 @@
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Department)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TankFilled)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Miles)

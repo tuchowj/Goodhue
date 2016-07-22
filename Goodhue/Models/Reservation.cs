@@ -9,8 +9,6 @@ namespace Goodhue.Models
 {
     public class Reservation
     {
-        //public Reservation() { }
-
         public int ID { get; set; }
         public string Username { get; set; }
 
@@ -31,6 +29,8 @@ namespace Goodhue.Models
         public string Department { get; set; }
 
         public int Miles { get; set; }
+
+        public bool TankFilled { get; set; }
 
         public int CarId { get; set; }
 

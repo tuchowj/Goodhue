@@ -16,9 +16,10 @@ namespace Goodhue.Models
         [Display(Name = "ID")]
         public int CountyID { get; set; }
         public string Description { get; set; }
+        public string Location { get; set; }
+        public string ImageURL { get; set; }
 
         //changing
-        public string Location { get; set; }
         public int Odometer { get; set; }
         [Display(Name = "Miles to Oil Change")]
         public int OilChangeMiles { get; set; }

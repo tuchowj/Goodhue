@@ -10,7 +10,7 @@ using Goodhue.Controllers;
 
 namespace MVCInBuiltFeatures.Controllers
 {
-    [Authorize (Roles="Admin")]
+    [Authorize(Roles = "Admin")]
     public class RolesController : Controller
     {
         ApplicationDbContext context = new ApplicationDbContext();
