@@ -27,22 +27,26 @@ namespace Goodhue.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public ActionResult Index(DateTime? startDate, DateTime? endDate)
+        public ActionResult Index(int? duration, DateTime? startDate, TimeSpan? startTime)
         {
-            if (startDate == null && endDate == null)
+            if (startDate == null)
             {
                 return RedirectToAction("Index");
             }
-            else if (endDate == null) //(and startDate implicitly isn't null)
+            if (duration == null)
             {
-                DateTime start = (DateTime) startDate;
-                endDate = start.AddDays(1);
+                duration = 0;
             }
-            else if (startDate == null) //(and endDate implicitly isn't null)
+            if (startTime == null)
             {
-                DateTime end = (DateTime) endDate;
-                startDate = end.AddDays(-1);
+                startTime = TimeSpan.Zero;
+
             }
+            int dur = (int)duration;
+            TimeSpan time = (TimeSpan)startTime;
+            DateTime date = (DateTime)startDate;
+            startDate = date.Add(time);
+            DateTime? endDate = date.Add(time).AddHours(dur);
 
             List<Car> availableCars = db.Cars.ToList();
             List<Reservation> reservations = reservationDb.Reservations.ToList();
