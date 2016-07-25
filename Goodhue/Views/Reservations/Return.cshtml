@@ -1,7 +1,7 @@
 ﻿@model Goodhue.Models.Car
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Return";
 }
 
 <h2>Return: @Html.DisplayFor(model => model.CountyID) @Html.DisplayFor(model => model.Description)</h2>
@@ -31,8 +31,14 @@
         <div class="form-group">
             <label class="control-label col-md-2">Filled Gas Tank</label>
             <div class="col-md-10">
-                <input class="form-control check-box" data-val="true" data-val-required="This field is required." id="tankFilled" name="tankFilled" type="checkbox" value="true">
+                <input style="width:38px;" class="form-control check-box" data-val="true" data-val-required="This field is required." id="tankFilled" name="tankFilled" type="checkbox" value="true">
                 <input name="tankFilled" type="hidden" value="false">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Any Comments?</label>
+            <div class="col-md-10">
+                <textarea class="form-control " rows="4" cols="50" id="comment" name="comment" form="usrform" placeholder="Please include any comments about the car for the fleet administrator including handling, cleanliness, washer fluid, wipers, etc."></textarea>
             </div>
         </div>
 

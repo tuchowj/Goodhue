@@ -9,15 +9,14 @@ using System.Web.Mvc;
 using Goodhue.Models;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Core.Objects;
+using System.Net.Mail;
 
 namespace Goodhue.Controllers
 {
     [Authorize]
     public class ReservationsController : Controller
     {
-        private static int checkoutCarId;
         private static int oldOdometer;
-        private static Reservation returnReservation;
         private ReservationDBContext db = new ReservationDBContext();
         private CarDBContext carDb = new CarDBContext();
 
@@ -41,8 +40,20 @@ namespace Goodhue.Controllers
             {
                 return HttpNotFound();
             }
+            List<Reservation> reservations = db.Reservations.Where(r => (r.CarId == car.ID) && r.IsActive && (r.EndDate > DateTime.Now)).ToList();
+            Reservation nextRes;
+            if (reservations.Any())
+            {
+                //note: this operation's runtime can most likely be improved if necessary
+                nextRes = reservations.OrderBy(r => r.StartDate).First();
+            }
+            else { nextRes = null; }
+
+            ViewBag.NextRes = nextRes;
             ViewBag.Car = car;
-            return View(db.Reservations.OrderBy(r=>r.StartDate).ToList());
+
+            
+            return View(db.Reservations.Where(r => r.IsActive && (r.CarId == car.ID)).OrderBy(r=>r.StartDate));
         }
 
         // GET: Reservations/Details/5
@@ -68,7 +79,7 @@ namespace Goodhue.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            checkoutCarId = (int)id;
+            //checkoutCarId = (int)id;
             Car car = carDb.Cars.Find(id);
             if (car == null)
             {
@@ -84,9 +95,9 @@ namespace Goodhue.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,StartDate,EndDate,Destination,Department,Miles,TankFilled,CarID,IsActive")] Reservation reservation, TimeSpan? startHour, TimeSpan? endHour)
+        public ActionResult Create(int? id, [Bind(Include = "ID,StartDate,EndDate,Destination,Department,Miles,TankFilled,CarID,IsActive")] Reservation reservation, TimeSpan? startHour, TimeSpan? endHour)
         {
-            Car car = carDb.Cars.Find(checkoutCarId);
+            Car car = carDb.Cars.Find(id);
             if (ModelState.IsValid)
             {
                 if (!startHour.HasValue)
@@ -105,7 +116,7 @@ namespace Goodhue.Controllers
                     ViewBag.HasScheduleConflict = true;
                     return View(reservation);
                 }
-                List<Reservation> reservations = db.Reservations.Where(r => r.CarId == checkoutCarId).Where(r => r.IsActive).ToList();
+                List<Reservation> reservations = db.Reservations.Where(r => r.CarId == car.ID).Where(r => r.IsActive).ToList();
                 foreach (Reservation res in reservations)
                 {
                     //check for double booking
@@ -118,7 +129,7 @@ namespace Goodhue.Controllers
                         return View(reservation);
                     }
                 }
-                reservation.CarId = checkoutCarId;
+                reservation.CarId = car.ID;
                 if (User.IsInRole("Maintenance"))
                 {
                     reservation.Username = "Maintenance";
@@ -187,7 +198,6 @@ namespace Goodhue.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
             }
-            returnReservation = reservation;
 
             //Edit Car Info
             if (carId == null)
@@ -200,20 +210,42 @@ namespace Goodhue.Controllers
                 return HttpNotFound();
             }
             oldOdometer = car.Odometer;
-            return View(car);
+            IEnumerable<Reservation> unreturnedReservations = db.Reservations.Where(r => (r.IsActive && (r.CarId == carId) && (r.EndDate <= reservation.StartDate)));
+            if (unreturnedReservations.Any()) {
+                ViewBag.Car = car;
+                return RedirectToAction("Schedule", new { id = carId });
+            } else {
+                return View(car);
+            }
         }
 
         // POST: Reservations/Return/5/2
         [HttpPost, ActionName("Return")]
         [ValidateAntiForgeryToken]
-        public ActionResult ReturnConfirmed(int? carId, int? reservationId, [Bind(Include = "ID,CountyID,Description,Location,ImageURL,Odometer,OilChangeMiles,IsAvailable")] Car car, bool tankFilled)
+        public ActionResult ReturnConfirmed(int? carId, int? reservationId, [Bind(Include = "ID,CountyID,Description,Location,ImageURL,Odometer,OilChangeMiles,IsAvailable")] Car car, bool tankFilled, string comment)
         {
+            Reservation returnReservation = db.Reservations.Find(reservationId);
+
             //Deactivate Reservation
             returnReservation.IsActive = false;
             returnReservation.Miles = car.Odometer - oldOdometer;
             returnReservation.TankFilled = tankFilled;
             db.Entry(returnReservation).State = EntityState.Modified;
             db.SaveChanges();
+
+            ////send email
+            //MailMessage mail = new MailMessage();
+
+            //SmtpClient smtpServer = new SmtpClient("smtp.gmail.com");
+            //smtpServer.Credentials = new System.Net.NetworkCredential("jonahg@redwingignite.org", "lolcats1");
+            //smtpServer.Port = 587; // Gmail works on this port
+
+            //mail.From = new MailAddress("jonahg@redwingignite.org");
+            //mail.To.Add("tuchowj@gmail.com");
+            //mail.Subject = "Comment";
+            //mail.Body = comment;
+
+            //smtpServer.Send(mail);
 
             //Edit Car Info
             if (ModelState.IsValid)
@@ -243,6 +275,7 @@ namespace Goodhue.Controllers
 
                 return RedirectToAction("Index","Cars");
             }
+
             return View(car);
         }
 

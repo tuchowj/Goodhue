@@ -29,29 +29,28 @@
 
     @foreach (var item in Model)
     {
-        if (item.IsActive && item.CarId == ViewBag.Car.ID)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Username)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StartDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EndDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Destination)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Department)
-                </td>
-                <td>
-                    @*@Html.ActionLink("Edit", "Edit", new { id=item.ID }) |*@
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Username)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Destination)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Department)
+            </td>
+            <td>
+                @if (item.Equals(ViewBag.NextRes))
+                {
                     @Html.ActionLink("Return", "Return", new { id = item.CarId, reservationId = item.ID }, new { @class = "btn btn-primary btn-sm" })
-                </td>
-            </tr>
-        }
+                }
+            </td>
+        </tr>
     }
 </table>
