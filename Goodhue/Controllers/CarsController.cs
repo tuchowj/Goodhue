@@ -15,6 +15,7 @@ namespace Goodhue.Controllers
     {
         private CarDBContext db = new CarDBContext();
         private ReservationDBContext reservationDb = new ReservationDBContext();
+        private CommentDBContext commentDb = new CommentDBContext();
 
         // GET: Cars
         [AllowAnonymous]
@@ -81,6 +82,7 @@ namespace Goodhue.Controllers
                     car.NextUser = nextRes.Username;
                 }
             }
+            db.SaveChanges();
         }
 
         // GET: Cars/Details/5
@@ -193,6 +195,48 @@ namespace Goodhue.Controllers
             reservationDb.SaveChanges();
             
             return RedirectToAction("Index");
+        }
+
+        // GET: Cars/Comments/5
+        public ActionResult Comments(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Car car = db.Cars.Find(id);
+            if (car == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.Description = car.Description;
+            return View(commentDb.Comments.Where(c => c.CarId == id).ToList());
+        }
+
+        // GET: Cars/DeleteComment/5
+        public ActionResult DeleteComment(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Comment comment = commentDb.Comments.Find(id);
+            if (comment == null)
+            {
+                return HttpNotFound();
+            }
+            return View(comment);
+        }
+
+        // POST: Cars/DeleteComment/5
+        [HttpPost, ActionName("DeleteComment")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteCommentConfirmed(int id)
+        {
+            Comment comment = commentDb.Comments.Find(id);
+            commentDb.Comments.Remove(comment);
+            commentDb.SaveChanges();
+            return RedirectToAction("Comments/" + comment.CarId);
         }
 
         protected override void Dispose(bool disposing)

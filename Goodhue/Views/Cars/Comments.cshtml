@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Goodhue.Models.Comment>
+
+@{
+    ViewBag.Title = "Comments";
+}
+
+<h2>Comments: @ViewBag.Description</h2>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Username)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Text)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Username)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Text)
+        </td>
+        <td>
+            @Html.ActionLink("Delete", "DeleteComment", new { id=item.ID })
+        </td>
+    </tr>
+}
+
+</table>

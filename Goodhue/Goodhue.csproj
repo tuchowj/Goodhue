@@ -42,6 +42,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -169,6 +170,7 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Car.cs" />
+    <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Reservation.cs" />
@@ -253,6 +255,8 @@
     <Content Include="Views\Roles\Edit.cshtml" />
     <Content Include="Views\Roles\ManageUserRoles.cshtml" />
     <Content Include="Views\Reservations\DeleteAll.cshtml" />
+    <Content Include="Views\Cars\DeleteComment.cshtml" />
+    <Content Include="Views\Cars\Comments.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

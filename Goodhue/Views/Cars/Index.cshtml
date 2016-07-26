@@ -110,6 +110,8 @@
                     {
                         <span>|</span>
                         @Html.ActionLink("Delete", "Delete", "Cars", new { id = item.ID }, null)
+                        <span>|</span>
+                        @Html.ActionLink("Comments", "Comments", "Cars", new { id = item.ID }, null)
                     }
                 </td>
             </tr>

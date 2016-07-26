@@ -19,6 +19,7 @@ namespace Goodhue.Controllers
         private static int oldOdometer;
         private ReservationDBContext db = new ReservationDBContext();
         private CarDBContext carDb = new CarDBContext();
+        private CommentDBContext commentDb = new CommentDBContext();
 
         // GET: Reservations
         [Authorize (Roles="Admin")]
@@ -246,6 +247,17 @@ namespace Goodhue.Controllers
             //mail.Body = comment;
 
             //smtpServer.Send(mail);
+
+            //Add comment if there's anything in textbox
+            if (comment.Length > 0)
+            {
+                Comment userComment = new Comment();
+                userComment.CarId = (int)carId;
+                userComment.Username = User.Identity.Name;
+                userComment.Text = comment;
+                commentDb.Comments.Add(userComment);
+                commentDb.SaveChanges();
+            }
 
             //Edit Car Info
             if (ModelState.IsValid)

@@ -7,6 +7,7 @@
 <h2>Return: @Html.DisplayFor(model => model.CountyID) @Html.DisplayFor(model => model.Description)</h2>
 
 
+@*@using (Html.BeginForm("Return", "Reservations", FormMethod.Post, new { id = "return" }))*@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -38,7 +39,7 @@
         <div class="form-group">
             <label class="control-label col-md-2">Any Comments?</label>
             <div class="col-md-10">
-                <textarea class="form-control " rows="4" cols="50" id="comment" name="comment" form="usrform" placeholder="Please include any comments about the car for the fleet administrator including handling, cleanliness, washer fluid, wipers, etc."></textarea>
+                <textarea class="form-control" rows="4" cols="50" id="comment" name="comment" placeholder="Please include any comments about the car for the fleet administrator including handling, cleanliness, washer fluid, wipers, etc."></textarea>
             </div>
         </div>
 
