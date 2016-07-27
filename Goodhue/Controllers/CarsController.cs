@@ -73,7 +73,7 @@ namespace Goodhue.Controllers
             foreach (Car car in cars)
             {
                 //list of active reservations for each car
-                List<Reservation> reservations = reservationDb.Reservations.Where(r => (r.CarId == car.ID) && r.IsActive && (r.EndDate > DateTime.Now)).ToList();
+                List<Reservation> reservations = reservationDb.Reservations.Where(r => (r.CarId == car.ID) && r.IsActive).ToList();
                 if (reservations.Any())
                 {
                     //note: this operation's runtime can most likely be improved if necessary
@@ -194,7 +194,7 @@ namespace Goodhue.Controllers
             }
             reservationDb.SaveChanges();
             
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Cars");
         }
 
         // GET: Cars/Comments/5

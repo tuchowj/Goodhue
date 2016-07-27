@@ -149,37 +149,6 @@ namespace Goodhue.Controllers
             return View(reservation);
         }
 
-        //// GET: Reservations/Edit/5
-        //public ActionResult Edit(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    Reservation reservation = db.Reservations.Find(id);
-        //    if (reservation == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(reservation);
-        //}
-
-        //// POST: Reservations/Edit/5
-        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Edit([Bind(Include = "ID,StartDate,EndDate,Destination,Department")] Reservation reservation)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        db.Entry(reservation).State = EntityState.Modified;
-        //        db.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
-        //    return View(reservation);
-        //}
-
         // GET: Reservations/Return/5/2
         public ActionResult Return(int? carId, int? reservationId)
         {
@@ -292,7 +261,6 @@ namespace Goodhue.Controllers
         }
 
         // GET: Reservations/Delete/5
-        [Authorize (Roles="Admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -304,11 +272,16 @@ namespace Goodhue.Controllers
             {
                 return HttpNotFound();
             }
+            //Only Admin can return other user's reservations
+            if (!User.IsInRole("Admin") && User.Identity.Name != reservation.Username &&
+                !(User.IsInRole("Maintenance") && reservation.Username == "Maintenance"))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+            }
             return View(reservation);
         }
 
         // POST: Reservations/Delete/5
-        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
