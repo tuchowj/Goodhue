@@ -84,7 +84,7 @@ namespace Goodhue.Controllers
             }
             db.SaveChanges();
         }
-
+        
         // GET: Cars/Details/5
         [AllowAnonymous]
         public ActionResult Details(int? id)

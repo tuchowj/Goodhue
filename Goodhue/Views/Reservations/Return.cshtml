@@ -30,7 +30,7 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label col-md-2">Filled Gas Tank</label>
+            <label class="control-label col-md-2">Filled Gas Tank?</label>
             <div class="col-md-10">
                 <input style="width:38px;" class="form-control check-box" data-val="true" data-val-required="This field is required." id="tankFilled" name="tankFilled" type="checkbox" value="true">
                 <input name="tankFilled" type="hidden" value="false">
@@ -55,7 +55,7 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to Schedule", "Schedule", new { id = Model.ID })
 </div>
 
 @section Scripts {
