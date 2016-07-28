@@ -255,7 +255,7 @@
     <Content Include="Views\Roles\Edit.cshtml" />
     <Content Include="Views\Roles\ManageUserRoles.cshtml" />
     <Content Include="Views\Reservations\DeleteAll.cshtml" />
-    <Content Include="Views\Cars\DeleteComment.cshtml" />
+    <Content Include="Views\Cars\DeleteComments.cshtml" />
     <Content Include="Views\Cars\Comments.cshtml" />
   </ItemGroup>
   <ItemGroup>

@@ -41,7 +41,7 @@ namespace Goodhue.Controllers
             {
                 return HttpNotFound();
             }
-            List<Reservation> reservations = db.Reservations.Where(r => (r.CarId == car.ID) && r.IsActive && (r.EndDate > DateTime.Now)).ToList();
+            List<Reservation> reservations = db.Reservations.Where(r => (r.CarId == car.ID) && r.IsActive).ToList();
             Reservation nextRes;
             if (reservations.Any())
             {
@@ -305,7 +305,7 @@ namespace Goodhue.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed()
         {
-            List<Reservation> badReservations = db.Reservations.Where(r => !r.IsActive).ToList();
+            IEnumerable<Reservation> badReservations = db.Reservations.Where(r => !r.IsActive);
             foreach (Reservation reservation in badReservations)
             {
                 db.Reservations.Remove(reservation);

@@ -14,7 +14,6 @@ namespace Goodhue
     {
         protected void Application_Start()
         {
-            Database.SetInitializer<CarDBContext>(new DropCreateDatabaseIfModelChanges<CarDBContext>());
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);

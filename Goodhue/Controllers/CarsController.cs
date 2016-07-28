@@ -23,7 +23,7 @@ namespace Goodhue.Controllers
         {
             List<Car> cars = db.Cars.ToList();
             setNextReservations(cars);
-            return View(cars);
+            return View(cars.OrderBy(c => c.CountyID));
         }
 
         [AllowAnonymous]
@@ -209,34 +209,37 @@ namespace Goodhue.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.Description = car.Description;
-            return View(commentDb.Comments.Where(c => c.CarId == id).ToList());
+            ViewBag.Car = car;
+            return View(commentDb.Comments.Where(c => c.CarId == id));
         }
 
         // GET: Cars/DeleteComment/5
-        public ActionResult DeleteComment(int? id)
+        public ActionResult DeleteComments(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Comment comment = commentDb.Comments.Find(id);
-            if (comment == null)
+            Car car = db.Cars.Find(id);
+            if (car == null)
             {
                 return HttpNotFound();
             }
-            return View(comment);
+            return View();
         }
 
-        // POST: Cars/DeleteComment/5
-        [HttpPost, ActionName("DeleteComment")]
+        // POST: Cars/DeleteComments/5
+        [HttpPost, ActionName("DeleteComments")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteCommentConfirmed(int id)
+        public ActionResult DeleteCommentsConfirmed(int id)
         {
-            Comment comment = commentDb.Comments.Find(id);
-            commentDb.Comments.Remove(comment);
+            IEnumerable<Comment> comments = commentDb.Comments.Where(c => c.CarId == id);
+            foreach (Comment comment in comments)
+            {
+                commentDb.Comments.Remove(comment);
+            }
             commentDb.SaveChanges();
-            return RedirectToAction("Comments/" + comment.CarId);
+            return RedirectToAction("Comments/" + id);
         }
 
         protected override void Dispose(bool disposing)

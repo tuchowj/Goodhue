@@ -175,21 +175,11 @@
                         @Html.DisplayFor(modelItem => item.NextUser)
                     </td>
                     <td>
-                        @*@Html.ActionLink("Schedule", "Schedule", "Reservations", new { id = item.ID }, null) |*@
-                        @Html.ActionLink("Details", "Details", "Cars", new { id = item.ID }, null)
-                        @*@Html.ActionLink("Checkout", "Create", "Reservations", new { id = item.ID }, null)*@
-                        @if (User.IsInRole("Admin"))
-                        {
-                            <span>|</span>
-                            @Html.ActionLink("Edit", "Edit", "Cars", new { id = item.ID }, null)
-
-                        }
-
-                        @if (User.IsInRole("Admin"))
-                        {
-                            <span>|</span>
-                            @Html.ActionLink("Delete", "Delete", "Cars", new { id = item.ID }, null)
-                        }
+                        @Html.ActionLink("Comments", "Comments", "Cars", new { id = item.ID }, null)
+                        <span>|</span>
+                        @Html.ActionLink("Edit", "Edit", "Cars", new { id = item.ID }, null)
+                        <span>|</span>
+                        @Html.ActionLink("Delete", "Delete", "Cars", new { id = item.ID }, null)
                     </td>
                 </tr>
             }
