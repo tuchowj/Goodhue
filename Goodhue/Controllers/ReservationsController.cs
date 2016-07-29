@@ -10,6 +10,7 @@ using Goodhue.Models;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Core.Objects;
 using System.Net.Mail;
+using System.Text;
 
 namespace Goodhue.Controllers
 {
@@ -114,7 +115,7 @@ namespace Goodhue.Controllers
                 if ((reservation.StartDate > reservation.EndDate) || (reservation.StartDate < DateTime.Today))
                 {
                     ViewBag.Car = car;
-                    ViewBag.HasScheduleConflict = true;
+                    ViewBag.Message = "Invalid input";
                     return View(reservation);
                 }
                 List<Reservation> reservations = db.Reservations.Where(r => r.CarId == car.ID).Where(r => r.IsActive).ToList();
@@ -126,7 +127,7 @@ namespace Goodhue.Controllers
                         (reservation.StartDate <= res.StartDate && reservation.EndDate >= res.EndDate))
                     {
                         ViewBag.Car = car;
-                        ViewBag.HasScheduleConflict = true;
+                        ViewBag.Message = "Conflicts with an existing reservation starting at " + res.StartDate.ToString() + " and ending at " + res.EndDate.ToString();
                         return View(reservation);
                     }
                 }
@@ -145,7 +146,7 @@ namespace Goodhue.Controllers
                 return RedirectToAction("Index","Cars");
             }
             ViewBag.Car = car;
-            ViewBag.HasScheduleConflict = false;
+            ViewBag.Message = null;
             return View(reservation);
         }
 
@@ -311,6 +312,25 @@ namespace Goodhue.Controllers
                 db.Reservations.Remove(reservation);
             }
             db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult WriteCSV()
+        {
+            var csv = new StringBuilder();
+            IEnumerable<Reservation> inactiveReservations = db.Reservations.Where(r => !r.IsActive);
+            foreach (Reservation res in inactiveReservations) {
+                var startDate = res.StartDate;
+                var endDate = res.EndDate;
+                var destination = res.Destination;
+                var department = res.Department;
+                var miles = res.Miles;
+                
+                var newLine = string.Format("{0},{1},{2},{3},{4}", startDate, endDate,
+                    destination, department, miles);
+                csv.AppendLine(newLine);
+            }
+            System.IO.File.WriteAllText("/Reservations.csv", csv.ToString());
             return RedirectToAction("Index");
         }
 

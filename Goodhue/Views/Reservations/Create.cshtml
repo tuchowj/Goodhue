@@ -17,10 +17,7 @@
             <div class="col-md-10">
                 @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
-                @if (ViewBag.HasScheduleConflict)
-                {
-                    <p class="text-danger field-validation-error">Schedule Conflict -- Please Choose a Different Time.</p>
-                }
+                <span class="text-danger field-validation-error">@ViewBag.Message</span>
             </div>
         </div>
 
@@ -36,10 +33,7 @@
             <div class="col-md-10">
                 @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
-                @if (ViewBag.HasScheduleConflict)
-                {
-                    <p class="text-danger field-validation-error">Schedule Conflict -- Please Choose a Different Time.</p>
-                }
+                <span class="text-danger field-validation-error">@ViewBag.Message</span>
             </div>
         </div>
 

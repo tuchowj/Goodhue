@@ -5,7 +5,7 @@
     ViewBag.Title = "Reservations";
 }
 
-<h2>Active Reservations</h2>
+@*<h2>Active Reservations</h2>
 
 <table class="table sortable">
     <tr>
@@ -52,21 +52,18 @@
                 @Html.DisplayFor(modelItem => item.Department)
             </td>
             <td>
-                @*@Html.ActionLink("Edit", "Edit", new { id=item.ID }) |*@
-                @Html.ActionLink("Return", "Return", new { carId = item.CarId, reservationId = item.ID }, new { @class = "btn btn-primary btn-sm" })
-                @if (User.IsInRole("Admin")) {
-                    <span>|</span>
-                    @Html.ActionLink("Delete", "Delete", new { id = item.ID })
-                }
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
             </td>
         </tr>
     }
 }
-</table>
+</table>*@
 
 @if (User.IsInRole("Admin")) {
     <h2>Reservations to be Charged</h2>
-    @Html.ActionLink("Delete All Inactive Reservations", "DeleteAll")
+    @Html.ActionLink("Delete All", "DeleteAll") <span>|</span>
+    @Html.ActionLink("Write CSV", "WriteCSV") <span>|</span>
+    <a href="~/Reservations.csv">Download CSV</a>
     <table class="table sortable">
         <tr>
             <th>
