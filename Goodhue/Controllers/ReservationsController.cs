@@ -97,6 +97,7 @@ namespace Goodhue.Controllers
         public ActionResult Create(int? id, [Bind(Include = "ID,StartDate,EndDate,Destination,Department,Miles,TankFilled,CarID,IsActive")] Reservation reservation, TimeSpan? startHour, TimeSpan? endHour)
         {
             Car car = carDb.Cars.Find(id);
+            ViewBag.Car = car;
             if (ModelState.IsValid)
             {
                 if (!startHour.HasValue)
@@ -109,10 +110,14 @@ namespace Goodhue.Controllers
                 }
                 reservation.StartDate = reservation.StartDate.Add((TimeSpan) startHour);
                 reservation.EndDate = reservation.EndDate.Add((TimeSpan) endHour);
-                if ((reservation.StartDate > reservation.EndDate) || (reservation.StartDate < DateTime.Today))
+                if (reservation.StartDate > reservation.EndDate)
                 {
-                    ViewBag.Car = car;
-                    ViewBag.Message = "Invalid input";
+                    ViewBag.Message = "Checkout time must be before Return time";
+                    return View(reservation);
+                }
+                else if (reservation.EndDate < DateTime.Today)
+                {
+                    ViewBag.Message = "Cannot checkout car before today";
                     return View(reservation);
                 }
                 List<Reservation> reservations = db.Reservations.Where(r => r.CarId == car.ID).Where(r => r.IsActive).ToList();
@@ -123,7 +128,6 @@ namespace Goodhue.Controllers
                         (reservation.EndDate > res.StartDate && reservation.EndDate <= res.EndDate) ||
                         (reservation.StartDate <= res.StartDate && reservation.EndDate >= res.EndDate))
                     {
-                        ViewBag.Car = car;
                         ViewBag.Message = "Conflicts with an existing reservation starting at " + res.StartDate.ToString() + " and ending at " + res.EndDate.ToString();
                         return View(reservation);
                     }

@@ -12,7 +12,8 @@ namespace Goodhue.Models
         //}
 
         //unchanging
-        public int ID { get; set; }
+        //public int ID { get; set; }
+        [Key]
         [Display(Name = "ID")]
         public int CountyID { get; set; }
         public string Description { get; set; }
