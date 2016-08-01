@@ -1,17 +1,13 @@
-﻿using System;
+﻿using Goodhue.Models;
+using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Infrastructure;
+using System.IO;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using Goodhue.Models;
-using System.Data.Entity.Infrastructure;
-using System.Data.Entity.Core.Objects;
-using System.Net.Mail;
-using System.Text;
-using System.IO;
 
 namespace Goodhue.Controllers
 {
