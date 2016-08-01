@@ -62,8 +62,7 @@
 @if (User.IsInRole("Admin")) {
     <h2>Reservations to be Charged</h2>
     @Html.ActionLink("Delete All", "DeleteAll") <span>|</span>
-    @Html.ActionLink("Write CSV", "WriteCSV") <span>|</span>
-    <a href="~/Reservations.csv">Download CSV</a>
+    @Html.ActionLink("Export to CSV", "WriteCSV")
     <table class="table sortable">
         <tr>
             <th>

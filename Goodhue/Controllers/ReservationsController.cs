@@ -11,6 +11,7 @@ using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Core.Objects;
 using System.Net.Mail;
 using System.Text;
+using System.IO;
 
 namespace Goodhue.Controllers
 {
@@ -315,23 +316,27 @@ namespace Goodhue.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult WriteCSV()
+        public void WriteCSV()
         {
-            var csv = new StringBuilder();
+            StringWriter sw = new StringWriter();
+            Response.ClearContent();
+            Response.AddHeader("content-disposition", "attachment;filename=Reservations.csv");
+            Response.ContentType = "text/csv";
+
             IEnumerable<Reservation> inactiveReservations = db.Reservations.Where(r => !r.IsActive);
-            foreach (Reservation res in inactiveReservations) {
+            foreach (Reservation res in inactiveReservations)
+            {
                 var startDate = res.StartDate;
                 var endDate = res.EndDate;
                 var destination = res.Destination;
                 var department = res.Department;
                 var miles = res.Miles;
-                
-                var newLine = string.Format("{0},{1},{2},{3},{4}", startDate, endDate,
-                    destination, department, miles);
-                csv.AppendLine(newLine);
+
+                sw.WriteLine(string.Format("{0},{1},{2},{3},{4}", startDate, endDate,
+                    destination, department, miles));
             }
-            System.IO.File.WriteAllText("/Reservations.csv", csv.ToString());
-            return RedirectToAction("Index");
+            Response.Write(sw.ToString());
+            Response.End();
         }
 
         protected override void Dispose(bool disposing)
