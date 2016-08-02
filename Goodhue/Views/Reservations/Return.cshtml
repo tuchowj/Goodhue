@@ -4,10 +4,8 @@
     ViewBag.Title = "Return";
 }
 
-<h2>Return: @Html.DisplayFor(model => model.CountyID) @Html.DisplayFor(model => model.Description)</h2>
+<h2>Return: @Html.DisplayFor(model => model.ID) @Html.DisplayFor(model => model.Description)</h2>
 
-
-@*@using (Html.BeginForm("Return", "Reservations", FormMethod.Post, new { id = "return" }))*@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -16,7 +14,6 @@
         <hr/>
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.ID)
-        @Html.HiddenFor(model => model.CountyID)
         @Html.HiddenFor(model => model.Description)
         @Html.HiddenFor(model => model.Location)
         @Html.HiddenFor(model => model.ImageURL)

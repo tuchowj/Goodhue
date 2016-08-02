@@ -23,7 +23,7 @@ namespace Goodhue.Controllers
         {
             List<Car> cars = db.Cars.ToList();
             setNextReservations(cars);
-            return View(cars.OrderBy(c => c.CountyID));
+            return View(cars.OrderBy(c => c.ID));
         }
 
         [AllowAnonymous]

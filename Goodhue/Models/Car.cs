@@ -1,20 +1,16 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 
 namespace Goodhue.Models
 {
     public class Car
     {
-        //public Car()
-        //{
-        //    Reservations = new List<Reservation>();
-        //}
-
         //unchanging
-        public int id { get; set; }
-        [Display(Name = "ID")]
-        public int CountyID { get; set; }
+        //public int ID { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public int ID { get; set; }
         public string Description { get; set; }
         public string Location { get; set; }
         public string ImageURL { get; set; }
@@ -31,9 +27,7 @@ namespace Goodhue.Models
         public string NextUser { get; set; }
         [Display(Name = "Available?")]
         public bool IsAvailable { get; set; }
-        //TODO: comments, availability?
 
-        //public virtual ICollection<Reservation> Reservations { get; set; }
     }
 
     public class CarDBContext : DbContext

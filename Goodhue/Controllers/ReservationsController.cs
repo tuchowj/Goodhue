@@ -323,16 +323,18 @@ namespace Goodhue.Controllers
             Response.AddHeader("content-disposition", "attachment;filename=Reservations.csv");
             Response.ContentType = "text/csv";
 
+            sw.WriteLine("ID,checkout_date,return_date,destination,department,miles_driven");
             IEnumerable<Reservation> inactiveReservations = db.Reservations.Where(r => !r.IsActive);
             foreach (Reservation res in inactiveReservations)
             {
+                var id = res.ID;
                 var startDate = res.StartDate;
                 var endDate = res.EndDate;
                 var destination = res.Destination;
                 var department = res.Department;
                 var miles = res.Miles;
 
-                sw.WriteLine(string.Format("{0},{1},{2},{3},{4}", startDate, endDate,
+                sw.WriteLine(string.Format("{0},{1},{2},{3},{4},{5}", id, startDate, endDate,
                     destination, department, miles));
             }
             Response.Write(sw.ToString());
