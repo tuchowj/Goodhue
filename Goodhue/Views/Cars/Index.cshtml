@@ -18,11 +18,29 @@
 
 <div class="row">
     <form action="" method="post">
-        <div class="col-sm-3"><h2>Find Available Car:</h2></div>
-        <div class="col-sm-2"><label># of Hours</label><input class="form-control text-box single-line" data-val="true" id="duration" name="duration" type="number" min="0" value=""></div>
-        <div class="col-sm-2"><label>Starting on</label><input class="select-date form-control text-box single-line" data-val="true" id="StartDate" name="StartDate" type="date" value=""></div>
-        <div class="col-sm-2"><label>At</label><input class="form-control text-box single-line" data-val="true" data-val-required="The End Date field is required." id="EndDate" name="EndDate" type="time" value=""></div>
-        <div class="col-sm-1"><br /><input class="btn btn-primary" type="submit" value="Filter Cars" /></div>
+        <div class="col-sm-3">
+            <h2>Find Available Car:</h2>
+        </div>
+        <div class="col-sm-2"><label>For</label>
+            <select class="form-control" id="duration" name="duration" type="number">
+                <option value="0"></option>
+                <option value="12">AM</option>
+                <option value="-12">PM</option>
+                <option value="24">Full Day</option>
+                <option value="48">2 Days</option>
+                <option value="72">3 Days</option>
+                <option value="168">1 Week</option>
+            </select>
+        </div>
+        <div class="col-sm-3">
+            <label>Starting on</label>
+            <input class="select-date form-control text-box single-line" data-val="true" id="StartDate" name="StartDate" type="date" value="">
+        </div>
+        @*<div class="col-sm-2"><label>At</label><input class="form-control text-box single-line" data-val="true" type="time" value=""></div>*@
+        <div class="col-sm-1">
+            <br />
+            <input class="btn btn-primary" type="submit" value="Filter Cars" />
+        </div>
     </form>
 </div>
 

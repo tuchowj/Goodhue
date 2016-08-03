@@ -327,7 +327,7 @@ namespace Goodhue.Controllers
             IEnumerable<Reservation> inactiveReservations = db.Reservations.Where(r => !r.IsActive);
             foreach (Reservation res in inactiveReservations)
             {
-                var id = res.ID;
+                var id = res.CarId;
                 var startDate = res.StartDate;
                 var endDate = res.EndDate;
                 var destination = res.Destination;

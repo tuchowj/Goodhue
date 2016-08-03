@@ -28,26 +28,28 @@ namespace Goodhue.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public ActionResult Index(int? duration, DateTime? startDate, TimeSpan? startTime)
+        public ActionResult Index(int? duration, DateTime? startDate)
         {
             if (startDate == null)
             {
                 return RedirectToAction("Index");
             }
-            if (duration == null)
-            {
-                duration = 0;
-            }
-            if (startTime == null)
-            {
-                startTime = TimeSpan.Zero;
+            //if (duration == null)
+            //{
+            //    duration = 0;
+            //}
+            TimeSpan startTime = TimeSpan.Zero;
 
+            if (duration == -12)
+            {
+                startTime = new TimeSpan(12,0,0);
+                duration = 12;
             }
             int dur = (int)duration;
-            TimeSpan time = (TimeSpan)startTime;
+            
             DateTime date = (DateTime)startDate;
-            startDate = date.Add(time);
-            DateTime? endDate = date.Add(time).AddHours(dur);
+            startDate = date.Add(startTime);
+            DateTime? endDate = date.Add(startTime).AddHours(dur);
 
             List<Car> availableCars = db.Cars.ToList();
             List<Reservation> reservations = reservationDb.Reservations.ToList();
@@ -112,7 +114,7 @@ namespace Goodhue.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,CountyID,Description,Location,ImageURL,Odometer,OilChangeMiles")] Car car)
+        public ActionResult Create([Bind(Include = "ID,Description,Location,ImageURL,Odometer,OilChangeMiles")] Car car)
         {
             if (ModelState.IsValid)
             {
@@ -146,7 +148,7 @@ namespace Goodhue.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,CountyID,Description,Location,ImageURL,Odometer,OilChangeMiles,NextReservation,NextUser,IsAvailable")] Car car)
+        public ActionResult Edit([Bind(Include = "ID,Description,Location,ImageURL,Odometer,OilChangeMiles,NextReservation,NextUser,IsAvailable")] Car car)
         {
             if (ModelState.IsValid)
             {
