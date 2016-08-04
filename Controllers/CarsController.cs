@@ -67,7 +67,7 @@ namespace Goodhue.Controllers
                 }
             }
             setNextReservations(availableCars);
-            return View(availableCars);
+            return View(availableCars.OrderBy(c => c.ID));
         }
 
         private void setNextReservations(List<Car> cars)

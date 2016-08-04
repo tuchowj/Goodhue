@@ -23,10 +23,9 @@
         </div>
         <div class="col-sm-2"><label>For</label>
             <select class="form-control" id="duration" name="duration" type="number">
-                <option value="0"></option>
-                <option value="12">AM</option>
-                <option value="-12">PM</option>
                 <option value="24">Full Day</option>
+                <option value="12">Morning</option>
+                <option value="-12">Afternoon</option>
                 <option value="48">2 Days</option>
                 <option value="72">3 Days</option>
                 <option value="168">1 Week</option>
@@ -34,7 +33,7 @@
         </div>
         <div class="col-sm-3">
             <label>Starting on</label>
-            <input class="select-date form-control text-box single-line" data-val="true" id="StartDate" name="StartDate" type="date" value="">
+            <input class="select-date form-control text-box single-line" data-val="true" id="StartDate" name="StartDate" type="date" value=@DateTime.Today>
         </div>
         @*<div class="col-sm-2"><label>At</label><input class="form-control text-box single-line" data-val="true" type="time" value=""></div>*@
         <div class="col-sm-1">
