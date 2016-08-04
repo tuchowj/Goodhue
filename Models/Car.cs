@@ -9,6 +9,7 @@ namespace Goodhue.Models
     {
         //unchanging
         //public int ID { get; set; }
+        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ID { get; set; }
         public string Description { get; set; }

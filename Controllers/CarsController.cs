@@ -116,7 +116,8 @@ namespace Goodhue.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,Description,Location,ImageURL,Odometer,OilChangeMiles")] Car car)
         {
-            if (ModelState.IsValid)
+            bool hasUniqueID = !db.Cars.Where(c => c.ID == car.ID).ToList().Any();
+            if (ModelState.IsValid && hasUniqueID)
             {
                 car.NextReservation = null;
                 car.IsAvailable = true;
