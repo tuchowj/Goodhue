@@ -4,7 +4,7 @@
     ViewBag.Title = "Return";
 }
 
-<h2>Return: @Html.DisplayFor(model => model.ID) @Html.DisplayFor(model => model.Description)</h2>
+<h2>Return: @Html.DisplayFor(model => model.Description) (@Html.DisplayFor(model => model.ID))</h2>
 
 @using (Html.BeginForm())
 {

@@ -194,7 +194,7 @@ namespace Goodhue.Controllers
         // POST: Reservations/Return/5/2
         [HttpPost, ActionName("Return")]
         [ValidateAntiForgeryToken]
-        public ActionResult ReturnConfirmed(int? carId, int? reservationId, [Bind(Include = "ID,CountyID,Description,Location,ImageURL,Odometer,OilChangeMiles,IsAvailable")] Car car, bool tankFilled, string comment)
+        public ActionResult ReturnConfirmed(int? carId, int? reservationId, [Bind(Include = "ID,Description,Location,ImageURL,Odometer,OilChangeMiles,IsAvailable")] Car car, bool tankFilled, string comment)
         {
             Reservation returnReservation = db.Reservations.Find(reservationId);
 
@@ -314,6 +314,13 @@ namespace Goodhue.Controllers
             }
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public ActionResult MyReservations()
+        {
+            bool isMaintenance = User.IsInRole("Maintenance");
+            return View(db.Reservations.Where(r => r.IsActive && (r.Username == User.Identity.Name ||
+                ((r.Username == "Maintenance") && isMaintenance))).OrderBy(r => r.EndDate).ToList());
         }
 
         public void WriteCSV()
