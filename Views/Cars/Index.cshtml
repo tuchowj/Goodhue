@@ -41,12 +41,16 @@
             <input class="btn btn-primary" type="submit" value="Filter Cars" />
         </div>
     </form>
+    <div class="col-sm-1">
+        <br />
+        @Html.ActionLink("Return a Car", "Return", null, new { @class = "btn btn-primary" })
+    </div>
 </div>
 
 @if (User.IsInRole("Admin"))
 {
     <p>
-        @Html.ActionLink("Create New", "Create", "Cars")
+        @Html.ActionLink("Create New", "Create")
     </p>
 }
 <table class="table sortable">

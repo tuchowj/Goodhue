@@ -39,20 +39,22 @@ namespace Goodhue.Controllers
             {
                 return HttpNotFound();
             }
-            List<Reservation> reservations = db.Reservations.Where(r => (r.CarId == car.ID) && r.IsActive).ToList();
-            Reservation nextRes;
-            if (reservations.Any())
-            {
-                //note: this operation's runtime can most likely be improved if necessary
-                nextRes = reservations.OrderBy(r => r.StartDate).First();
-            }
-            else { nextRes = null; }
-
-            ViewBag.NextRes = nextRes;
+            ViewBag.NextRes = getNextRes(car);
             ViewBag.Car = car;
 
             
             return View(db.Reservations.Where(r => r.IsActive && (r.CarId == car.ID)).OrderBy(r=>r.StartDate));
+        }
+
+        private Reservation getNextRes(Car car)
+        {
+            List<Reservation> reservations = db.Reservations.Where(r => (r.CarId == car.ID) && r.IsActive).ToList();
+            if (reservations.Any())
+            {
+                //note: this operation's runtime can most likely be improved if necessary
+                return reservations.OrderBy(r => r.StartDate).First();
+            }
+            else { return null; }
         }
 
         // GET: Reservations/Details/5
@@ -154,7 +156,6 @@ namespace Goodhue.Controllers
         // GET: Reservations/Return/5/2
         public ActionResult Return(int? carId, int? reservationId)
         {
-            //Deactivate Reservation
             if (reservationId == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -171,7 +172,6 @@ namespace Goodhue.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
             }
 
-            //Edit Car Info
             if (carId == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -186,7 +186,7 @@ namespace Goodhue.Controllers
             if (unreturnedReservations.Any()) {
                 ViewBag.Car = car;
                 return RedirectToAction("Schedule", new { id = carId });
-            } else {
+            } else { //user cannot return any reservation but the next one
                 return View(car);
             }
         }
@@ -198,7 +198,7 @@ namespace Goodhue.Controllers
         {
             Reservation returnReservation = db.Reservations.Find(reservationId);
 
-            //Deactivate Reservation
+            //Edit Reservation Info
             returnReservation.IsActive = false;
             returnReservation.Miles = car.Odometer - oldOdometer;
             returnReservation.TankFilled = tankFilled;

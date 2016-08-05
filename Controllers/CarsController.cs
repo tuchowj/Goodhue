@@ -200,6 +200,20 @@ namespace Goodhue.Controllers
             return RedirectToAction("Index", "Cars");
         }
 
+        // GET: Cars/Return
+        [AllowAnonymous]
+        public ActionResult Return() {
+            IEnumerable<Car> cars = db.Cars;
+            IEnumerable<Reservation> reservations = reservationDb.Reservations;
+            List<Reservation> nextReservations = new List<Reservation>();
+            foreach (Car car in cars)
+            {
+                List<Reservation> resList = reservations.Where(r => r.IsActive && r.CarId == car.ID).ToList();
+                nextReservations.Add(resList.OrderBy(r => r.EndDate).First());
+            }
+            return View(nextReservations.OrderBy(r => r.EndDate));
+        }
+
         // GET: Cars/Comments/5
         public ActionResult Comments(int? id)
         {

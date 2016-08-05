@@ -256,6 +256,7 @@
     <Content Include="Web.config" />
     <Content Include="Web.config" />
     <Content Include="Views\Reservations\MyReservations.cshtml" />
+    <Content Include="Views\Cars\Return.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
