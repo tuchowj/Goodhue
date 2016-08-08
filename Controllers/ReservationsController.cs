@@ -7,6 +7,7 @@ using System.Data.Entity.Infrastructure;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Mail;
 using System.Web.Mvc;
 
 namespace Goodhue.Controllers
@@ -218,6 +219,17 @@ namespace Goodhue.Controllers
             //mail.Body = comment;
 
             //smtpServer.Send(mail);
+
+            MailMessage mail = new MailMessage("jonahg@redwingignite.org","jonahg@redwingignite.org");
+            SmtpClient client = new SmtpClient();
+            client.Port = 485;
+            client.DeliveryMethod = SmtpDeliveryMethod.Network;
+            client.UseDefaultCredentials = false;
+            client.Host = "smtp.gmail.com";
+            client.EnableSsl = true;
+            mail.Subject = "this is a test email.";
+            mail.Body = "this is my test email body";
+            client.Send(mail);
 
             //Add comment if there's anything in textbox
             if (comment.Length > 0)
