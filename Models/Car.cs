@@ -8,7 +8,6 @@ namespace Goodhue.Models
     public class Car
     {
         //unchanging
-        //public int ID { get; set; }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ID { get; set; }
