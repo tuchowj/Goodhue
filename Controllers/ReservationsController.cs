@@ -206,31 +206,6 @@ namespace Goodhue.Controllers
             db.Entry(returnReservation).State = EntityState.Modified;
             db.SaveChanges();
 
-            ////send email
-            //MailMessage mail = new MailMessage();
-
-            //SmtpClient smtpServer = new SmtpClient("smtp.gmail.com");
-            //smtpServer.Credentials = new System.Net.NetworkCredential("jonahg@redwingignite.org", "lolcats1");
-            //smtpServer.Port = 587; // Gmail works on this port
-
-            //mail.From = new MailAddress("jonahg@redwingignite.org");
-            //mail.To.Add("tuchowj@gmail.com");
-            //mail.Subject = "Comment";
-            //mail.Body = comment;
-
-            //smtpServer.Send(mail);
-
-            MailMessage mail = new MailMessage("jonahg@redwingignite.org","jonahg@redwingignite.org");
-            SmtpClient client = new SmtpClient();
-            client.Port = 485;
-            client.DeliveryMethod = SmtpDeliveryMethod.Network;
-            client.UseDefaultCredentials = false;
-            client.Host = "smtp.gmail.com";
-            client.EnableSsl = true;
-            mail.Subject = "this is a test email.";
-            mail.Body = "this is my test email body";
-            client.Send(mail);
-
             //Add comment if there's anything in textbox
             if (comment.Length > 0)
             {
@@ -240,6 +215,19 @@ namespace Goodhue.Controllers
                 userComment.Text = comment;
                 commentDb.Comments.Add(userComment);
                 commentDb.SaveChanges();
+
+                //send email
+                MailMessage mail = new MailMessage();
+                SmtpClient client = new SmtpClient();
+                client.Port = 25;
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.UseDefaultCredentials = false;
+                client.Host = "mail.goodhue.county";
+                mail.From = new MailAddress("carshare.donotreply@co.goodhue.mn.us");
+                mail.To.Add("jonahg@redwingignite.org");
+                mail.Subject = "Car Pool Comment";
+                mail.Body = comment;
+                client.Send(mail);
             }
 
             //Edit Car Info

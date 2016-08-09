@@ -209,7 +209,10 @@ namespace Goodhue.Controllers
             foreach (Car car in cars)
             {
                 List<Reservation> resList = reservations.Where(r => r.IsActive && r.CarId == car.ID).ToList();
-                nextReservations.Add(resList.OrderBy(r => r.EndDate).First());
+                if ((resList).Any())
+                {
+                    nextReservations.Add(resList.OrderBy(r => r.EndDate).First());
+                }
             }
             return View(nextReservations.OrderBy(r => r.EndDate));
         }
