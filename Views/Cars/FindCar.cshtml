@@ -1,0 +1,169 @@
+﻿@using Microsoft.AspNet.Identity
+@model IEnumerable<Goodhue.Models.Car>
+
+@{
+    ViewBag.Title = "Find Car";
+}
+
+@if (User.IsInRole("Admin"))
+{
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+}
+<h2>Select a Car to Checkout</h2>
+<table class="table sortable">
+    <tr>
+        <th>
+            
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Location)
+        </th>
+        @if (User.IsInRole("Admin"))
+        {
+            <th>
+                @Html.DisplayNameFor(model => model.Odometer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OilChangeMiles)
+            </th>
+        }
+        <th>
+            @Html.DisplayNameFor(model => model.NextReservation)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NextUser)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        if (item.IsAvailable)
+        {
+            <tr>
+                <td>
+                    <img style="height:70px; width:93.33px;" src=@item.ImageURL />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Location)
+                </td>
+                @if (User.IsInRole("Admin"))
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Odometer)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OilChangeMiles)
+                    </td>
+                }
+                <td>
+                    @Html.DisplayFor(modelItem => item.NextReservation)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NextUser)
+                </td>
+                <td>
+                    @Html.ActionLink("Select", "Create", "Reservations", new { id = item.ID }, new { @class = "btn btn-primary btn-sm" })
+                    
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <span>|</span>
+                        @Html.ActionLink("Edit", "Edit", "Cars", new { id = item.ID }, null)
+                    
+                    }
+                
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <span>|</span>
+                        @Html.ActionLink("Delete", "Delete", "Cars", new { id = item.ID }, null)
+                        <span>|</span>
+                        @Html.ActionLink("Comments", "Comments", "Cars", new { id = item.ID }, null)
+                    }
+                </td>
+            </tr>
+        }
+    }
+
+</table>
+@if (User.IsInRole("Admin"))
+{
+    <h2>Unavailable Cars</h2>
+    <table class="table sortable">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Location)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Odometer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OilChangeMiles)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NextReservation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NextUser)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            if (!item.IsAvailable)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Location)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Odometer)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OilChangeMiles)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NextReservation)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NextUser)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Comments", "Comments", "Cars", new { id = item.ID }, null)
+                        <span>|</span>
+                        @Html.ActionLink("Edit", "Edit", "Cars", new { id = item.ID }, null)
+                        <span>|</span>
+                        @Html.ActionLink("Delete", "Delete", "Cars", new { id = item.ID }, null)
+                    </td>
+                </tr>
+            }
+        }
+
+    </table>
+}

@@ -1,0 +1,51 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<div class="jumbotron">
+    <div class="row">
+        <div class="col-md-2">
+            <img src="~/Images/Goodhue_county.png" height="100">
+        </div>
+        <div class="col-md-10">
+            <h1>County Car Reservations</h1>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    @*<div class="col-md-1"></div>*@
+    <div class="col-md-4">
+        @using (Html.BeginForm("FindCar", "Cars", FormMethod.Post, null))
+        {
+            <input class="btn-lg btn-primary" type="submit" value="Checkout a Car" /><br /><br />
+            <label>Available For</label>
+            <select class="form-control" id="duration" name="duration" type="number">
+                <option value="24">Full Day</option>
+                <option value="12">Morning</option>
+                <option value="-12">Afternoon</option>
+                <option value="48">2 Days</option>
+                <option value="72">3 Days</option>
+                <option value="168">1 Week</option>
+            </select>
+            <label>Starting on</label>
+            <input class="select-date form-control text-box single-line" data-val="true" id="StartDate" name="StartDate" type="date" value="" placeholder="mm/dd/yyyy" />
+        }
+    </div>
+    <div class="col-md-4">
+        @using (Html.BeginForm("Return", "Cars", FormMethod.Post, null))
+        {
+            <input class="btn-lg btn-primary" type="submit" value="Return a Car" /><br /><br />
+            @*<label>Car ID</label>
+            <input class="form-control text-box single-line" data-val="true" id="CarID" name="CarID" type="number" min="0" />*@
+        }
+    </div>
+    <div class="col-md-4">
+        @using (Html.BeginForm("Index", "Cars", FormMethod.Get, null))
+        {
+            <input class="btn-lg btn-primary" type="submit" value="View Schedule" /><br /><br />
+            @*<label>Car ID</label>
+            <input class="form-control text-box single-line" data-val="true" id="CarID" name="CarID" type="number" min="0" />*@
+        }
+    </div>
+</div>
