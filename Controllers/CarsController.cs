@@ -34,10 +34,6 @@ namespace Goodhue.Controllers
             {
                 return RedirectToAction("Index");
             }
-            //if (duration == null)
-            //{
-            //    duration = 0;
-            //}
             TimeSpan startTime = TimeSpan.Zero;
 
             if (duration == -12)
@@ -68,6 +64,52 @@ namespace Goodhue.Controllers
             }
             setNextReservations(availableCars);
             return View(availableCars.OrderBy(c => c.ID));
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public ActionResult FindAvailable(int? duration, DateTime? startDate)
+        {
+            if (startDate == null)
+            {
+                return View("FindCar", db.Cars.ToList().OrderBy(c => c.ID));
+            }
+            TimeSpan startTime = TimeSpan.Zero;
+
+            if (duration == -12)
+            {
+                startTime = new TimeSpan(12, 0, 0);
+                duration = 12;
+            }
+            int dur = (int)duration;
+
+            DateTime date = (DateTime)startDate;
+            startDate = date.Add(startTime);
+            DateTime? endDate = date.Add(startTime).AddHours(dur);
+
+            List<Car> availableCars = db.Cars.ToList();
+            List<Reservation> reservations = reservationDb.Reservations.ToList();
+            foreach (Reservation res in reservations)
+            {
+                if (res.IsActive)
+                {
+                    if ((startDate >= res.StartDate && startDate < res.EndDate) ||
+                        (endDate > res.StartDate && endDate <= res.EndDate) ||
+                        (startDate <= res.StartDate && endDate >= res.EndDate))
+                    {
+                        Car badCar = db.Cars.Find(res.CarId);
+                        availableCars.Remove(badCar);
+                    }
+                }
+            }
+            setNextReservations(availableCars);
+            return View("FindCar", availableCars.OrderBy(c => c.ID));
+        }
+
+        [AllowAnonymous]
+        public ActionResult FindCar()
+        {
+            return View(db.Cars.OrderBy(c => c.ID));
         }
 
         private void setNextReservations(List<Car> cars)

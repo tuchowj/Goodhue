@@ -9,11 +9,12 @@ namespace Goodhue.Controllers
 {
     public class HomeController : Controller
     {
-        private CarDBContext db = new CarDBContext();
+        private CarDBContext carDb = new CarDBContext();
+        private ReservationDBContext reservationDb = new ReservationDBContext();
 
         public ActionResult Index()
         {
-            return RedirectToAction("Index", "Cars");
+            return View();
         }
 
         public ActionResult About()

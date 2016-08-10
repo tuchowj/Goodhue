@@ -225,8 +225,8 @@ namespace Goodhue.Controllers
                 client.UseDefaultCredentials = false;
                 client.Host = "mail.goodhue.county";
                 mail.From = new MailAddress("carshare.donotreply@co.goodhue.mn.us");
-                ApplicationDbContext appDb = new ApplicationDbContext();
-                var account = new AccountController();
+                //ApplicationDbContext appDb = new ApplicationDbContext();
+                //var account = new AccountController();
                 //foreach (ApplicationUser user in appDb.Users)
                 //{
                 //    var roles = account.UserManager.GetRoles(user.Id);

@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<Goodhue.Models.Reservation>
 
 @{
-    ViewBag.Title = "Return";
+    ViewBag.Title = "Return Car";
 }
+<h2>Return a Car</h2>
 
-<h2>Return</h2>
 <table class="table sortable">
     <tr>
         <th>
@@ -27,7 +27,6 @@
         </th>
         <th></th>
     </tr>
-
 @foreach (var item in Model) {
     <tr>
         <td>
@@ -47,11 +46,10 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Department)
-        </td>>
+        </td>
         <td>
             @Html.ActionLink("Return", "Return", "Reservations",new { id = item.CarId, reservationId = item.ID }, new { @class = "btn btn-primary btn-sm" })
         </td>
     </tr>
 }
-
 </table>

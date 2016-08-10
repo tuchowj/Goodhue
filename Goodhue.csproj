@@ -272,6 +272,8 @@
     </Content>
     <Content Include="Views\Reservations\MyReservations.cshtml" />
     <Content Include="Views\Cars\Return.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Cars\FindCar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

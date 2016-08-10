@@ -4,48 +4,7 @@
 @{
     ViewBag.Title = "Home";
 }
-
-<div class="jumbotron">
-    <div class="row">
-        <div class="col-md-2">
-            <img src="~/Images/Goodhue_county.png" height="100">
-        </div>
-        <div class="col-md-10">
-            <h1>County Car Reservations</h1>
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <form action="" method="post">
-        <div class="col-sm-3">
-            <h2>Find Available Car:</h2>
-        </div>
-        <div class="col-sm-2"><label>For</label>
-            <select class="form-control" id="duration" name="duration" type="number">
-                <option value="24">Full Day</option>
-                <option value="12">Morning</option>
-                <option value="-12">Afternoon</option>
-                <option value="48">2 Days</option>
-                <option value="72">3 Days</option>
-                <option value="168">1 Week</option>
-            </select>
-        </div>
-        <div class="col-sm-3">
-            <label>Starting on</label>
-            <input class="select-date form-control text-box single-line" data-val="true" id="StartDate" name="StartDate" type="date" value="" placeholder="mm/dd/YYYY" />
-        </div>
-        @*<div class="col-sm-2"><label>At</label><input class="form-control text-box single-line" data-val="true" type="time" value=""></div>*@
-        <div class="col-sm-1">
-            <br />
-            <input class="btn btn-primary" type="submit" value="Filter Cars" />
-        </div>
-    </form>
-    <div class="col-sm-1">
-        <br />
-        @Html.ActionLink("Return a Car", "Return", null, new { @class = "btn btn-primary" })
-    </div>
-</div>
+<h2>View a Car's Schedule</h2>
 
 @if (User.IsInRole("Admin"))
 {
@@ -118,17 +77,12 @@
                     @Html.DisplayFor(modelItem => item.NextUser)
                 </td>
                 <td>
-                    @Html.ActionLink("Select", "Schedule", "Reservations", new { id = item.ID }, new { @class = "btn btn-primary btn-sm" })
+                    @Html.ActionLink("View Schedule", "Schedule", "Reservations", new { id = item.ID }, new { @class = "btn btn-primary btn-sm" })
                     
                     @if (User.IsInRole("Admin"))
                     {
                         <span>|</span>
                         @Html.ActionLink("Edit", "Edit", "Cars", new { id = item.ID }, null)
-                    
-                    }
-                
-                    @if (User.IsInRole("Admin"))
-                    {
                         <span>|</span>
                         @Html.ActionLink("Delete", "Delete", "Cars", new { id = item.ID }, null)
                         <span>|</span>
@@ -205,6 +159,5 @@
                 </tr>
             }
         }
-
     </table>
 }

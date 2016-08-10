@@ -54,8 +54,9 @@
                 {
                     @Html.ActionLink("Return", "Return", new { id = item.CarId, reservationId = item.ID }, new { @class = "btn btn-primary btn-sm" })
                 }
-                @*@Html.ActionLink("Delete", "Delete", new { reservationId = item.ID })*@
             </td>
         </tr>
     }
 </table>
+<hr />
+@Html.ActionLink("Back to All Cars", "Index", "Cars")
