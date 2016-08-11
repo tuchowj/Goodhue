@@ -9,8 +9,6 @@ namespace Goodhue.Controllers
 {
     public class HomeController : Controller
     {
-        private CarDBContext carDb = new CarDBContext();
-        private ReservationDBContext reservationDb = new ReservationDBContext();
 
         public ActionResult Index()
         {

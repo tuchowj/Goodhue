@@ -14,11 +14,11 @@
 </div>
 
 <div class="row">
-    @*<div class="col-md-1"></div>*@
-    <div class="col-md-4">
+    <div class="col-md-1"></div>
+    <div class="col-md-3">
         @using (Html.BeginForm("FindCar", "Cars", FormMethod.Post, null))
         {
-            <input class="btn-lg btn-primary" type="submit" value="Checkout a Car" /><br /><br />
+            <input class="btn-lg btn-primary" type="submit" value="Reserve a Car" /><br /><br />
             <label>Available For</label>
             <select class="form-control" id="duration" name="duration" type="number">
                 <option value="24">Full Day</option>
@@ -32,20 +32,21 @@
             <input class="select-date form-control text-box single-line" data-val="true" id="StartDate" name="StartDate" type="date" value="" placeholder="mm/dd/yyyy" />
         }
     </div>
-    <div class="col-md-4">
-        @using (Html.BeginForm("Return", "Cars", FormMethod.Post, null))
+    <div class="col-md-4" align="center">
+        @using (Html.BeginForm("Return", "Cars", FormMethod.Get, null))
         {
             <input class="btn-lg btn-primary" type="submit" value="Return a Car" /><br /><br />
             @*<label>Car ID</label>
             <input class="form-control text-box single-line" data-val="true" id="CarID" name="CarID" type="number" min="0" />*@
         }
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3" align="right">
         @using (Html.BeginForm("Index", "Cars", FormMethod.Get, null))
         {
-            <input class="btn-lg btn-primary" type="submit" value="View Schedule" /><br /><br />
+            <input class="btn-lg btn-primary" type="submit" value="View Reservations" /><br /><br />
             @*<label>Car ID</label>
             <input class="form-control text-box single-line" data-val="true" id="CarID" name="CarID" type="number" min="0" />*@
         }
     </div>
+    <div class="col-md-1"></div>
 </div>

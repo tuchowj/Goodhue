@@ -147,7 +147,7 @@ namespace Goodhue.Controllers
                 reservation.IsActive = true;
                 db.Reservations.Add(reservation);
                 db.SaveChanges();
-                return RedirectToAction("Index","Cars");
+                return RedirectToAction("Schedule", new { id = car.ID });
             }
             ViewBag.Car = car;
             ViewBag.Message = null;
@@ -217,7 +217,6 @@ namespace Goodhue.Controllers
                 commentDb.SaveChanges();
 
                 //send email
-                
                 MailMessage mail = new MailMessage();
                 SmtpClient client = new SmtpClient();
                 client.Port = 25;
@@ -234,7 +233,7 @@ namespace Goodhue.Controllers
                 //}
                 mail.To.Add("jonahg@redwingignite.org");
                 mail.Subject = "Car Pool Comment";
-                mail.Body = comment;
+                mail.Body = User.Identity.Name + ": " + comment;
                 client.Send(mail);
             }
 
@@ -263,8 +262,7 @@ namespace Goodhue.Controllers
                     }
 
                 } while (saveFailed);
-
-                return RedirectToAction("Index","Cars");
+                return RedirectToAction("Schedule", new { id = carId });
             }
 
             return View(car);
@@ -299,7 +297,7 @@ namespace Goodhue.Controllers
             Reservation reservation = db.Reservations.Find(id);
             db.Reservations.Remove(reservation);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Schedule", new { id = reservation.CarId });
         }
 
         // GET: Reservations/DeleteAll

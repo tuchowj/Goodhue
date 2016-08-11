@@ -80,6 +80,11 @@ namespace Goodhue.Controllers
                     car.NextReservation = nextRes.StartDate;
                     car.NextUser = nextRes.Username;
                 }
+                else  //in case a reservation was deleted
+                {
+                    car.NextReservation = null;
+                    car.NextUser = null;
+                }
             }
             db.SaveChanges();
         }
