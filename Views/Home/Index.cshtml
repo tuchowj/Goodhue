@@ -29,7 +29,7 @@
                 <option value="168">1 Week</option>
             </select>
             <label>Starting on</label>
-            <input class="select-date form-control text-box single-line" data-val="true" id="StartDate" name="StartDate" type="date" value="" placeholder="mm/dd/yyyy" />
+            <input class="form-control text-box single-line date" data-val="true" id="StartDate" name="StartDate" type="text" value="" placeholder="mm/dd/yyyy" />
         }
     </div>
     <div class="col-md-4" align="center">
@@ -50,3 +50,7 @@
     </div>
     <div class="col-md-1"></div>
 </div>
+
+<script>
+    $(".date").datepicker();
+</script>
