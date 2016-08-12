@@ -2,9 +2,13 @@
 @model IEnumerable<Goodhue.Models.Car>
 
 @{
-    ViewBag.Title = "Home";
+    ViewBag.Title = "View Reservations";
 }
-<h2>View All Reservations for a Car</h2>
+<h2 class="col-md-10">View All Reservations for a Car</h2>
+<h2 class="col-md-2"> @Html.ActionLink("View My Reservations", "MyReservations", "Reservations", null, new { @class = "btn btn-primary" })
+</h2>
+
+
 
 @if (User.IsInRole("Admin"))
 {

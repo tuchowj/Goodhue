@@ -55,11 +55,32 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Department, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Department, new { htmlAttributes = new { @class = "form-control", placeholder = "Department name or grant info" } })
-                @Html.ValidationMessageFor(model => model.Department, "", new { @class = "text-danger" })
+                <select class="form-control single-line" id="Department" name="Department" type="text">
+                    <option value="Administration">Administration</option>
+                    <option value="Assessor">Assessor</option>
+                    <option value="Attorney">Attorney</option>
+                    <option value="Court Services">Court Services</option>
+                    <option value="Extension">Extension</option>
+                    <option value="Finance">Finance</option>
+                    <option value="Facilities/Maintenance">Facilities/Maintenance</option>
+                    <option value="Grants">Grants</option>
+                    <option value="HHS">HHS</option>
+                    <option value="Human Resources">Human Resources</option>
+                    <option value="IT">IT</option>
+                    <option value="Land Use">Land Use</option>
+                    <option value="Public Works">Public Works</option>
+                    <option value="Recorder">Recorder</option>
+                    <option value="Sheriff">Sheriff</option>
+                    <option value="Veterans Service">Veterans Service</option>
+                </select>
             </div>
         </div>
-
+        <div class="form-group">
+            <label class="control-label col-md-2">Grant Info (optional)</label>
+            <div class="col-md-10">
+                <input class="form-control text-box single-line" id="grant" name="grant" type="text" placeholder="">
+            </div>
+        </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Reserve" class="btn btn-primary" />
@@ -75,3 +96,23 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
+
+<div class="container">
+    <div class="row">
+        <div class='col-sm-6'>
+            <div class="form-group">
+                <div class='input-group date' id='datetimepicker1'>
+                    <input type='text' class="form-control" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            $(function () {
+                $('#datetimepicker1').datetimepicker();
+            });
+        </script>
+    </div>
+</div>

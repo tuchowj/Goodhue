@@ -21,14 +21,14 @@ namespace Goodhue.Controllers
         [AllowAnonymous]
         public ActionResult Index()
         {
+            setNextReservations();
             List<Car> cars = db.Cars.ToList();
-            setNextReservations(cars);
             return View(cars.OrderBy(c => c.ID));
         }
 
         // POST: Cars/FindCar
-        [AllowAnonymous]
         [HttpPost]
+        [AllowAnonymous]
         public ActionResult FindCar(int? duration, DateTime? startDate)
         {
             if (startDate == null)
@@ -63,13 +63,13 @@ namespace Goodhue.Controllers
                     }
                 }
             }
-            setNextReservations(availableCars);
+            setNextReservations();
             return View("FindCar", availableCars.OrderBy(c => c.ID));
         }
 
-        private void setNextReservations(List<Car> cars)
+        private void setNextReservations()
         {
-            foreach (Car car in cars)
+            foreach (Car car in db.Cars)
             {
                 //list of active reservations for each car
                 List<Reservation> reservations = reservationDb.Reservations.Where(r => (r.CarId == car.ID) && r.IsActive).ToList();
