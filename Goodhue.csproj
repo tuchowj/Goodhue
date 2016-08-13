@@ -194,10 +194,7 @@
   <ItemGroup>
     <Content Include=".gitattributes" />
     <Content Include=".gitignore" />
-    <Content Include="Content\bootstrap-material-datetimepicker-gh-pages\.gitignore" />
     <Content Include="Content\bootstrap-material-datetimepicker.css" />
-    <Content Include="Content\bootstrap-material-datetimepicker-gh-pages\font\Material-Design-Icons.svg" />
-    <Content Include="Content\bootstrap-material-datetimepicker-gh-pages\index.html" />
     <Content Include="Scripts\bootstrap-material-datetimepicker.js" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap.css" />
@@ -251,14 +248,6 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="packages.config" />
-    <Content Include="Content\bootstrap-material-datetimepicker-gh-pages\bower.json" />
-    <Content Include="Content\bootstrap-material-datetimepicker-gh-pages\font\Material-Design-Icons.eot" />
-    <Content Include="Content\bootstrap-material-datetimepicker-gh-pages\font\Material-Design-Icons.ttf" />
-    <Content Include="Content\bootstrap-material-datetimepicker-gh-pages\font\Material-Design-Icons.woff" />
-    <Content Include="Content\bootstrap-material-datetimepicker-gh-pages\font\Material-Design-Icons.woff2" />
-    <Content Include="Content\bootstrap-material-datetimepicker-gh-pages\LICENSE.md" />
-    <Content Include="Content\bootstrap-material-datetimepicker-gh-pages\package.json" />
-    <Content Include="Content\bootstrap-material-datetimepicker-gh-pages\README.md" />
     <None Include="Properties\PublishProfiles\CarShare.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\datetimepickers.js" />
@@ -362,8 +351,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\bootstrap-material-datetimepicker-gh-pages\css\" />
-    <Folder Include="Content\bootstrap-material-datetimepicker-gh-pages\js\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
