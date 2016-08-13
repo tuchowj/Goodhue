@@ -97,26 +97,15 @@ namespace Goodhue.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(int? id, [Bind(Include = "ID,StartDate,EndDate,Destination,Department,Miles,TankFilled,CarID,IsActive")] Reservation reservation, TimeSpan? startHour, TimeSpan? endHour, string grant)
+        public ActionResult Create(int? id, [Bind(Include = "ID,StartDate,EndDate,Destination,Department,Miles,TankFilled,CarID,IsActive")] Reservation reservation, string grant)
         {
             Car car = carDb.Cars.Find(id);
             ViewBag.Car = car;
             if (ModelState.IsValid)
             {
-                if (!startHour.HasValue)
-                {
-                    startHour = TimeSpan.Zero;
-                }
-                if (!endHour.HasValue)
-                {
-                    endHour = TimeSpan.Zero;
-                    reservation.EndDate = reservation.EndDate.AddHours(23).AddMinutes(59);
-                }
-                reservation.StartDate = reservation.StartDate.Add((TimeSpan) startHour);
-                reservation.EndDate = reservation.EndDate.Add((TimeSpan) endHour);
                 if (reservation.StartDate > reservation.EndDate)
                 {
-                    ViewBag.Message = "Checkout time must be before Return time";
+                    ViewBag.Message = "Return Time must come after Checkout Time";
                     return View(reservation);
                 }
                 else if (reservation.EndDate < DateTime.Today)

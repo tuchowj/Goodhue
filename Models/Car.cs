@@ -20,7 +20,7 @@ namespace Goodhue.Models
         [Display(Name = "Miles to Oil Change")]
         public int OilChangeMiles { get; set; }
         [Display(Name = "Next Reservation")]
-        [DataType(DataType.Date)]
+        //[DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:g}", ApplyFormatInEditMode = true)]
         public DateTime? NextReservation { get; set; }
         [Display(Name = "Next Reserved By")]

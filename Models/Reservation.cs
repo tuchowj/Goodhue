@@ -13,12 +13,12 @@ namespace Goodhue.Models
         public string Username { get; set; }
 
         [Display(Name = "Checkout Time")]
-        [DataType(DataType.Date)]
+        //[DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:g}", ApplyFormatInEditMode = true)]
         public DateTime StartDate { get; set; }
         
         [Display(Name = "Return Time")]
-        [DataType(DataType.Date)]
+        //[DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:g}", ApplyFormatInEditMode = true)]
         public DateTime EndDate { get; set; }
 
