@@ -29,12 +29,12 @@
                 @Html.DisplayNameFor(model => model.OilChangeMiles)
             </th>
         }
-        <th>
+        @*<th>
             @Html.DisplayNameFor(model => model.NextReservation)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.NextUser)
-        </th>
+        </th>*@
         <th></th>
     </tr>
 
@@ -64,24 +64,14 @@
                         @Html.DisplayFor(modelItem => item.OilChangeMiles)
                     </td>
                 }
-                <td>
+                @*<td>
                     @Html.DisplayFor(modelItem => item.NextReservation)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.NextUser)
-                </td>
+                </td>*@
                 <td>
                     @Html.ActionLink("Select", "Create", "Reservations", new { id = item.ID }, new { @class = "btn btn-primary btn-sm" })
-                    
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <span>|</span>
-                        @Html.ActionLink("Edit", "Edit", "Cars", new { id = item.ID }, null)
-                        <span>|</span>
-                        @Html.ActionLink("Delete", "Delete", "Cars", new { id = item.ID }, null)
-                        <span>|</span>
-                        @Html.ActionLink("Comments", "Comments", "Cars", new { id = item.ID }, null)
-                    }
                 </td>
             </tr>
         }
