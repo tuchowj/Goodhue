@@ -195,10 +195,10 @@
     <Content Include=".gitattributes" />
     <Content Include=".gitignore" />
     <Content Include="Content\bootstrap-material-datetimepicker-gh-pages\.gitignore" />
-    <Content Include="Content\bootstrap-material-datetimepicker-gh-pages\css\bootstrap-material-datetimepicker.css" />
+    <Content Include="Content\bootstrap-material-datetimepicker.css" />
     <Content Include="Content\bootstrap-material-datetimepicker-gh-pages\font\Material-Design-Icons.svg" />
     <Content Include="Content\bootstrap-material-datetimepicker-gh-pages\index.html" />
-    <Content Include="Content\bootstrap-material-datetimepicker-gh-pages\js\bootstrap-material-datetimepicker.js" />
+    <Content Include="Scripts\bootstrap-material-datetimepicker.js" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
@@ -261,6 +261,7 @@
     <Content Include="Content\bootstrap-material-datetimepicker-gh-pages\README.md" />
     <None Include="Properties\PublishProfiles\CarShare.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\datetimepickers.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery-1.12.4.intellisense.js" />
@@ -361,6 +362,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\bootstrap-material-datetimepicker-gh-pages\css\" />
+    <Folder Include="Content\bootstrap-material-datetimepicker-gh-pages\js\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

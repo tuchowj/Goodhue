@@ -93,10 +93,7 @@
     @Html.ActionLink("Back to Schedule", "Schedule", new { id = ViewBag.Car.ID })
 </div>
 
-<script>
-    $('#checkoutTime').bootstrapMaterialDatePicker({ format: 'MM/DD/YYYY hh:mm A', shortTime: true, currentDate: moment({ hour: 7 }) });
-    $('#returnTime').bootstrapMaterialDatePicker({ format: 'MM/DD/YYYY hh:mm A', shortTime: true, currentDate: moment({ hour: 17 }) });
-</script>
+@Scripts.Render("~/Scripts/datetimepickers.js")
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

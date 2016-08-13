@@ -9,6 +9,15 @@ using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Web.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using Goodhue.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Goodhue.Controllers;
 
 namespace Goodhue.Controllers
 {
@@ -217,14 +226,16 @@ namespace Goodhue.Controllers
                 client.UseDefaultCredentials = false;
                 client.Host = "mail.goodhue.county";
                 mail.From = new MailAddress("carshare.donotreply@co.goodhue.mn.us");
-                //ApplicationDbContext appDb = new ApplicationDbContext();
-                //var account = new AccountController();
-                //foreach (ApplicationUser user in appDb.Users)
-                //{
-                //    var roles = account.UserManager.GetRoles(user.Id);
-                //    if ("Admin" in roles) {}
-                //}
-                mail.To.Add("jonahg@redwingignite.org");
+                ApplicationDbContext appDb = new ApplicationDbContext();
+                var account = new AccountController();
+                foreach (ApplicationUser user in appDb.Users)
+                {
+                    if (account.UserManager.GetRoles(user.Id).Contains("Admin"))
+                    {
+                        mail.To.Add(user.Email); //user is an admin
+                    }
+                }
+                
                 mail.Subject = "Car Pool Comment";
                 mail.Body = User.Identity.Name + ": " + comment;
                 client.Send(mail);
