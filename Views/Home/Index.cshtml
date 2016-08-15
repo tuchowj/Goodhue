@@ -29,15 +29,13 @@
                 <option value="168">1 Week</option>
             </select>
             <label>Starting on</label>
-            <input class="form-control text-box single-line date" data-val="true" id="StartDate" name="StartDate" type="text" value="" placeholder="mm/dd/yyyy" />
+            <input class="form-control text-box single-line date" data-val="true" id="startDate" name="startDate" type="text" placeholder="mm/dd/yyyy" />
         }
     </div>
     <div class="col-md-4" align="center">
         @using (Html.BeginForm("ReturnNext", "Home", FormMethod.Get, null))
         {
             <input class="btn-lg btn-primary" type="submit" value="Return (My Next)" /><br /><br />
-            @*<label>Car ID</label>
-            <input class="form-control text-box single-line" data-val="true" id="CarID" name="CarID" type="number" min="0" />*@
         }
         <p class="text-danger field-validation-error">@ViewBag.UnreturnedRes</p>
     </div>
@@ -45,8 +43,6 @@
         @using (Html.BeginForm("Index", "Cars", FormMethod.Get, null))
         {
             <input class="btn-lg btn-primary" type="submit" value="View Reservations" /><br /><br />
-            @*<label>Car ID</label>
-            <input class="form-control text-box single-line" data-val="true" id="CarID" name="CarID" type="number" min="0" />*@
         }
     </div>
     <div class="col-md-1"></div>

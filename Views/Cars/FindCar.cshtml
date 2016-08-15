@@ -71,7 +71,7 @@
                     @Html.DisplayFor(modelItem => item.NextUser)
                 </td>*@
                 <td>
-                    @Html.ActionLink("Select", "Create", "Reservations", new { id = item.ID }, new { @class = "btn btn-primary btn-sm" })
+                    @Html.ActionLink("Select", "Create", "Reservations", new { id = item.ID, start = ViewBag.Start, end = ViewBag.End  }, new { @class = "btn btn-primary btn-sm" })
                 </td>
             </tr>
         }

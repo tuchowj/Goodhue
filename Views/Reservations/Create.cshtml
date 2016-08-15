@@ -15,34 +15,20 @@
         <div class="form-group">
             @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", id="checkoutTime", type="text", placeholder = "mm/dd/yyyy --:-- --" } })
+                @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", id = "checkoutTime", type = "text", value = ViewBag.Start, placeholder = "mm/dd/yyyy --:-- --" } })
                 @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
             </div>
             <span class="col-md-offset-2 col-md-5 text-danger field-validation-error">@ViewBag.Message</span>
         </div>
 
-        @*<div class="form-group">
-            <label class="control-label col-md-2">Checkout Hour</label>
-            <div class="col-md-10">
-                <input class="form-control text-box single-line timepicker" data-val="true" id="startHour" name="timepicker" type="text">
-            </div>
-        </div>*@
-
         <div class="form-group">
             @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", id="returnTime", type="text", placeholder = "mm/dd/yyyy --:-- --" } })
+                @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", id = "returnTime", type = "text", value = ViewBag.End, placeholder = "mm/dd/yyyy --:-- --" } })
                 @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
             </div>
             <span class="col-md-offset-2 col-md-5 text-danger field-validation-error">@ViewBag.Message</span>
         </div>
-
-        @*<div class="form-group">
-            <label class="control-label col-md-2">Return Hour</label>
-            <div class="col-md-10">
-                <input class="form-control text-box single-line timepicker" data-val="true" id="endHour" name="timepicker" type="text">
-            </div>
-        </div>*@
 
         <div class="form-group">
             @Html.LabelFor(model => model.Destination, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -93,6 +79,12 @@
     @Html.ActionLink("Back to Schedule", "Schedule", new { id = ViewBag.Car.ID })
 </div>
 
+@*<script>
+    var start = new moment(@ViewBag.Start, "MM/DD/YYYY hh:mm:ss A");
+    var end = new moment(@ViewBag.End, "MM/DD/YYYY hh:mm:ss A");
+    $('#checkoutTime').bootstrapMaterialDatePicker({ format: 'MM/DD/YYYY hh:mm A', shortTime: true, currentDate: start });
+    $('#returnTime').bootstrapMaterialDatePicker({ format: 'MM/DD/YYYY hh:mm A', shortTime: true, currentDate: end });
+</script>*@
 @Scripts.Render("~/Scripts/datetimepickers.js")
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

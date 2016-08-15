@@ -33,10 +33,13 @@ namespace Goodhue.Controllers
         {
             if (startDate == null)
             {
+                DateTime today = DateTime.Today;
+                ViewBag.Start = today.AddHours(8);
+                ViewBag.End = today.AddHours(17);
                 return View("FindCar", db.Cars.ToList().OrderBy(c => c.ID));
             }
-            TimeSpan startTime = TimeSpan.Zero;
 
+            TimeSpan startTime = TimeSpan.Zero;
             if (duration == -12)
             {
                 startTime = new TimeSpan(12, 0, 0);
@@ -63,7 +66,10 @@ namespace Goodhue.Controllers
                     }
                 }
             }
-            setNextReservations();
+            DateTime start = (DateTime)startDate;
+            DateTime end = start.AddDays(Math.Floor((double)dur / 24));
+            ViewBag.Start = start.AddHours(8);
+            ViewBag.End = end.AddHours(17);
             return View("FindCar", availableCars.OrderBy(c => c.ID));
         }
 

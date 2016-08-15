@@ -16,7 +16,7 @@ namespace Goodhue.Controllers
     [Authorize]
     public class ReservationsController : Controller
     {
-        private static int oldOdometer;
+        private int oldOdometer;
         private ReservationDBContext db = new ReservationDBContext();
         private CarDBContext carDb = new CarDBContext();
         private CommentDBContext commentDb = new CommentDBContext();
@@ -46,25 +46,13 @@ namespace Goodhue.Controllers
             return View(db.Reservations.Where(r => r.IsActive && (r.CarId == car.ID)).OrderBy(r=>r.StartDate));
         }
 
-        private Reservation getNextRes(Car car)
-        {
-            List<Reservation> reservations = db.Reservations.Where(r => (r.CarId == car.ID) && r.IsActive).ToList();
-            if (reservations.Any())
-            {
-                //note: this operation's runtime can most likely be improved if necessary
-                return reservations.OrderBy(r => r.StartDate).First();
-            }
-            else { return null; }
-        }
-
         // GET: Reservations/Create/2
-        public ActionResult Create(int? id)
+        public ActionResult Create(int? id, DateTime? start, DateTime? end)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            //checkoutCarId = (int)id;
             Car car = carDb.Cars.Find(id);
             if (car == null)
             {
@@ -72,6 +60,8 @@ namespace Goodhue.Controllers
             }
             ViewBag.Car = car;
             ViewBag.HasScheduleConflict = false;
+            ViewBag.Start = start.ToString();
+            ViewBag.End = end.ToString();
             return View();
         }
 
@@ -228,7 +218,6 @@ namespace Goodhue.Controllers
                         mail.To.Add(user.Email); //user is an admin
                     }
                 }
-                
                 mail.Subject = "Car Pool Comment";
                 mail.Body = User.Identity.Name + ": " + comment;
                 client.Send(mail);
@@ -349,6 +338,17 @@ namespace Goodhue.Controllers
             }
             Response.Write(sw.ToString());
             Response.End();
+        }
+
+        private Reservation getNextRes(Car car)
+        {
+            List<Reservation> reservations = db.Reservations.Where(r => (r.CarId == car.ID) && r.IsActive).ToList();
+            if (reservations.Any())
+            {
+                //note: this operation's runtime can most likely be improved if necessary
+                return reservations.OrderBy(r => r.StartDate).First();
+            }
+            else { return null; }
         }
 
         protected override void Dispose(bool disposing)
