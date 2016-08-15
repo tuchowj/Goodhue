@@ -43,8 +43,6 @@ namespace Goodhue.Controllers
             }
             ViewBag.NextRes = getNextRes(car);
             ViewBag.Car = car;
-
-            
             return View(db.Reservations.Where(r => r.IsActive && (r.CarId == car.ID)).OrderBy(r=>r.StartDate));
         }
 
@@ -57,22 +55,6 @@ namespace Goodhue.Controllers
                 return reservations.OrderBy(r => r.StartDate).First();
             }
             else { return null; }
-        }
-
-        // GET: Reservations/Details/5
-        [AllowAnonymous]
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Reservation reservation = db.Reservations.Find(id);
-            if (reservation == null)
-            {
-                return HttpNotFound();
-            }
-            return View(reservation);
         }
 
         // GET: Reservations/Create/2
@@ -141,6 +123,25 @@ namespace Goodhue.Controllers
                 }
                 db.Reservations.Add(reservation);
                 db.SaveChanges();
+
+                //send confirmation email
+                MailMessage mail = new MailMessage();
+                SmtpClient client = new SmtpClient();
+                client.Port = 25;
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.UseDefaultCredentials = false;
+                client.Host = "mail.goodhue.county";
+                mail.From = new MailAddress("carshare.donotreply@co.goodhue.mn.us");
+                mail.To.Add(User.Identity.Name);
+
+                mail.Subject = "Car Pool Comment";
+                mail.Body = "You have successfully checked out the car \"" + car.Description +
+                    " (" + car.ID + ") starting on " + reservation.StartDate + ". Please " +
+                    "remember to keep track of the odometer when you are done.<br/><br/>" + 
+                    "<b>You are expected to return this car by " + reservation.EndDate + ".</b>";
+                mail.IsBodyHtml = true;
+                client.Send(mail);
+
                 return RedirectToAction("Schedule", new { id = car.ID });
             }
             ViewBag.Car = car;

@@ -12,13 +12,11 @@ namespace Goodhue.Models
         public int ID { get; set; }
         public string Username { get; set; }
 
-        [Display(Name = "Checkout Time")]
-        //[DataType(DataType.Date)]
+        [Display(Name = "Checkout Date & Time")]
         [DisplayFormat(DataFormatString = "{0:g}", ApplyFormatInEditMode = true)]
         public DateTime StartDate { get; set; }
-        
-        [Display(Name = "Return Time")]
-        //[DataType(DataType.Date)]
+
+        [Display(Name = "Return Date & Time")]
         [DisplayFormat(DataFormatString = "{0:g}", ApplyFormatInEditMode = true)]
         public DateTime EndDate { get; set; }
 
@@ -32,6 +30,7 @@ namespace Goodhue.Models
 
         public bool TankFilled { get; set; }
 
+        [Display(Name = "Car ID")]
         public int CarId { get; set; }
 
         public bool IsActive { get; set; }
