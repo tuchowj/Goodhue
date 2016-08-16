@@ -43,6 +43,7 @@ namespace Goodhue.Controllers
             }
             ViewBag.NextRes = getNextRes(car);
             ViewBag.Car = car;
+            ViewBag.Error = TempData["Error"];
             return View(db.Reservations.Where(r => r.IsActive && (r.CarId == car.ID)).OrderBy(r=>r.StartDate));
         }
 
@@ -78,16 +79,6 @@ namespace Goodhue.Controllers
             {
                 reservation.StartDate = start;
                 reservation.EndDate = end;
-                //if (reservation.StartDate > reservation.EndDate)
-                //{
-                //    ViewBag.Message = "Return Time must come after Checkout Time";
-                //    return View(reservation);
-                //}
-                //else if (reservation.EndDate < DateTime.Today)
-                //{
-                //    ViewBag.Message = "Cannot checkout car before today";
-                //    return View(reservation);
-                //}
                 List<Reservation> reservations = db.Reservations.Where(r => r.CarId == car.ID).Where(r => r.IsActive).ToList();
                 foreach (Reservation res in reservations)
                 {
@@ -128,7 +119,7 @@ namespace Goodhue.Controllers
 
                 mail.Subject = "Car Pool Comment";
                 mail.Body = "You have successfully checked out the car \"" + car.Description +
-                    " (" + car.ID + ") starting on " + reservation.StartDate + ". Please " +
+                    " (" + car.ID + ")\" starting on " + reservation.StartDate + ". Please " +
                     "remember to keep track of the odometer when you are done.<br/><br/>" + 
                     "<b>You are expected to return this car by " + reservation.EndDate + ".</b>";
                 mail.IsBodyHtml = true;
@@ -340,6 +331,35 @@ namespace Goodhue.Controllers
             }
             Response.Write(sw.ToString());
             Response.End();
+        }
+
+        public ActionResult AddRes(int? carId, DateTime startDate, DateTime endDate)
+        {
+            if (endDate < startDate)
+            {
+                TempData["Error"] = "Return time must be after checkout time";
+                return RedirectToAction("Schedule", new { id = carId });
+            }
+
+            if (startDate < DateTime.Today)
+            {
+                TempData["Error"] = "Cannot reserve car before today";
+                return RedirectToAction("Schedule", new { id = carId });
+            }
+
+            List<Reservation> reservations = db.Reservations.Where(r => r.IsActive && r.CarId == carId).ToList();
+            foreach (Reservation res in reservations)
+            {
+                if ((startDate >= res.StartDate && startDate < res.EndDate) ||
+                    (endDate > res.StartDate && endDate <= res.EndDate) ||
+                    (startDate <= res.StartDate && endDate >= res.EndDate))
+                {
+                    TempData["Error"] = "Conflicts with reservation starting on " + 
+                        res.StartDate + " and ending on " + res.EndDate;
+                    return RedirectToAction("Schedule", new { id = carId });
+                }
+            }
+            return RedirectToAction("Create", new { id = carId, start = startDate, end = endDate });
         }
 
         private Reservation getNextRes(Car car)

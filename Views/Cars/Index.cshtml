@@ -4,15 +4,14 @@
 @{
     ViewBag.Title = "View Reservations";
 }
-<h2 class="col-md-10">View All Reservations for a Car</h2>
-<h2 class="col-md-2"> @Html.ActionLink("View My Reservations", "MyReservations", "Reservations", null, new { @class = "btn btn-primary" })
-</h2>
 
-
-
+<div class="row">
+    <h2 class="col-md-10">View All Reservations for a Car</h2>
+    <h2 class="col-md-2">@Html.ActionLink("View My Reservations", "MyReservations", "Reservations", null, new { @class = "btn btn-primary" })</h2>
+</div>
 @if (User.IsInRole("Admin"))
 {
-    <p>
+    <p class="col-md-2">
         @Html.ActionLink("Add New Car", "Create")
     </p>
 }
@@ -89,6 +88,9 @@
                         @Html.ActionLink("Edit", "Edit", "Cars", new { id = item.ID }, null)
                         <span>|</span>
                         @Html.ActionLink("Delete", "Delete", "Cars", new { id = item.ID }, null)
+                    }
+                    @if (User.IsInRole("Admin") || User.IsInRole("Maintenance"))
+                    {
                         <span>|</span>
                         @Html.ActionLink("Comments", "Comments", "Cars", new { id = item.ID }, null)
                     }

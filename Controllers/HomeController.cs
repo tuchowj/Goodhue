@@ -63,7 +63,7 @@ namespace Goodhue.Controllers
         {
             if (endDate < startDate)
             {
-                ViewBag.Error = "Return time be after checkout time";
+                ViewBag.Error = "Return time must be after checkout time";
                 return View("Index");
             }
 
@@ -74,18 +74,15 @@ namespace Goodhue.Controllers
             }
 
             List<Car> availableCars = carDb.Cars.Where(c => c.IsAvailable).ToList();
-            List<Reservation> reservations = reservationDb.Reservations.ToList();
+            List<Reservation> reservations = reservationDb.Reservations.Where(r => r.IsActive).ToList();
             foreach (Reservation res in reservations)
             {
-                if (res.IsActive)
+                if ((startDate >= res.StartDate && startDate < res.EndDate) ||
+                    (endDate > res.StartDate && endDate <= res.EndDate) ||
+                    (startDate <= res.StartDate && endDate >= res.EndDate))
                 {
-                    if ((startDate >= res.StartDate && startDate < res.EndDate) ||
-                        (endDate > res.StartDate && endDate <= res.EndDate) ||
-                        (startDate <= res.StartDate && endDate >= res.EndDate))
-                    {
-                        Car badCar = carDb.Cars.Find(res.CarId);
-                        availableCars.Remove(badCar);
-                    }
+                    Car badCar = carDb.Cars.Find(res.CarId);
+                    availableCars.Remove(badCar);
                 }
             }
             if (!availableCars.Any())

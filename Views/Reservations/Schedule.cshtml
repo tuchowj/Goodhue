@@ -4,8 +4,7 @@
     ViewBag.Title = "Reservations";
 }
 <div class="row">
-    <h2 class="col-sm-10">Reservations for: @ViewBag.Car.Description (@ViewBag.Car.ID)</h2>
-    <h2 class="col-sm-2">@Html.ActionLink("Add New Reservation", "Create", "Reservations", new { id = ViewBag.Car.ID }, new { @class = "btn btn-primary"})</h2>
+    <h2 class="col-md-10">Reservations for: @ViewBag.Car.Description (@ViewBag.Car.ID)</h2>
 </div>
 <table class="table sortable">
     <tr>
@@ -59,4 +58,25 @@
     }
 </table>
 <hr />
-@Html.ActionLink("Choose a Different Car", "Index", "Cars")
+
+<div class="col-md-6"><br />@Html.ActionLink("Choose a Different Car", "Index", "Cars", null, new { @class = "btn btn-primary" })</div>
+@using (Html.BeginForm("AddRes", "Reservations", FormMethod.Get, null))
+{    
+    <input id="carId" name="carId" type="hidden" value=@ViewBag.Car.ID />
+    <div class="col-md-2">
+        <label>Checkout Date &amp; Time</label>
+        <input class="form-control text-box single-line" data-val="true" id="startDate" name="startDate" type="text" placeholder="mm/dd/yyyy --:-- --" />
+    </div>
+    <div class="col-md-2">
+        <label>Return Date &amp; Time</label>
+        <input class="form-control text-box single-line" data-val="true" id="endDate" name="endDate" type="text" placeholder="mm/dd/yyyy --:-- --" />
+    </div>
+    <div class="col-md-2">
+        <br />
+        <input class="btn btn-primary" type="submit" value="Add New Reservation" />
+        <br />
+        <p class="text-danger field-validation-error">@ViewBag.Error</p>
+    </div>
+}
+
+@Scripts.Render("~/Scripts/datetimepickers.js")
