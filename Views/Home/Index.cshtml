@@ -16,20 +16,14 @@
 <div class="row">
     <div class="col-md-1"></div>
     <div class="col-md-3">
-        @using (Html.BeginForm("FindCar", "Cars", FormMethod.Post, null))
+        @using (Html.BeginForm("FindCar", "Home", FormMethod.Get, null))
         {
             <input class="btn-lg btn-primary" type="submit" value="Reserve a Car" /><br /><br />
-            <label>Available For</label>
-            <select class="form-control" id="duration" name="duration" type="number">
-                <option value="24">Full Day</option>
-                <option value="12">Morning</option>
-                <option value="-12">Afternoon</option>
-                <option value="48">2 Days</option>
-                <option value="72">3 Days</option>
-                <option value="168">1 Week</option>
-            </select>
-            <label>Starting on</label>
-            <input class="form-control text-box single-line date" data-val="true" id="startDate" name="startDate" type="text" placeholder="mm/dd/yyyy" />
+            <label>Checkout Date &amp; Time</label>
+            <input class="form-control text-box single-line" data-val="true" id="startDate" name="startDate" type="text" placeholder="mm/dd/yyyy --:-- --" />
+            <label>Return Date &amp; Time</label>
+            <input class="form-control text-box single-line" data-val="true" id="endDate" name="endDate" type="text" placeholder="mm/dd/yyyy --:-- --" />
+            <p class="text-danger field-validation-error">@ViewBag.Error</p>
         }
     </div>
     <div class="col-md-4" align="center">

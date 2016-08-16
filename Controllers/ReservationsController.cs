@@ -16,7 +16,7 @@ namespace Goodhue.Controllers
     [Authorize]
     public class ReservationsController : Controller
     {
-        private int oldOdometer;
+        private static int oldOdometer;
         private ReservationDBContext db = new ReservationDBContext();
         private CarDBContext carDb = new CarDBContext();
         private CommentDBContext commentDb = new CommentDBContext();
@@ -47,7 +47,7 @@ namespace Goodhue.Controllers
         }
 
         // GET: Reservations/Create/2
-        public ActionResult Create(int? id, DateTime? start, DateTime? end)
+        public ActionResult Create(int? id, DateTime start, DateTime end)
         {
             if (id == null)
             {
@@ -60,8 +60,8 @@ namespace Goodhue.Controllers
             }
             ViewBag.Car = car;
             ViewBag.HasScheduleConflict = false;
-            ViewBag.Start = start.ToString();
-            ViewBag.End = end.ToString();
+            ViewBag.Start = start;
+            ViewBag.End = end;
             return View();
         }
 
@@ -70,22 +70,24 @@ namespace Goodhue.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(int? id, [Bind(Include = "ID,StartDate,EndDate,Destination,Department,Miles,TankFilled,CarID,IsActive")] Reservation reservation, string grant)
+        public ActionResult Create(int? id, DateTime start, DateTime end, [Bind(Include = "ID,StartDate,EndDate,Destination,Department,Miles,TankFilled,CarID,IsActive")] Reservation reservation, string grant)
         {
             Car car = carDb.Cars.Find(id);
             ViewBag.Car = car;
             if (ModelState.IsValid)
             {
-                if (reservation.StartDate > reservation.EndDate)
-                {
-                    ViewBag.Message = "Return Time must come after Checkout Time";
-                    return View(reservation);
-                }
-                else if (reservation.EndDate < DateTime.Today)
-                {
-                    ViewBag.Message = "Cannot checkout car before today";
-                    return View(reservation);
-                }
+                reservation.StartDate = start;
+                reservation.EndDate = end;
+                //if (reservation.StartDate > reservation.EndDate)
+                //{
+                //    ViewBag.Message = "Return Time must come after Checkout Time";
+                //    return View(reservation);
+                //}
+                //else if (reservation.EndDate < DateTime.Today)
+                //{
+                //    ViewBag.Message = "Cannot checkout car before today";
+                //    return View(reservation);
+                //}
                 List<Reservation> reservations = db.Reservations.Where(r => r.CarId == car.ID).Where(r => r.IsActive).ToList();
                 foreach (Reservation res in reservations)
                 {

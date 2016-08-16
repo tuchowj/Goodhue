@@ -57,5 +57,45 @@ namespace Goodhue.Controllers
                 return View("Index");
             }
         }
+
+        // GET: Cars/FindCar
+        public ActionResult FindCar(DateTime startDate, DateTime endDate)
+        {
+            if (endDate < startDate)
+            {
+                ViewBag.Error = "Return time be after checkout time";
+                return View("Index");
+            }
+
+            if (startDate < DateTime.Today)
+            {
+                ViewBag.Error = "Cannot reserve car before today";
+                return View("Index");
+            }
+
+            List<Car> availableCars = carDb.Cars.Where(c => c.IsAvailable).ToList();
+            List<Reservation> reservations = reservationDb.Reservations.ToList();
+            foreach (Reservation res in reservations)
+            {
+                if (res.IsActive)
+                {
+                    if ((startDate >= res.StartDate && startDate < res.EndDate) ||
+                        (endDate > res.StartDate && endDate <= res.EndDate) ||
+                        (startDate <= res.StartDate && endDate >= res.EndDate))
+                    {
+                        Car badCar = carDb.Cars.Find(res.CarId);
+                        availableCars.Remove(badCar);
+                    }
+                }
+            }
+            if (!availableCars.Any())
+            {
+                ViewBag.Error = "No cars available at that time";
+                return View("Index");
+            }
+            ViewBag.Start = startDate;
+            ViewBag.End = endDate;
+            return View("FindCar", availableCars.OrderBy(c => c.ID));
+        }
     }
 }

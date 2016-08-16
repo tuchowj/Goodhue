@@ -1,3 +1,2 @@
-﻿$(".date").bootstrapMaterialDatePicker({ format: 'MM/DD/YYYY', time: false, clearButton: true });
-$('#checkoutTime').bootstrapMaterialDatePicker({ format: 'MM/DD/YYYY hh:mm A', shortTime: true});
-$('#returnTime').bootstrapMaterialDatePicker({ format: 'MM/DD/YYYY hh:mm A', shortTime: true});
+﻿$('#startDate').bootstrapMaterialDatePicker({ format: 'MM/DD/YYYY hh:mm A', shortTime: true, currentDate: moment({hour:8})});
+$('#endDate').bootstrapMaterialDatePicker({ format: 'MM/DD/YYYY hh:mm A', shortTime: true, currentDate: moment({hour:17})});
