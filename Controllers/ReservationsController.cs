@@ -120,8 +120,9 @@ namespace Goodhue.Controllers
                 mail.Body = "You have successfully reserved car \"" + car.Description +
                     " (" + car.ID + ")\" starting on " + reservation.StartDate + "<br/><br/>" +
                     "<b>You are expected to return this car by " + reservation.EndDate +
-                    ". You need to enter the odometer reading on the \"Return Your Car\" " +
-                    "screen. Other users cannot return the car until you do.</b>";
+                    ". When you're done with the car, you need to enter the odometer" +
+                    "reading on the \"Return Your Car\" screen. Other users cannot return" +
+                    "the car until you do.</b>";
                 mail.IsBodyHtml = true;
                 client.Send(mail);
 
