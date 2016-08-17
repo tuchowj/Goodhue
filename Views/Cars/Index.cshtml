@@ -6,7 +6,8 @@
 }
 
 <div class="row">
-    <h2 class="col-md-10">View All Reservations for a Car</h2>
+    <h2 class="col-md-8">View All Reservations for a Car</h2>
+    <h2 class="col-md-2">@Html.ActionLink("View Reservations by Day", "Day", "Reservations", null, new { @class = "btn btn-primary" })</h2>
     <h2 class="col-md-2">@Html.ActionLink("View My Reservations", "MyReservations", "Reservations", null, new { @class = "btn btn-primary" })</h2>
 </div>
 @if (User.IsInRole("Admin"))

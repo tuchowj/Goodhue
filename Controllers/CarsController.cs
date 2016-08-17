@@ -162,6 +162,7 @@ namespace Goodhue.Controllers
         }
 
         // GET: Cars/Comments/5
+        [Authorize(Roles="Admin,Maintenance")]
         public ActionResult Comments(int? id)
         {
             if (id == null)
@@ -178,6 +179,7 @@ namespace Goodhue.Controllers
         }
 
         // GET: Cars/DeleteComment/5
+        [Authorize(Roles = "Admin,Maintenance")]
         public ActionResult DeleteComments(int? id)
         {
             if (id == null)
@@ -195,6 +197,7 @@ namespace Goodhue.Controllers
         // POST: Cars/DeleteComments/5
         [HttpPost, ActionName("DeleteComments")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Maintenance")]
         public ActionResult DeleteCommentsConfirmed(int id)
         {
             IEnumerable<Comment> comments = commentDb.Comments.Where(c => c.CarId == id);

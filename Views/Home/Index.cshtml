@@ -29,7 +29,7 @@
     <div class="col-md-4" align="center">
         @using (Html.BeginForm("ReturnNext", "Home", FormMethod.Get, null))
         {
-            <input class="btn-lg btn-primary" type="submit" value="Return (My Next)" /><br /><br />
+            <input class="btn-lg btn-primary" type="submit" value="Return a Car" /><br /><br />
         }
         <p class="text-danger field-validation-error">@ViewBag.UnreturnedRes</p>
     </div>
@@ -42,4 +42,9 @@
     <div class="col-md-1"></div>
 </div>
 
+<script>
+    $("#startDate").change(function () {
+        @ViewBag.Error = "";
+    });
+</script>
 @Scripts.Render("~/Scripts/datetimepickers.js")

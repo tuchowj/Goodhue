@@ -4,8 +4,21 @@
     ViewBag.Title = "Day";
 }
 
-<h2>Reservations on: @ViewBag.Day</h2>
-
+<div class="row">
+    <div class="col-md-8">
+        <h2>Reservations on: @ViewBag.Day</h2>
+    </div>
+    @using (Html.BeginForm("Day", "Reservations", FormMethod.Post, null))
+    {
+        @Html.AntiForgeryToken()
+        <h2 class="col-md-2">
+            <input class="form-control text-box single-line" data-val="true" id="date" name="date" type="text" placeholder="mm/dd/yyyy" />
+        </h2>
+        <h2 class="col-md-2">
+            <input class="btn btn-primary" type="submit" value="Set Date" />
+        </h2>
+    }
+</div>
 <table class="table sortable">
     <tr>
         <th>
@@ -51,9 +64,16 @@
                 @Html.DisplayFor(modelItem => item.Department)
             </td>
             <td>
-                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                @if (User.Identity.Name == item.Username || User.IsInRole("Admin") || (User.IsInRole("Maintenance") && item.Username == "Maintenance"))
+                {
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                }
             </td>
         </tr>
     }
-
 </table>
+
+<hr />
+@Html.ActionLink("View Reservations by Car", "Index", "Cars")
+
+@Scripts.Render("~/Scripts/datetimepickers.js")

@@ -116,12 +116,12 @@ namespace Goodhue.Controllers
                 client.Host = "mail.goodhue.county";
                 mail.From = new MailAddress("carshare.donotreply@co.goodhue.mn.us");
                 mail.To.Add(User.Identity.Name);
-
                 mail.Subject = "Car Pool Comment";
-                mail.Body = "You have successfully checked out the car \"" + car.Description +
-                    " (" + car.ID + ")\" starting on " + reservation.StartDate + ". Please " +
-                    "remember to keep track of the odometer when you are done.<br/><br/>" + 
-                    "<b>You are expected to return this car by " + reservation.EndDate + ".</b>";
+                mail.Body = "You have successfully reserved car \"" + car.Description +
+                    " (" + car.ID + ")\" starting on " + reservation.StartDate + "<br/><br/>" +
+                    "<b>You are expected to return this car by " + reservation.EndDate +
+                    ". You need to enter the odometer reading on the \"Return Your Car\" " +
+                    "screen. Other users cannot return the car until you do.</b>";
                 mail.IsBodyHtml = true;
                 client.Send(mail);
 
@@ -301,11 +301,39 @@ namespace Goodhue.Controllers
             return RedirectToAction("Index");
         }
 
+        // GET: Reservations/MyReservations
         public ActionResult MyReservations()
         {
             bool isMaintenance = User.IsInRole("Maintenance");
             return View(db.Reservations.Where(r => r.IsActive && (r.Username == User.Identity.Name ||
                 ((r.Username == "Maintenance") && isMaintenance))).OrderBy(r => r.EndDate).ToList());
+        }
+
+        // GET: Reservations/Day
+        [AllowAnonymous]
+        public ActionResult Day()
+        {
+            IEnumerable<Reservation> activeReservations = db.Reservations.Where(r => r.IsActive);
+            ViewBag.Day = DateTime.Today.ToShortDateString();
+            return View(activeReservations.Where(r => r.StartDate < DateTime.Today.AddDays(1) &&
+                r.EndDate > DateTime.Today).ToList());
+        }
+
+        // POST: Reservations/Day
+        [HttpPost, ActionName("Day")]
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        public ActionResult DayChanged(DateTime? date)
+        {
+            if (date == null)
+            {
+                date = DateTime.Today;
+            }
+            DateTime day = (DateTime)date;
+            IEnumerable<Reservation> activeReservations = db.Reservations.Where(r => r.IsActive);
+            ViewBag.Day = day.ToShortDateString();
+            return View(activeReservations.Where(r => r.StartDate < day.AddDays(1) &&
+                r.EndDate > day).ToList());
         }
 
         public void WriteCSV()

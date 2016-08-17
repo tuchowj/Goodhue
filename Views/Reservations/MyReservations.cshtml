@@ -4,7 +4,7 @@
     ViewBag.Title = "MyReservations";
 }
 
-<h2>Reservations For: @User.Identity.Name</h2>
+<h2>Reservations for: @User.Identity.Name</h2>
 
 <table class="table sortable">
     <tr>
@@ -54,5 +54,7 @@
         </td>
     </tr>
 }
-
 </table>
+
+<hr />
+@Html.ActionLink("View Reservations by Car", "Index", "Cars")
