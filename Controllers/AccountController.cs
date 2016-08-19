@@ -10,6 +10,8 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using Goodhue.Models;
 using System.Net.Mail;
+using Microsoft.Owin.Security.DataProtection;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace Goodhue.Controllers
 {
@@ -309,16 +311,26 @@ namespace Goodhue.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = UserManager.FindByName(model.Email);
-                if (user == null)
-                {
-                    // Don't reveal that the user does not exist or is not confirmed
-                    return View("ForgotPasswordConfirmation");
-                }
+                //var user = UserManager.FindByName(model.Email);
+                ////if (user == null)
+                ////{
+                ////    // Don't reveal that the user does not exist or is not confirmed
+                ////    return View("ForgotPasswordConfirmation");
+                ////}
+                //var provider = new DpapiDataProtectionProvider("Account");
+                //var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>());
+                //userManager.UserTokenProvider = new DataProtectorTokenProvider<ApplicationUser>(
+                //    provider.Create("EmailConfirmation"));
 
-                string code = UserManager.GeneratePasswordResetToken(user.Id);
+                //string code = UserManager.GeneratePasswordResetToken(user.Id);
+                //var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                ////await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+                var userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                var user = userManager.FindByName(model.Email);
+                string code = userManager.GeneratePasswordResetToken(user.Id);
                 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                //await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
                 MailMessage mail = new MailMessage();
                 SmtpClient client = new SmtpClient();
                 client.Port = 25;
@@ -326,15 +338,71 @@ namespace Goodhue.Controllers
                 client.UseDefaultCredentials = false;
                 client.Host = "mail.goodhue.county";
                 mail.From = new MailAddress("carshare.donotreply@co.goodhue.mn.us");
-                mail.To.Add("jonahg@redwingignite.org");
+                ApplicationDbContext appDb = new ApplicationDbContext();
+                var account = new AccountController();
+                mail.To.Add(user.Email);
                 mail.Subject = "Reset Password";
                 mail.Body = "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>";
-                client.Send(mail);
+                mail.IsBodyHtml = true;
+                client.Send(mail); 
                 return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
 
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+
+        //
+        // GET: /Account/ForgotPasswordConfirmation
+        [AllowAnonymous]
+        public ActionResult ForgotPasswordConfirmation()
+        {
+            return View();
+        }
+
+        //
+        // GET: /Account/ResetPassword
+        [AllowAnonymous]
+        public ActionResult ResetPassword(string code)
+        {
+            return code == null ? View("Error") : View();
+        }
+
+        //
+        // POST: /Account/ResetPassword
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            var user = userManager.FindByName(model.Email);
+            string code = userManager.GeneratePasswordResetToken(user.Id);
+            var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+            if (user == null)
+            {
+                // Don't reveal that the user does not exist
+                return RedirectToAction("ResetPasswordConfirmation", "Account");
+            }
+            var result = await userManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("ResetPasswordConfirmation", "Account");
+            }
+            AddErrors(result);
+            return View();
+        }
+
+        //
+        // GET: /Account/ResetPasswordConfirmation
+        [AllowAnonymous]
+        public ActionResult ResetPasswordConfirmation()
+        {
+            return View();
         }
 
         //
