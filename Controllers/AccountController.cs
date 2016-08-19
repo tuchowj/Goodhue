@@ -311,21 +311,6 @@ namespace Goodhue.Controllers
         {
             if (ModelState.IsValid)
             {
-                //var user = UserManager.FindByName(model.Email);
-                ////if (user == null)
-                ////{
-                ////    // Don't reveal that the user does not exist or is not confirmed
-                ////    return View("ForgotPasswordConfirmation");
-                ////}
-                //var provider = new DpapiDataProtectionProvider("Account");
-                //var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>());
-                //userManager.UserTokenProvider = new DataProtectorTokenProvider<ApplicationUser>(
-                //    provider.Create("EmailConfirmation"));
-
-                //string code = UserManager.GeneratePasswordResetToken(user.Id);
-                //var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                ////await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
                 var userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
                 var user = userManager.FindByName(model.Email);
                 string code = userManager.GeneratePasswordResetToken(user.Id);

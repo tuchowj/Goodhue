@@ -120,7 +120,7 @@ namespace Goodhue.Controllers
                 mail.Body = "You have successfully reserved car \"" + car.Description +
                     " (" + car.ID + ")\" starting on " + reservation.StartDate + "<br/><br/>" +
                     "<b>You are expected to return this car by " + reservation.EndDate +
-                    ". When you're done with the car, you need to enter the odometer " +
+                    ". When you're finished with the car, you need to enter the odometer " +
                     "reading on the \"Return Your Car\" screen. Other users cannot return " +
                     "the car until you do.</b>";
                 mail.IsBodyHtml = true;
@@ -306,8 +306,17 @@ namespace Goodhue.Controllers
         public ActionResult MyReservations()
         {
             bool isMaintenance = User.IsInRole("Maintenance");
-            return View(db.Reservations.Where(r => r.IsActive && (r.Username == User.Identity.Name ||
-                ((r.Username == "Maintenance") && isMaintenance))).OrderBy(r => r.EndDate).ToList());
+            IEnumerable<Reservation> myReservations = db.Reservations.Where(r => r.IsActive && (r.Username == User.Identity.Name ||
+                ((r.Username == "Maintenance") && isMaintenance))).OrderBy(r => r.EndDate);
+            List<Reservation> nextReservations = new List<Reservation>();
+            foreach (Car car in carDb.Cars) {
+                Reservation nextRes = getNextRes(car);
+                if (nextRes != null) {
+                    nextReservations.Add(nextRes);
+                }
+            }
+            ViewBag.NextReservations = nextReservations;
+            return View(myReservations);
         }
 
         // GET: Reservations/Day

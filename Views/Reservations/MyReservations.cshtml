@@ -51,7 +51,12 @@
         </td>
         <td>
             @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+            @if (ViewBag.NextReservations.Contains(item))
+            {
+                @Html.ActionLink("Return", "Return", new { carId = item.CarId, reservationId = item.ID }, new { @class = "btn btn-primary btn-sm" })
+            }
         </td>
+        
     </tr>
 }
 </table>
