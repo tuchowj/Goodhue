@@ -319,6 +319,24 @@ namespace Goodhue.Controllers
             return View(myReservations);
         }
 
+        // GET: Reservations/Conflicts
+        [Authorize (Roles="Admin")]
+        public ActionResult Conflicts()
+        {
+            IEnumerable<Reservation> conflicts = db.Reservations.Where(r => r.IsActive && r.EndDate < DateTime.Now).OrderBy(r => r.EndDate);
+            List<Reservation> nextReservations = new List<Reservation>();
+            foreach (Car car in carDb.Cars)
+            {
+                Reservation nextRes = getNextRes(car);
+                if (nextRes != null)
+                {
+                    nextReservations.Add(nextRes);
+                }
+            }
+            ViewBag.NextReservations = nextReservations;
+            return View(conflicts);
+        }
+
         // GET: Reservations/Day
         [AllowAnonymous]
         public ActionResult Day()

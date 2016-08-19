@@ -2,11 +2,15 @@
 @model IEnumerable<Goodhue.Models.Reservation>
 
 @{
-    ViewBag.Title = "Reservations";
+    ViewBag.Title = "Admin";
 }
 
 @if (User.IsInRole("Admin")) {
-    <h2>Reservations to be Charged</h2>
+    <div class="row">
+        <h2 class="col-md-10">Reservations to be Charged</h2>
+        <h2 class="col-md-2">@Html.ActionLink("View Unreturned Reservations", "Conflicts", null, new { @class = "btn btn-primary"})</h2>
+    </div>
+    
     @Html.ActionLink("Delete All", "DeleteAll") <span>|</span>
     @Html.ActionLink("Export to CSV", "WriteCSV")
     <table class="table sortable">

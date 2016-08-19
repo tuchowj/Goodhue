@@ -331,6 +331,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\FindCar.cshtml" />
     <Content Include="Views\Reservations\Day.cshtml" />
+    <Content Include="Views\Reservations\Conflicts.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
