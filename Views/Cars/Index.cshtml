@@ -90,7 +90,7 @@
                         <span>|</span>
                         @Html.ActionLink("Delete", "Delete", "Cars", new { id = item.ID }, null)
                     }
-                    @if (User.IsInRole("Admin") || User.IsInRole("Maintenance"))
+                    @if (User.IsInRole("Admin"))
                     {
                         <span>|</span>
                         @Html.ActionLink("Comments", "Comments", "Cars", new { id = item.ID }, null)

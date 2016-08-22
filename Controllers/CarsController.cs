@@ -162,7 +162,7 @@ namespace Goodhue.Controllers
         }
 
         // GET: Cars/Comments/5
-        [Authorize(Roles="Admin,Maintenance")]
+        [Authorize(Roles="Admin,Emailed_Comments")]
         public ActionResult Comments(int? id)
         {
             if (id == null)

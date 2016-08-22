@@ -92,16 +92,9 @@ namespace Goodhue.Controllers
                     }
                 }
                 reservation.CarId = car.ID;
-                if (User.IsInRole("Maintenance"))
-                {
-                    reservation.Username = "Maintenance";
-                }
-                else
-                {
-                    reservation.Username = User.Identity.Name;
-                }
+                reservation.Username = User.Identity.Name;
                 reservation.IsActive = true;
-                if (!(grant == null || grant == "")) {
+                if (!(grant == null || grant == "")) { //append grant info to dept field
                     reservation.Department = reservation.Department + " -- " + grant;
                 }
                 db.Reservations.Add(reservation);
@@ -116,13 +109,13 @@ namespace Goodhue.Controllers
                 client.Host = "mail.goodhue.county";
                 mail.From = new MailAddress("carshare.donotreply@co.goodhue.mn.us");
                 mail.To.Add(User.Identity.Name);
-                mail.Subject = "Car Pool Comment";
+                mail.Subject = "Pool Car Reservation Confirmation";
                 mail.Body = "You have successfully reserved car \"" + car.Description +
-                    " (" + car.ID + ")\" starting on " + reservation.StartDate + "<br/><br/>" +
+                    " (" + car.ID + ")\" starting on " + reservation.StartDate + ".<br/><br/>" +
                     "<b>You are expected to return this car by " + reservation.EndDate +
-                    ". When you're finished with the car, you need to enter the odometer " +
-                    "reading on the \"Return Your Car\" screen. Other users cannot return " +
-                    "the car until you do.</b>";
+                    ".<br/><br/>When you return the car, you must enter the odometer reading " +
+                    "on the Return Your Car screen. Your ending odometer reading becomes the " +
+                    "beginning odometer reading for the next reservation.</b><br/>";
                 mail.IsBodyHtml = true;
                 client.Send(mail);
 
@@ -146,8 +139,7 @@ namespace Goodhue.Controllers
                 return HttpNotFound();
             }
             //Only Admin can return other user's reservations
-            if (!User.IsInRole("Admin") && User.Identity.Name != reservation.Username &&
-                !(User.IsInRole("Maintenance") && reservation.Username == "Maintenance"))
+            if (!User.IsInRole("Admin") && User.Identity.Name != reservation.Username)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
             }
@@ -207,9 +199,9 @@ namespace Goodhue.Controllers
                 var account = new AccountController();
                 foreach (ApplicationUser user in appDb.Users)
                 {
-                    if (account.UserManager.GetRoles(user.Id).Contains("Admin"))
+                    if (account.UserManager.GetRoles(user.Id).Contains("Emailed_Comments"))
                     {
-                        mail.To.Add(user.Email); //user is an admin
+                        mail.To.Add(user.Email);
                     }
                 }
                 mail.Subject = "Car Pool Comment";
@@ -245,6 +237,24 @@ namespace Goodhue.Controllers
                 return RedirectToAction("Schedule", new { id = carId });
             }
 
+            if (car.OilChangeMiles < 250)
+            {
+                //send oil change email
+                MailMessage mail = new MailMessage();
+                SmtpClient client = new SmtpClient();
+                client.Port = 25;
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.UseDefaultCredentials = false;
+                client.Host = "mail.goodhue.county";
+                mail.From = new MailAddress("carshare.donotreply@co.goodhue.mn.us");
+                mail.To.Add(User.Identity.Name);
+                mail.Subject = "Oil Change Needed Soon";
+                mail.Body = "The car " + car.Description + " (" + car.ID + 
+                    ") will need an oil change in " + car.OilChangeMiles + " miles";
+                //mail.IsBodyHtml = true;
+                client.Send(mail);
+            }
+
             return View(car);
         }
 
@@ -261,8 +271,7 @@ namespace Goodhue.Controllers
                 return HttpNotFound();
             }
             //Only Admin can return other user's reservations
-            if (!User.IsInRole("Admin") && User.Identity.Name != reservation.Username &&
-                !(User.IsInRole("Maintenance") && reservation.Username == "Maintenance"))
+            if (!User.IsInRole("Admin") && User.Identity.Name != reservation.Username)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
             }
@@ -305,9 +314,8 @@ namespace Goodhue.Controllers
         // GET: Reservations/MyReservations
         public ActionResult MyReservations()
         {
-            bool isMaintenance = User.IsInRole("Maintenance");
-            IEnumerable<Reservation> myReservations = db.Reservations.Where(r => r.IsActive && (r.Username == User.Identity.Name ||
-                ((r.Username == "Maintenance") && isMaintenance))).OrderBy(r => r.EndDate);
+            IEnumerable<Reservation> myReservations = db.Reservations.Where(r => r.IsActive &&
+                (r.Username == User.Identity.Name)).OrderBy(r => r.EndDate);
             List<Reservation> nextReservations = new List<Reservation>();
             foreach (Car car in carDb.Cars) {
                 Reservation nextRes = getNextRes(car);

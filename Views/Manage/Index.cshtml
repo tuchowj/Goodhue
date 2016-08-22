@@ -50,7 +50,7 @@
                 ]
             </dd>
         *@
-        @if (User.IsInRole("Admin")) {
+        @if (User.IsInRole("Super_Admin")) {
             <dt>Roles:</dt>
             <dd>[@Html.ActionLink("Change User Roles", "Index", "Roles")]</dd>
         }
