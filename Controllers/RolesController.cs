@@ -157,10 +157,14 @@ namespace MVCInBuiltFeatures.Controllers
                 return View("ManageUserRoles");
             }
 
-            if (account.UserManager.IsInRole(user.Id, RoleName))
+            if (Email == User.Identity.Name)
+            {
+                ViewBag.ResultMessage = "Cannot remove yourself from roles.";
+            }
+            else if (account.UserManager.IsInRole(user.Id, RoleName)) //successful deletion
             {
                 account.UserManager.RemoveFromRole(user.Id, RoleName);
-                ViewBag.ResultMessage = "Role removed from this user successfully !";
+                ViewBag.ResultMessage = "Role removed from this user successfully.";
             }
             else
             {
