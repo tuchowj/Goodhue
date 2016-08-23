@@ -359,9 +359,8 @@ namespace Goodhue.Controllers
         public ActionResult Day()
         {
             IEnumerable<Reservation> activeReservations = db.Reservations.Where(r => r.IsActive);
-            ViewBag.Day = DateTime.Today.ToShortDateString();
-            return View(activeReservations.Where(r => r.StartDate < DateTime.Today.AddDays(1) &&
-                r.EndDate > DateTime.Today).ToList());
+            ViewBag.Day = "All Days (No Date Specified)";
+            return View(activeReservations.ToList());
         }
 
         // POST: Reservations/Day
@@ -372,7 +371,7 @@ namespace Goodhue.Controllers
         {
             if (date == null)
             {
-                date = DateTime.Today;
+                return RedirectToAction("Day");
             }
             DateTime day = (DateTime)date;
             IEnumerable<Reservation> activeReservations = db.Reservations.Where(r => r.IsActive);
