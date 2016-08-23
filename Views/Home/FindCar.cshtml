@@ -7,40 +7,38 @@
 
 <h2>Select a Car to Reserve</h2>
 <table class="table sortable">
-    <tr>
-        <th>
-            
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Location)
-        </th>
-        @if (User.IsInRole("Admin"))
-        {
+    <thead>
+        <tr>
+            <th data-defaultsort='disabled'></th>
             <th>
-                @Html.DisplayNameFor(model => model.Odometer)
+                @Html.DisplayNameFor(model => model.ID)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.OilChangeMiles)
+                @Html.DisplayNameFor(model => model.Description)
             </th>
-        }
-        @*<th>
-            @Html.DisplayNameFor(model => model.NextReservation)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.NextUser)
-        </th>*@
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
-        if (item.IsAvailable)
+            <th>
+                @Html.DisplayNameFor(model => model.Location)
+            </th>
+            @if (User.IsInRole("Admin"))
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.Odometer)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OilChangeMiles)
+                </th>
+            }
+            @*<th>
+                    @Html.DisplayNameFor(model => model.NextReservation)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NextUser)
+                </th>*@
+            <th data-defaultsort='disabled'></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
         {
             <tr>
                 <td>
@@ -65,15 +63,15 @@
                     </td>
                 }
                 @*<td>
-                    @Html.DisplayFor(modelItem => item.NextReservation)
-                </td>
+                        @Html.DisplayFor(modelItem => item.NextReservation)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NextUser)
+                    </td>*@
                 <td>
-                    @Html.DisplayFor(modelItem => item.NextUser)
-                </td>*@
-                <td>
-                    @Html.ActionLink("Select", "Create", "Reservations", new { id = item.ID, start = ViewBag.Start, end = ViewBag.End  }, new { @class = "btn btn-primary btn-sm" })
+                    @Html.ActionLink("Select", "Create", "Reservations", new { id = item.ID, start = ViewBag.Start, end = ViewBag.End }, new { @class = "btn btn-primary btn-sm" })
                 </td>
             </tr>
         }
-    }
+    </tbody>
 </table>

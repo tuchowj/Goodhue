@@ -8,7 +8,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Goodhue.Controllers;
 
-namespace MVCInBuiltFeatures.Controllers
+namespace Goodhue.Controllers
 {
     [Authorize(Roles = "Super_Admin")]
     public class RolesController : Controller

@@ -50,9 +50,5 @@
                 ]
             </dd>
         *@
-        @if (User.IsInRole("Super_Admin")) {
-            <dt>Roles:</dt>
-            <dd>[@Html.ActionLink("Change User Roles", "Index", "Roles")]</dd>
-        }
     </dl>
 </div>
