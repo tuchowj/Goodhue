@@ -55,6 +55,7 @@
                 <input type="submit" value="Reserve" class="btn btn-primary" />
             </div>
         </div>
+        <p class="text-danger">@ViewBag.Error</p>
     </div>
 }
 
@@ -62,7 +63,6 @@
     @Html.ActionLink("Back to Schedule", "Schedule", new { id = ViewBag.Car.ID })
 </div>
 
-@Scripts.Render("~/Scripts/datetimepickers.js")
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

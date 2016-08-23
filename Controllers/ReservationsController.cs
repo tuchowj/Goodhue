@@ -60,7 +60,6 @@ namespace Goodhue.Controllers
                 return HttpNotFound();
             }
             ViewBag.Car = car;
-            ViewBag.HasScheduleConflict = false;
             ViewBag.Start = start;
             ViewBag.End = end;
             return View();
@@ -87,7 +86,9 @@ namespace Goodhue.Controllers
                         (reservation.EndDate > res.StartDate && reservation.EndDate <= res.EndDate) ||
                         (reservation.StartDate <= res.StartDate && reservation.EndDate >= res.EndDate))
                     {
-                        ViewBag.Message = "Conflicts with an existing reservation starting at " + res.StartDate.ToString() + " and ending at " + res.EndDate.ToString();
+                        ViewBag.Start = start;
+                        ViewBag.End = end;
+                        ViewBag.Error = "Schedule Conflict -- Someone was probably in the process of reserving this car at the same time as you!";
                         return View(reservation);
                     }
                 }
@@ -122,7 +123,7 @@ namespace Goodhue.Controllers
                 return RedirectToAction("Schedule", new { id = car.ID });
             }
             ViewBag.Car = car;
-            ViewBag.Message = null;
+            ViewBag.Error = "Invalid Model State";
             return View(reservation);
         }
 
