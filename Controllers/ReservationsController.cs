@@ -234,25 +234,34 @@ namespace Goodhue.Controllers
                     }
 
                 } while (saveFailed);
-                return RedirectToAction("Schedule", new { id = carId });
-            }
 
-            if (car.OilChangeMiles < 250)
-            {
-                //send oil change email
-                MailMessage mail = new MailMessage();
-                SmtpClient client = new SmtpClient();
-                client.Port = 25;
-                client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                client.UseDefaultCredentials = false;
-                client.Host = "mail.goodhue.county";
-                mail.From = new MailAddress("carshare.donotreply@co.goodhue.mn.us");
-                mail.To.Add(User.Identity.Name);
-                mail.Subject = "Oil Change Needed Soon";
-                mail.Body = "The car " + car.Description + " (" + car.ID + 
-                    ") will need an oil change in " + car.OilChangeMiles + " miles";
-                //mail.IsBodyHtml = true;
-                client.Send(mail);
+                if (car.OilChangeMiles < 300)
+                {
+                    //send oil change email
+                    MailMessage mail = new MailMessage();
+                    SmtpClient client = new SmtpClient();
+                    client.Port = 25;
+                    client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    client.UseDefaultCredentials = false;
+                    client.Host = "mail.goodhue.county";
+                    mail.From = new MailAddress("carshare.donotreply@co.goodhue.mn.us");
+                    ApplicationDbContext appDb = new ApplicationDbContext();
+                    var account = new AccountController();
+                    foreach (ApplicationUser user in appDb.Users)
+                    {
+                        if (account.UserManager.GetRoles(user.Id).Contains("Emailed_Comments"))
+                        {
+                            mail.To.Add(user.Email);
+                        }
+                    }
+                    mail.Subject = "Oil Change Needed Soon";
+                    mail.Body = "The car \"" + car.Description + " (" + car.ID +
+                        ")\" will need an oil change in " + car.OilChangeMiles + " miles.";
+                    //mail.IsBodyHtml = true;
+                    client.Send(mail);
+                }
+
+                return RedirectToAction("Schedule", new { id = carId });
             }
 
             return View(car);
