@@ -51,7 +51,7 @@
                     {
                         @Html.ActionLink("Delete", "Delete", new { id = item.ID })
                     }
-                    @if (item.Equals(ViewBag.NextRes) && (item.Username == User.Identity.Name) )
+                    @if (item.Equals(ViewBag.NextRes) && (User.Identity.Name == item.Username))
                     {
                         @Html.ActionLink("Return", "Return", new { id = item.CarId, reservationId = item.ID }, new { @class = "btn btn-primary btn-sm" })
                     }

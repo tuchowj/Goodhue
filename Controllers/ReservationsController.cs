@@ -74,6 +74,8 @@ namespace Goodhue.Controllers
         {
             Car car = carDb.Cars.Find(id);
             ViewBag.Car = car;
+            ViewBag.Start = start;
+            ViewBag.End = end;
             if (ModelState.IsValid)
             {
                 reservation.StartDate = start;
@@ -86,8 +88,6 @@ namespace Goodhue.Controllers
                         (reservation.EndDate > res.StartDate && reservation.EndDate <= res.EndDate) ||
                         (reservation.StartDate <= res.StartDate && reservation.EndDate >= res.EndDate))
                     {
-                        ViewBag.Start = start;
-                        ViewBag.End = end;
                         ViewBag.Error = "Schedule Conflict -- Someone was probably in the process of reserving this car at the same time as you!";
                         return View(reservation);
                     }
@@ -122,7 +122,6 @@ namespace Goodhue.Controllers
 
                 return RedirectToAction("Schedule", new { id = car.ID });
             }
-            ViewBag.Car = car;
             ViewBag.Error = "Invalid Model State";
             return View(reservation);
         }
