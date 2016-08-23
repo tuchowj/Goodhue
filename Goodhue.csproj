@@ -195,6 +195,7 @@
     <Content Include=".gitattributes" />
     <Content Include=".gitignore" />
     <Content Include="Content\bootstrap-material-datetimepicker.css" />
+    <Content Include="Content\bootstrap-sortable.css" />
     <Content Include="Content\icon.css" />
     <Content Include="Scripts\bootstrap-material-datetimepicker.js" />
     <Content Include="Content\bootstrap-theme.css" />
@@ -246,6 +247,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Images\Goodhue_county.png" />
+    <Content Include="Scripts\bootstrap-sortable.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="packages.config" />

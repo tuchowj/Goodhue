@@ -14,69 +14,72 @@
     @Html.ActionLink("Delete All", "DeleteAll") <span>|</span>
     @Html.ActionLink("Export to CSV", "WriteCSV")
     <table class="table sortable">
-        <tr>
-            <th>
-                Car ID
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Username)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Destination)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Department)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TankFilled)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Miles)
-            </th>
-            <th></th>
-        </tr>
-
-        @foreach (var item in Model)
-        {
-            if (!item.IsActive)
+        <thead>
+            <tr>
+                <th>
+                    Car ID
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Username)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StartDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EndDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Destination)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Department)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TankFilled)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Miles)
+                </th>
+                <th data-defaultsort='disabled'></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CarId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Username)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.StartDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.EndDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Destination)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Department)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TankFilled)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Miles)
-                    </td>
-                    <td>
-                        @*@Html.ActionLink("Edit", "Edit", new { id=item.ID }) |*@
-                        @Html.ActionLink("Delete", "Delete", new { id = item.ID })
-                    </td>
-                </tr>
+                if (!item.IsActive)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CarId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Username)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StartDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EndDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Destination)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Department)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TankFilled)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Miles)
+                        </td>
+                        <td>
+                            @*@Html.ActionLink("Edit", "Edit", new { id=item.ID }) |*@
+                            @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                        </td>
+                    </tr>
+                }
             }
-        }
+        </tbody>
     </table>
 }
