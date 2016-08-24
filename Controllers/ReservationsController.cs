@@ -168,6 +168,12 @@ namespace Goodhue.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ReturnConfirmed(int? carId, int? reservationId, [Bind(Include = "ID,Description,Location,ImageURL,Odometer,OilChangeMiles,IsAvailable")] Car car, bool tankFilled, string comment)
         {
+            if (car.Odometer < oldOdometer)
+            {
+                ViewBag.Error = "Odometer cannot be less than before. If the old odometer is incorrect, contact an administrator.";
+                return View(car);
+            }
+
             Reservation returnReservation = db.Reservations.Find(reservationId);
 
             //Edit Reservation Info
@@ -187,7 +193,7 @@ namespace Goodhue.Controllers
                 commentDb.Comments.Add(userComment);
                 commentDb.SaveChanges();
 
-                //send email
+                //send comment email
                 MailMessage mail = new MailMessage();
                 SmtpClient client = new SmtpClient();
                 client.Port = 25;
@@ -205,7 +211,9 @@ namespace Goodhue.Controllers
                     }
                 }
                 mail.Subject = "Car Pool Comment";
-                mail.Body = User.Identity.Name + ": " + comment;
+                mail.Body = "<b>" + car.Description + " (" + car.ID + ")</b><br/><br/>" +
+                    User.Identity.Name + ": " + comment;
+                mail.IsBodyHtml = true;
                 client.Send(mail);
             }
 

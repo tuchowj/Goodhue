@@ -17,7 +17,7 @@ namespace Goodhue.Controllers
             return View();
         }
 
-        public ActionResult About()
+        public ActionResult Help()
         {
             return View();
         }
@@ -27,6 +27,7 @@ namespace Goodhue.Controllers
             return View();
         }
 
+        //
         // GET: Home/ReturnNext
         [Authorize]
         public ActionResult ReturnNext()

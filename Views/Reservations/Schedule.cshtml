@@ -47,11 +47,11 @@
                     @Html.DisplayFor(modelItem => item.Department)
                 </td>
                 <td>
-                    @if (User.Identity.Name == item.Username || User.IsInRole("Admin") || (User.IsInRole("Maintenance") && item.Username == "Maintenance"))
+                    @if (User.Identity.Name == item.Username || User.IsInRole("Admin"))
                     {
                         @Html.ActionLink("Delete", "Delete", new { id = item.ID })
                     }
-                    @if (item.Equals(ViewBag.NextRes) && (User.Identity.Name == item.Username))
+                    @if (item.Equals(ViewBag.NextRes) && ((User.Identity.Name == item.Username) || User.IsInRole("Admin")))
                     {
                         @Html.ActionLink("Return", "Return", new { id = item.CarId, reservationId = item.ID }, new { @class = "btn btn-primary btn-sm" })
                     }
