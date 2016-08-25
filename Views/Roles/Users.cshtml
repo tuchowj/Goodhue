@@ -4,8 +4,24 @@
     ViewBag.Title = "Users";
 }
 
-<h2>Users</h2>
-
+<div class="row">
+    <h2 class="col-md-8">Users @ViewBag.Role</h2>
+    @using (Html.BeginForm("Filter", "Roles", FormMethod.Post, null))
+    {
+        @Html.AntiForgeryToken()
+        <h2 class="col-md-2">
+            <select class="form-control single-line" id="role" name="role" type="text">
+                <option value="All">All Roles</option>
+                <option value="Admin">Admin</option>
+                <option value="Emailed_Comments">Emailed_Comments</option>
+                <option value="Super_Admin">Super_Admin</option>
+            </select>
+        </h2>
+        <h2 class="col-md-2">
+            <input class="btn btn-primary" type="submit" value="Filter" />
+        </h2>
+    }
+</div>
 <table class="table sortable">
     <thead>
         <tr>

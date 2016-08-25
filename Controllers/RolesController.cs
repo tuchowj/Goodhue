@@ -32,6 +32,28 @@ namespace Goodhue.Controllers
             return View(account.UserManager.Users.ToList());
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Filter(string role)
+        {
+            if (role == "All")
+            {
+                return RedirectToAction("Users");
+            }
+            var account = new AccountController();
+            List<ApplicationUser> usersInRole = new List<ApplicationUser>();
+            foreach (ApplicationUser user in account.UserManager.Users)
+            {
+                var accControl = new AccountController(); //won't work without different account controller
+                List<string> userRoles = accControl.UserManager.GetRoles(user.Id).ToList();
+                if (userRoles.Contains(role)) {
+                    usersInRole.Add(user);
+                }
+            }
+            ViewBag.Role = "in Role: " + role;
+            return View("Users",usersInRole);
+        }
+
         //
         //GET: /Roles/DeleteUser
         public ActionResult DeleteUser(string id)
@@ -79,7 +101,7 @@ namespace Goodhue.Controllers
                     Name = collection["RoleName"]
                 });
                 context.SaveChanges();
-                ViewBag.ResultMessage = "Role created successfully !";
+                ViewBag.ResultMessage = "Role created successfully";
                 return RedirectToAction("Index");
             }
             catch
