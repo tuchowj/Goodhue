@@ -329,7 +329,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Views\Reservations\MyReservations.cshtml" />
-    <Content Include="Views\Cars\ReturnNext.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\FindCar.cshtml" />
     <Content Include="Views\Reservations\Day.cshtml" />
