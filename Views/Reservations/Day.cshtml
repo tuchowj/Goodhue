@@ -66,7 +66,7 @@
                     @Html.DisplayFor(modelItem => item.Department)
                 </td>
                 <td>
-                    @if (User.Identity.Name == item.Username || User.IsInRole("Admin") || (User.IsInRole("Maintenance") && item.Username == "Maintenance"))
+                    @if (User.Identity.Name == item.Username || User.IsInRole("Admin"))
                     {
                         @Html.ActionLink("Delete", "Delete", new { id = item.ID })
                     }

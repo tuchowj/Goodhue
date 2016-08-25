@@ -333,6 +333,8 @@
     <Content Include="Views\Home\FindCar.cshtml" />
     <Content Include="Views\Reservations\Day.cshtml" />
     <Content Include="Views\Reservations\Conflicts.cshtml" />
+    <Content Include="Views\Roles\Users.cshtml" />
+    <Content Include="Views\Roles\DeleteUser.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

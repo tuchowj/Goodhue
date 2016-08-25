@@ -7,6 +7,8 @@ using Goodhue.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Goodhue.Controllers;
+using System.Net;
+using System.Web.Security;
 
 namespace Goodhue.Controllers
 {
@@ -20,6 +22,42 @@ namespace Goodhue.Controllers
         public ActionResult Index()
         {
             return RedirectToAction("ManageUserRoles");
+        }
+
+        //
+        // GET: /Roles/Users
+        public ActionResult Users()
+        {
+            var account = new AccountController();
+            return View(account.UserManager.Users.ToList());
+        }
+
+        //
+        //GET: /Roles/DeleteUser
+        public ActionResult DeleteUser(string id)
+        {
+            var account = new AccountController();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ApplicationUser user = account.UserManager.Users.Where(u => u.Id.Equals(id)).FirstOrDefault();
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+            return View(user);
+        }
+
+        // POST: Reservations/DeleteUser/5
+        [HttpPost, ActionName("DeleteUser")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(string id)
+        {
+            var account = new AccountController();
+            ApplicationUser user = account.UserManager.Users.Where(u => u.Id.Equals(id)).FirstOrDefault();
+            account.UserManager.Delete(user);
+            return RedirectToAction("Users");
         }
 
         //
