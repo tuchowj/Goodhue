@@ -36,7 +36,7 @@
                     }
                     @if (User.IsInRole("Super_Admin"))
                     {
-                        <li>@Html.ActionLink("Users and Roles", "Index", "Roles")</li>
+                        <li>@Html.ActionLink("Users and Roles", "Users", "Roles")</li>
                     }
                 </ul>
                 @Html.Partial("_LoginPartial")

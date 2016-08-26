@@ -5,11 +5,11 @@
 }
 
 <div class="row">
-    <h2 class="col-md-8">Users @ViewBag.Role</h2>
+    <h2 class="col-md-7">Users @ViewBag.Role</h2>
     @using (Html.BeginForm("Filter", "Roles", FormMethod.Post, null))
     {
         @Html.AntiForgeryToken()
-        <h2 class="col-md-2">
+        <h2 class="col-md-3">
             <select class="form-control single-line" id="role" name="role" type="text">
                 <option value="All">All Roles</option>
                 <option value="Admin">Admin</option>
@@ -22,6 +22,7 @@
         </h2>
     }
 </div>
+@Html.ActionLink("Manage User Roles","ManageUserRoles")
 <table class="table sortable">
     <thead>
         <tr>
