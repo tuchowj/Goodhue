@@ -5,13 +5,13 @@
 }
 
 <div class="row">
-    <h2 class="col-md-7">Users @ViewBag.Role</h2>
+    <h2 class="col-md-7">All Users @ViewBag.Role</h2>
     @using (Html.BeginForm("Filter", "Roles", FormMethod.Post, null))
     {
         @Html.AntiForgeryToken()
         <h2 class="col-md-3">
             <select class="form-control single-line" id="role" name="role" type="text">
-                <option value="All">All Roles</option>
+                <option value="All">All Users</option>
                 <option value="Admin">Admin</option>
                 <option value="Emailed_Comments">Emailed_Comments</option>
                 <option value="Super_Admin">Super_Admin</option>

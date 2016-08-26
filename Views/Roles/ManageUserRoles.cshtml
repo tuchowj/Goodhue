@@ -19,7 +19,7 @@
 @if (ViewBag.RolesForThisUser != null)
 {
     <div style="background-color:lightgray;">
-        <h4>Roles for this user </h4>
+        <h4>View Roles for a User </h4>
         <ol>
             @foreach (string role in ViewBag.RolesForThisUser)
             {
@@ -31,7 +31,7 @@
 
 <hr />
 
-<h3>Add Role to User</h3>
+<h3>Add a Role to a User</h3>
 
 @using (Html.BeginForm("AddRoleToUser", "Roles"))
 {
@@ -53,7 +53,7 @@
 }
 <hr />
 
-<h3>Delete A User from a Role</h3>
+<h3>Delete a Role from a User</h3>
 
 @using (Html.BeginForm("DeleteRoleFromUser", "Roles"))
 {

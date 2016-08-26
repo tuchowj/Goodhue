@@ -30,7 +30,7 @@
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li><a href="http://www.co.goodhue.mn.us/DocumentCenter/View/11545">Help</a></li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li><a href="http://www.co.goodhue.mn.us/DocumentCenter/View/11604">Contact</a></li>
                     @if (User.IsInRole("Admin")) {
                         <li>@Html.ActionLink("Admin", "Index", "Reservations")</li>
                     }
@@ -46,9 +46,6 @@
     <div class="container body-content">
         @RenderBody()
         <hr />
-        @*<footer>
-            <p>&copy; @DateTime.Now.Year - Goodhue County</p>
-        </footer>*@
     </div>
 
     @Scripts.Render("~/bundles/jquery")
