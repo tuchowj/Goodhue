@@ -2,5 +2,11 @@
 
 @foreach (var item in Model)
 {
-    <option value=@item.Name>@item.Name</option>
+    if (!item.Name.Equals("HHS")) {
+        <option value=@item.Name>@item.Name</option>
+    }
+    else
+    {
+        <option selected="selected" value="HHS">HHS</option>
+    }
 }

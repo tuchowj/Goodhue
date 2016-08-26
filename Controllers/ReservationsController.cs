@@ -445,7 +445,7 @@ namespace Goodhue.Controllers
 
         public PartialViewResult ShowDepartments()
         {
-            return PartialView("Department",departmentDb.Departments.ToList());
+            return PartialView("Department",departmentDb.Departments.ToList().OrderBy(d => d.Name));
         }
 
         private Reservation getNextRes(Car car)
