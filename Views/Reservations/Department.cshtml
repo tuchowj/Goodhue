@@ -1,0 +1,6 @@
+﻿@model IEnumerable<Goodhue.Models.Department>
+
+@foreach (var item in Model)
+{
+    <option value=@item.Name>@item.Name</option>
+}

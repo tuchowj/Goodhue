@@ -7,7 +7,8 @@
 
 @if (User.IsInRole("Admin")) {
     <div class="row">
-        <h2 class="col-md-10">Reservations to be Charged</h2>
+        <h2 class="col-md-8">Reservations to be Charged</h2>
+        <h2 class="col-md-2">@Html.ActionLink("Add/Remove Department", "Index", "Departments", null, new { @class = "btn btn-primary" })</h2>
         <h2 class="col-md-2">@Html.ActionLink("View Unreturned Reservations", "Conflicts", null, new { @class = "btn btn-primary"})</h2>
     </div>
     

@@ -20,6 +20,7 @@ namespace Goodhue.Controllers
         private ReservationDBContext db = new ReservationDBContext();
         private CarDBContext carDb = new CarDBContext();
         private CommentDBContext commentDb = new CommentDBContext();
+        private DepartmentDBContext departmentDb = new DepartmentDBContext();
 
         // GET: Reservations
         [Authorize (Roles="Admin")]
@@ -440,6 +441,11 @@ namespace Goodhue.Controllers
                 }
             }
             return RedirectToAction("Create", new { id = carId, start = startDate, end = endDate });
+        }
+
+        public PartialViewResult ShowDepartments()
+        {
+            return PartialView("Department",departmentDb.Departments.ToList());
         }
 
         private Reservation getNextRes(Car car)

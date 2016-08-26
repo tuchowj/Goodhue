@@ -25,14 +25,16 @@
             @Html.LabelFor(model => model.Department, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <select class="form-control single-line" id="Department" name="Department" type="text">
-                    <option value="Administration">Administration</option>
+                    @{Html.RenderAction("ShowDepartments");}
+                    @*<option value="Administration">Administration</option>
                     <option value="Assessor">Assessor</option>
                     <option value="Attorney">Attorney</option>
                     <option value="Court Services">Court Services</option>
+                    <option value="Elections">Elections</option>
                     <option value="Extension">Extension</option>
                     <option value="Finance">Finance</option>
                     <option value="Facilities/Maintenance">Facilities/Maintenance</option>
-                    <option value="HHS">HHS</option>
+                    <option value="HHS" selected="selected">HHS</option>
                     <option value="Human Resources">Human Resources</option>
                     <option value="IT">IT</option>
                     <option value="Land Use">Land Use</option>
@@ -40,7 +42,7 @@
                     <option value="Recorder">Recorder</option>
                     <option value="Sheriff">Sheriff</option>
                     <option value="Shop">Shop</option>
-                    <option value="Veterans Service">Veterans Service</option>
+                    <option value="Veterans Service">Veterans Service</option>*@
                 </select>
             </div>
         </div>
