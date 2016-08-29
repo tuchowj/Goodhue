@@ -49,6 +49,7 @@
                 <td>
                     @if (User.Identity.Name == item.Username || User.IsInRole("Admin"))
                     {
+                        @Html.ActionLink("Edit", "Edit", new { id = item.ID }) <span>|</span>
                         @Html.ActionLink("Delete", "Delete", new { id = item.ID })
                     }
                     @if (item.Equals(ViewBag.NextRes) && ((User.Identity.Name == item.Username) || User.IsInRole("Admin")))

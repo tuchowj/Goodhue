@@ -29,8 +29,8 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li><a href="http://www.co.goodhue.mn.us/DocumentCenter/View/11545">Help</a></li>
-                    <li><a href="http://www.co.goodhue.mn.us/DocumentCenter/View/11604">Contact</a></li>
+                    <li><a href="http://www.co.goodhue.mn.us/DocumentCenter/View/11545" target="_blank">Help</a></li>
+                    <li><a href="http://www.co.goodhue.mn.us/DocumentCenter/View/11604" target="_blank">Contact</a></li>
                     @if (User.IsInRole("Admin")) {
                         <li>@Html.ActionLink("Admin", "Index", "Reservations")</li>
                     }

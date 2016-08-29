@@ -276,6 +276,41 @@ namespace Goodhue.Controllers
             return View(car);
         }
 
+        // GET: Reservations/Edit/5
+        public ActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Reservation reservation = db.Reservations.Find(id);
+            if (reservation == null)
+            {
+                return HttpNotFound();
+            }
+            if (!User.IsInRole("Admin") && User.Identity.Name != reservation.Username)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+            }
+            return View(reservation);
+        }
+
+        // POST: Cars/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "ID,Username,StartDate,EndDate,Destination,Department,Miles,TankFilled,CarID,IsActive")] Reservation reservation)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(reservation).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Schedule", new {id = reservation.CarId});
+            }
+            return View(reservation);
+        }
+
         // GET: Reservations/Delete/5
         public ActionResult Delete(int? id)
         {
