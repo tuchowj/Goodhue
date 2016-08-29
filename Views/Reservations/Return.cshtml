@@ -6,7 +6,8 @@
 
 <h2>Return: @Html.DisplayFor(model => model.Description) (@Html.DisplayFor(model => model.ID))</h2>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Return", "Reservations", FormMethod.Post,
+    new { onsubmit = "return confirm('Have you entered in the correct odometer reading?');" }))
 {
     @Html.AntiForgeryToken()
 
@@ -45,7 +46,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Return" class="btn btn-primary" />
+                <input type="submit" onsubmit="confirmOdo()" value="Return" class="btn btn-primary" />
             </div>
         </div>
         <p class="col-md-offset-2 col-md-10 text-danger">@ViewBag.Error</p>
@@ -59,6 +60,11 @@
     @Html.ActionLink("Back to Schedule", "Schedule", new { id = Model.ID })
 </div>
 
+<script>
+    function confirmOdo() {
+        confirm("Have you entered in the correct odometer reading?");
+    }
+</script>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

@@ -71,7 +71,7 @@ namespace Goodhue.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(int? id, DateTime start, DateTime end, [Bind(Include = "ID,StartDate,EndDate,Destination,Department,Miles,TankFilled,CarID,IsActive")] Reservation reservation, string grant)
+        public ActionResult Create(int? id, DateTime start, DateTime end, [Bind(Include = "ID,StartDate,EndDate,Destination,Department,Miles,TankFilled,CarID,IsActive")] Reservation reservation, string username, string grant)
         {
             Car car = carDb.Cars.Find(id);
             ViewBag.Car = car;
@@ -94,8 +94,15 @@ namespace Goodhue.Controllers
                     }
                 }
                 reservation.CarId = car.ID;
-                reservation.Username = User.Identity.Name;
                 reservation.IsActive = true;
+                if (User.IsInRole("Admin") && !(username == null || username == ""))
+                {
+                    reservation.Username = username;
+                }
+                else
+                {
+                    reservation.Username = User.Identity.Name;
+                }
                 if (!(grant == null || grant == "")) { //append grant info to dept field
                     reservation.Department = reservation.Department + " -- " + grant;
                 }

@@ -12,6 +12,16 @@
         <h2>Checkout: @ViewBag.Car.Description (@ViewBag.Car.ID)</h2>
         <h4>From @ViewBag.Start to @ViewBag.End</h4>
         <hr />
+        @if (User.IsInRole("Admin"))
+        {
+            <div class="form-group">
+                <label class="control-label col-md-2">Reservation Username</label>
+                <div class="col-md-10">
+                    <input class="form-control text-box single-line" id="username" name="username" type="text" placeholder="If reserving for someone else">
+                </div>
+            </div>
+        }
+        
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
             @Html.LabelFor(model => model.Destination, htmlAttributes: new { @class = "control-label col-md-2" })
