@@ -300,10 +300,14 @@ namespace Goodhue.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Username,StartDate,EndDate,Destination,Department,Miles,TankFilled,CarID,IsActive")] Reservation reservation)
+        public ActionResult Edit([Bind(Include = "ID,Username,StartDate,EndDate,Destination,Department,Miles,TankFilled,CarID,IsActive")] Reservation reservation, string grant)
         {
             if (ModelState.IsValid)
             {
+                if (!(grant == null || grant == ""))
+                { //append grant info to dept field
+                    reservation.Department = reservation.Department + " -- " + grant;
+                }
                 db.Entry(reservation).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Schedule", new {id = reservation.CarId});
