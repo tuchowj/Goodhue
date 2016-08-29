@@ -53,6 +53,7 @@
                     @Html.DisplayFor(modelItem => item.Department)
                 </td>
                 <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.ID }) <span>|</span>
                     @Html.ActionLink("Delete", "Delete", new { id = item.ID })
                     @if (ViewBag.NextReservations.Contains(item))
                     {

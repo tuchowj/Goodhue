@@ -292,6 +292,8 @@ namespace Goodhue.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
             }
+            Car car = carDb.Cars.Find(reservation.CarId);
+            ViewBag.Car = car;
             return View(reservation);
         }
 
@@ -312,6 +314,8 @@ namespace Goodhue.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Schedule", new {id = reservation.CarId});
             }
+            Car car = carDb.Cars.Find(reservation.CarId);
+            ViewBag.Car = car;
             return View(reservation);
         }
 

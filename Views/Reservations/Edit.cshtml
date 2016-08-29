@@ -4,7 +4,8 @@
     ViewBag.Title = "Edit";
 }
 
-<h2>Edit</h2>
+<h2>Edit Reservation for: @ViewBag.Car.Description (@ViewBag.Car.ID)</h2>
+<h4>From @Html.DisplayFor(model => model.StartDate) to @Html.DisplayFor(model => model.EndDate)</h4>
 
 
 @using (Html.BeginForm())
@@ -12,7 +13,6 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Reservation</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.ID)
