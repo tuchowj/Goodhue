@@ -60,6 +60,7 @@ namespace Goodhue.Controllers
         }
 
         // GET: Cars/FindCar
+        [Authorize]
         public ActionResult FindCar(DateTime startDate, DateTime endDate)
         {
             if (endDate < startDate)

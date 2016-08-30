@@ -10,7 +10,6 @@ using Goodhue.Models;
 
 namespace Goodhue.Controllers
 {
-    [Authorize (Roles="Admin")]
     public class CarsController : Controller
     {
         private CarDBContext db = new CarDBContext();
@@ -18,7 +17,7 @@ namespace Goodhue.Controllers
         private CommentDBContext commentDb = new CommentDBContext();
 
         // GET: Cars
-        [AllowAnonymous]
+        [Authorize]
         public ActionResult Index()
         {
             setNextReservations();
@@ -26,6 +25,7 @@ namespace Goodhue.Controllers
             return View(cars.OrderBy(c => c.ID));
         }
 
+        [Authorize]
         private void setNextReservations()
         {
             foreach (Car car in db.Cars)
@@ -49,7 +49,7 @@ namespace Goodhue.Controllers
         }
         
         // GET: Cars/Details/5
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -65,6 +65,7 @@ namespace Goodhue.Controllers
         }
 
         // GET: Cars/Create
+        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             return View();
@@ -75,6 +76,7 @@ namespace Goodhue.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult Create([Bind(Include = "ID,Description,Location,ImageURL,Odometer,OilChangeMiles")] Car car)
         {
             bool hasUniqueID = !db.Cars.Where(c => c.ID == car.ID).ToList().Any();
@@ -91,6 +93,7 @@ namespace Goodhue.Controllers
         }
 
         // GET: Cars/Edit/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -110,6 +113,7 @@ namespace Goodhue.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit([Bind(Include = "ID,Description,Location,ImageURL,Odometer,OilChangeMiles,NextReservation,NextUser,IsAvailable")] Car car)
         {
             if (ModelState.IsValid)
@@ -122,6 +126,7 @@ namespace Goodhue.Controllers
         }
 
         // GET: Cars/Delete/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -140,6 +145,7 @@ namespace Goodhue.Controllers
         // POST: Cars/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult DeleteConfirmed(int id)
         {
             //Delete Car

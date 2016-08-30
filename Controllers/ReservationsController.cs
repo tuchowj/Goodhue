@@ -30,7 +30,6 @@ namespace Goodhue.Controllers
         }
 
         // GET: Reservations
-        [AllowAnonymous]
         public ActionResult Schedule(int? id)
         {
             if (id == null)
@@ -443,7 +442,6 @@ namespace Goodhue.Controllers
         }
 
         // GET: Reservations/Day
-        [AllowAnonymous]
         public ActionResult Day()
         {
             IEnumerable<Reservation> activeReservations = db.Reservations.Where(r => r.IsActive);
@@ -454,7 +452,6 @@ namespace Goodhue.Controllers
         // POST: Reservations/Day
         [HttpPost, ActionName("Day")]
         [ValidateAntiForgeryToken]
-        [AllowAnonymous]
         public ActionResult DayChanged(DateTime? date)
         {
             if (date == null)
