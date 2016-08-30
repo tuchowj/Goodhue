@@ -98,6 +98,35 @@ namespace Goodhue.Controllers
                 if (User.IsInRole("Admin") && !(username == null || username == ""))
                 {
                     reservation.Username = username;
+
+
+                    //send confirmation email to username entered
+                    try
+                    {
+                        MailMessage mail2 = new MailMessage();
+                        SmtpClient client2 = new SmtpClient();
+                        client2.Port = 25;
+                        client2.DeliveryMethod = SmtpDeliveryMethod.Network;
+                        client2.UseDefaultCredentials = false;
+                        client2.Host = "mail.goodhue.county";
+                        mail2.From = new MailAddress("carshare.donotreply@co.goodhue.mn.us");
+                        mail2.To.Add(username);
+                        mail2.Subject = "Pool Car Reservation Confirmation";
+                        mail2.Body = "You have successfully reserved car \"" + car.Description +
+                            " (" + car.ID + ")\" starting on " + reservation.StartDate + ".<br/><br/>" +
+                            "<b>You are expected to return this car by " + reservation.EndDate +
+                            ".<br/><br/>When you return the car, you must enter the odometer reading " +
+                            "on the Return Your Car screen. Your ending odometer reading becomes the " +
+                            "beginning odometer reading for the next reservation.</b><br/>";
+                        mail2.IsBodyHtml = true;
+                    
+                        client2.Send(mail2);
+                    }
+                    catch
+                    {
+                        ViewBag.Error = "Failed to send email to " + username;
+                        return View(reservation);
+                    }
                 }
                 else
                 {

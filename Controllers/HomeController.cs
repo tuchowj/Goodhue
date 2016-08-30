@@ -64,7 +64,8 @@ namespace Goodhue.Controllers
         {
             if (endDate < startDate)
             {
-                ViewBag.Error = "Return time must be after checkout time";
+                ViewBag.Error = "Return date/time "+ endDate + " is before start date/time " + startDate + 
+                    ". Please re-enter reservation times.";
                 return View("Index");
             }
 
