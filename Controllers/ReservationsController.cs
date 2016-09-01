@@ -111,7 +111,7 @@ namespace Goodhue.Controllers
                         mail2.From = new MailAddress("carshare.donotreply@co.goodhue.mn.us");
                         mail2.To.Add(username);
                         mail2.Subject = "Pool Car Reservation Confirmation";
-                        mail2.Body = "You have successfully reserved car \"" + car.Description +
+                        mail2.Body = User.Identity.Name + " has reserved you the car \"" + car.Description +
                             " (" + car.ID + ")\" starting on " + reservation.StartDate + ".<br/><br/>" +
                             "<b>You are expected to return this car by " + reservation.EndDate +
                             ".<br/><br/>When you return the car, you must enter the odometer reading " +
@@ -279,7 +279,7 @@ namespace Goodhue.Controllers
 
                 } while (saveFailed);
 
-                if (car.OilChangeMiles < 300)
+                if (car.OilChangeMiles < 500)
                 {
                     //send oil change email
                     MailMessage mail = new MailMessage();
