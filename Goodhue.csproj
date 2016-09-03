@@ -341,6 +341,7 @@
     <Content Include="Views\Departments\Delete.cshtml" />
     <Content Include="Views\Departments\Index.cshtml" />
     <Content Include="Views\Reservations\Department.cshtml" />
+    <Content Include="Views\Reservations\EditOld.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

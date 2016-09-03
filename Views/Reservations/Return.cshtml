@@ -6,8 +6,7 @@
 
 <h2>Return: @Html.DisplayFor(model => model.Description) (@Html.DisplayFor(model => model.ID))</h2>
 
-@using (Html.BeginForm("Return", "Reservations", FormMethod.Post,
-    new { onsubmit = "return confirm('Click OK to confirm your ending odometer reading');" }))
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 

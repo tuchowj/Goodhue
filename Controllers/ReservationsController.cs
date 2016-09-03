@@ -276,7 +276,6 @@ namespace Goodhue.Controllers
                         var entry = ex.Entries.Single();
                         objContext.Refresh(RefreshMode.ClientWins, entry.Entity);
                     }
-
                 } while (saveFailed);
 
                 if (car.OilChangeMiles < 500)
@@ -348,6 +347,49 @@ namespace Goodhue.Controllers
                 db.Entry(reservation).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Schedule", new {id = reservation.CarId});
+            }
+            Car car = carDb.Cars.Find(reservation.CarId);
+            ViewBag.Car = car;
+            return View(reservation);
+        }
+
+        // GET: Reservations/EditOld/5
+        public ActionResult EditOld(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Reservation reservation = db.Reservations.Find(id);
+            if (reservation == null)
+            {
+                return HttpNotFound();
+            }
+            if (!User.IsInRole("Admin") && User.Identity.Name != reservation.Username)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+            }
+            Car car = carDb.Cars.Find(reservation.CarId);
+            ViewBag.Car = car;
+            return View(reservation);
+        }
+
+        // POST: Cars/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditOld([Bind(Include = "ID,Username,StartDate,EndDate,Destination,Department,Miles,TankFilled,CarID,IsActive")] Reservation reservation, string grant)
+        {
+            if (ModelState.IsValid)
+            {
+                if (!(grant == null || grant == ""))
+                { //append grant info to dept field
+                    reservation.Department = reservation.Department + " -- " + grant;
+                }
+                db.Entry(reservation).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
             }
             Car car = carDb.Cars.Find(reservation.CarId);
             ViewBag.Car = car;
