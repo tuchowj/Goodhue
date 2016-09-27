@@ -111,9 +111,9 @@ namespace Goodhue.Controllers
                         mail2.From = new MailAddress("carshare.donotreply@co.goodhue.mn.us");
                         mail2.To.Add(username);
                         mail2.Subject = "Pool Car Reservation Confirmation";
-                        mail2.Body = User.Identity.Name + " has reserved you the car \"" + car.Description +
-                            " (" + car.ID + ")\" starting on " + reservation.StartDate + ".<br/><br/>" +
-                            "<b>You are expected to return this car by " + reservation.EndDate +
+                        mail2.Body = User.Identity.Name + " has reserved you the car: \"" + car.Description +
+                            " (" + car.ID + ")\" located at: \"" + car.Location + "\" starting on: " + reservation.StartDate + ".<br/><br/>" +
+                            "<b>You are expected to return this car by: " + reservation.EndDate +
                             ".<br/><br/>When you return the car, you must enter the odometer reading " +
                             "on the Return Your Car screen. Your ending odometer reading becomes the " +
                             "beginning odometer reading for the next reservation.</b><br/>";
@@ -147,9 +147,9 @@ namespace Goodhue.Controllers
                 mail.From = new MailAddress("carshare.donotreply@co.goodhue.mn.us");
                 mail.To.Add(User.Identity.Name);
                 mail.Subject = "Pool Car Reservation Confirmation";
-                mail.Body = "You have successfully reserved car \"" + car.Description +
-                    " (" + car.ID + ")\" starting on " + reservation.StartDate + ".<br/><br/>" +
-                    "<b>You are expected to return this car by " + reservation.EndDate +
+                mail.Body = "You have successfully reserved the car: \"" + car.Description +
+                    " (" + car.ID + ")\" located at: \"" + car.Location + "\" starting on: " + reservation.StartDate + ".<br/><br/>" +
+                    "<b>You are expected to return this car by: " + reservation.EndDate +
                     ".<br/><br/>When you return the car, you must enter the odometer reading " +
                     "on the Return Your Car screen. Your ending odometer reading becomes the " +
                     "beginning odometer reading for the next reservation.</b><br/>";
@@ -303,6 +303,27 @@ namespace Goodhue.Controllers
                     //mail.IsBodyHtml = true;
                     client.Send(mail);
                 }
+
+                //send return confirmation email
+                MailMessage mail2 = new MailMessage();
+                SmtpClient client2 = new SmtpClient();
+                client2.Port = 25;
+                client2.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client2.UseDefaultCredentials = false;
+                client2.Host = "mail.goodhue.county";
+                mail2.From = new MailAddress("carshare.donotreply@co.goodhue.mn.us");
+                mail2.To.Add(User.Identity.Name);
+                mail2.Subject = "Pool Car Reservation Confirmation";
+                mail2.Body = "You have successfully returned the car: \"" + car.Description +
+                    " (" + car.ID + ")\" located at: \"" + car.Location +
+                    "\".<br/><br/>The starting odometer was: "+ oldOdometer + 
+                    " and the current odometer is: " + car.Odometer + ", meaning " +
+                    "that you've driven " + returnReservation.Miles + " miles. This reservation " +
+                    "has been charged to "+ returnReservation.Department + ".<br/><br/>" +
+                    "If any of this is incorrect, please contact an administrator to get " +
+                    "it fixed.<br/>";
+                mail2.IsBodyHtml = true;
+                client2.Send(mail2);
 
                 return RedirectToAction("Schedule", new { id = carId });
             }
