@@ -536,7 +536,7 @@ namespace Goodhue.Controllers
             Response.AddHeader("content-disposition", "attachment;filename=Reservations.csv");
             Response.ContentType = "text/csv";
 
-            sw.WriteLine("Car_ID,User_Email,Checkout_Date,Return_Date,Destination,Department,Miles_Driven");
+            sw.WriteLine("Car_ID,User_Email,Checkout_Date,Return_Date,Destination,Department,Start_Odo,End_Odo,Miles_Driven");
             IEnumerable<Reservation> inactiveReservations = db.Reservations.Where(r => !r.IsActive);
             foreach (Reservation res in inactiveReservations)
             {
@@ -544,11 +544,13 @@ namespace Goodhue.Controllers
                 var user = res.Username.Replace(",", ""); //strip commas to sanitize input
                 var startDate = res.StartDate;
                 var endDate = res.EndDate;
-                var destination = res.Destination.Replace(",", ""); //
-                var department = res.Department.Replace(",", ""); //
+                var destination = res.Destination.Replace(",", "");
+                var department = res.Department.Replace(",", "");
+                var startOdo = res.StartOdo;
+                var endOdo = res.EndOdo;
                 var miles = res.Miles;
-                sw.WriteLine(string.Format("{0},{1},{2},{3},{4},{5},{6}", id, user, startDate,
-                    endDate, destination, department, miles));
+                sw.WriteLine(string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8}", id, user, startDate,
+                    endDate, destination, department, startOdo, endOdo, miles));
             }
             Response.Write(sw.ToString());
             Response.End();
