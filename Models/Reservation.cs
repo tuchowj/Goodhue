@@ -28,10 +28,17 @@ namespace Goodhue.Models
 
         public int Miles { get; set; }
 
+        [Display(Name = "Tank Filled?")]
         public bool TankFilled { get; set; }
 
         [Display(Name = "Car ID")]
         public int CarId { get; set; }
+
+        [Display(Name = "Start Odo")]
+        public int StartOdo { get; set; }
+
+        [Display(Name = "End Odo")]
+        public int EndOdo { get; set; }
 
         public bool IsActive { get; set; }
     }

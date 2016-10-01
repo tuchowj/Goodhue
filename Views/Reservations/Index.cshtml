@@ -39,6 +39,12 @@
                     @Html.DisplayNameFor(model => model.TankFilled)
                 </th>
                 <th>
+                    @Html.DisplayNameFor(model => model.StartOdo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EndOdo)
+                </th>
+                <th>
                     @Html.DisplayNameFor(model => model.Miles)
                 </th>
                 <th data-defaultsort='disabled'></th>
@@ -70,6 +76,12 @@
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.TankFilled)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StartOdo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EndOdo)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Miles)

@@ -1,6 +1,7 @@
 ﻿using Goodhue.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -13,16 +14,6 @@ namespace Goodhue.Controllers
         private ReservationDBContext reservationDb = new ReservationDBContext();
 
         public ActionResult Index()
-        {
-            return View();
-        }
-
-        public ActionResult Help()
-        {
-            return View();
-        }
-
-        public ActionResult Contact()
         {
             return View();
         }
@@ -59,7 +50,7 @@ namespace Goodhue.Controllers
             }
         }
 
-        // GET: Cars/FindCar
+        // GET: Home/FindCar
         [Authorize]
         public ActionResult FindCar(DateTime startDate, DateTime endDate)
         {
