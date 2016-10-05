@@ -594,6 +594,7 @@ namespace Goodhue.Controllers
             }
             else
             {
+                defaultDept = defaultDept.Split(new char[] { ' ' })[0];
                 ViewBag.DefaultDept = defaultDept;
             }
             return PartialView("Department",departmentDb.Departments.ToList().OrderBy(d => d.Name));
