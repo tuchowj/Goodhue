@@ -2,11 +2,12 @@
 
 @foreach (var item in Model)
 {
-    if (!item.Name.Equals("HHS")) {
+    if (!item.Name.Equals(ViewBag.DefaultDept))
+    {
         <option value=@item.Name.ToString()>@item.Name</option>
     }
     else
     {
-        <option selected="selected" value="HHS">HHS</option>
+        <option selected="selected" value=@ViewBag.DefaultDept>@ViewBag.DefaultDept</option>
     }
 }

@@ -4,6 +4,11 @@
     ViewBag.Title = "Return";
 }
 
+<style>
+.result {
+    top:8px;
+}
+</style>
 <h2>Return: @Html.DisplayFor(model => model.Description) (@Html.DisplayFor(model => model.ID))</h2>
 
 @using (Html.BeginForm())
@@ -12,14 +17,37 @@
 
     <div class="form-horizontal">
         <hr/>
+        
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        
+        <div class="form-group">
+            <label class="control-label col-md-2">Start Date</label>
+            <div class="col-md-10 result">@ViewBag.Reservation.StartDate</div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">End Date</label>
+            <div class="col-md-10 result">@ViewBag.Reservation.EndDate</div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Destination</label>
+            <div class="col-md-10 result">@ViewBag.Reservation.Destination</div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Department</label>
+            <div class="col-md-10 result">@ViewBag.Reservation.Department</div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Start Odometer</label>
+            <div class="col-md-10 result">@Html.DisplayFor(model => model.Odometer)</div>
+        </div>
+
         @Html.HiddenFor(model => model.ID)
         @Html.HiddenFor(model => model.Description)
         @Html.HiddenFor(model => model.Location)
         @Html.HiddenFor(model => model.ImageURL)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Odometer, htmlAttributes: new { @class = "control-label col-md-2" })
+            <label class="control-label col-md-2">Ending Odometer</label>
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Odometer, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Odometer, "", new { @class = "text-danger" })
@@ -45,18 +73,17 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" onsubmit="confirmOdo()" value="Return" class="btn btn-primary" />
+                <input type="submit" value="Return" class="btn btn-primary" />
             </div>
         </div>
         <p class="col-md-offset-2 col-md-10 text-danger">@ViewBag.Error</p>
     </div>
 }
-
 <div>
-    @Html.ActionLink("Return a Different Car", "MyReservations")
+    @Html.ActionLink("Edit Reservation", "Edit", new { id = @ViewBag.Reservation.ID })
 </div>
 <div>
-    @Html.ActionLink("Back to Schedule", "Schedule", new { id = Model.ID })
+    @Html.ActionLink("Return a Different Car", "MyReservations")
 </div>
 
 @section Scripts {

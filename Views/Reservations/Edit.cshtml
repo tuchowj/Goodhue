@@ -32,7 +32,7 @@
             @Html.LabelFor(model => model.Department, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <select class="form-control single-line" id="Department" name="Department" type="text">
-                    @{Html.RenderAction("ShowDepartments");}
+                    @{Html.RenderAction("ShowDepartments", new { defaultDept = Model.Department});}
                 </select>
             </div>
         </div>

@@ -194,6 +194,7 @@ namespace Goodhue.Controllers
                 ViewBag.Car = car;
                 return RedirectToAction("Schedule", new { id = carId });
             } else { //user cannot return any reservation but the next one
+                ViewBag.Reservation = reservation;
                 return View(car);
             }
         }
@@ -585,8 +586,16 @@ namespace Goodhue.Controllers
             return RedirectToAction("Create", new { id = carId, start = startDate, end = endDate });
         }
 
-        public PartialViewResult ShowDepartments()
+        public PartialViewResult ShowDepartments(string defaultDept)
         {
+            if (defaultDept == null || defaultDept == "")
+            {
+                ViewBag.DefaultDept = "HHS";
+            }
+            else
+            {
+                ViewBag.DefaultDept = defaultDept;
+            }
             return PartialView("Department",departmentDb.Departments.ToList().OrderBy(d => d.Name));
         }
 
