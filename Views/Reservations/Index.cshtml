@@ -5,94 +5,105 @@
     ViewBag.Title = "Admin";
 }
 
-@if (User.IsInRole("Admin")) {
-    <div class="row">
-        <h2 class="col-md-8">Reservations to be Charged</h2>
-        <h2 class="col-md-2">@Html.ActionLink("Add/Remove Department", "Index", "Departments", null, new { @class = "btn btn-primary" })</h2>
-        <h2 class="col-md-2">@Html.ActionLink("View Unreturned Reservations", "Conflicts", null, new { @class = "btn btn-primary"})</h2>
-    </div>
-    
-    @Html.ActionLink("Delete All", "DeleteAll") <span>|</span>
-    @Html.ActionLink("Export to CSV", "WriteCSV")
-    <table class="table sortable">
-        <thead>
-            <tr>
-                <th>
-                    Car ID
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Username)
-                </th>
-                <th data-dateformat='MM/DD/YYYY hh:mm A'>
-                    @Html.DisplayNameFor(model => model.StartDate)
-                </th>
-                <th data-dateformat='MM/DD/YYYY hh:mm A'>
-                    @Html.DisplayNameFor(model => model.EndDate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Destination)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Department)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.TankFilled)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.StartOdo)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.EndOdo)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Miles)
-                </th>
-                <th data-defaultsort='disabled'></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
+
+<div class="row">
+    <h2 class="col-md-8">Reservations to be Charged</h2>
+    <h2 class="col-md-2">
+    @if (User.IsInRole("Admin"))
+    {
+        @Html.ActionLink("Add/Remove Department", "Index", "Departments", null, new { @class = "btn btn-primary" })
+    }
+    </h2>
+    <h2 class="col-md-2">
+    @if (User.IsInRole("Admin"))
+    {
+        @Html.ActionLink("View Unreturned Reservations", "Conflicts", null, new { @class = "btn btn-primary"})
+    }
+    </h2>
+</div>
+
+@Html.ActionLink("Export to CSV", "WriteCSV")
+<table class="table sortable">
+    <thead>
+        <tr>
+            <th>
+                Car ID
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Username)
+            </th>
+            <th data-dateformat='MM/DD/YYYY hh:mm A'>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+            <th data-dateformat='MM/DD/YYYY hh:mm A'>
+                @Html.DisplayNameFor(model => model.EndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Destination)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Department)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TankFilled)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartOdo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndOdo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Miles)
+            </th>
+            <th data-defaultsort='disabled'></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            if (!item.IsActive)
             {
-                if (!item.IsActive)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.CarId)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Username)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.StartDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.EndDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Destination)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Department)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.TankFilled)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.StartOdo)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.EndOdo)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Miles)
-                        </td>
-                        <td>
-                            @Html.ActionLink("Edit", "EditOld", new { id=item.ID }) |
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CarId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Username)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Destination)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Department)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TankFilled)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartOdo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndOdo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Miles)
+                    </td>
+                    <td>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            @Html.ActionLink("Edit", "EditOld", new { id=item.ID }) <span>|</span>
                             @Html.ActionLink("Delete", "Delete", new { id = item.ID })
-                        </td>
-                    </tr>
-                }
+                        }
+                    </td>
+                </tr>
             }
-        </tbody>
-    </table>
-}
+        }
+    </tbody>
+</table>

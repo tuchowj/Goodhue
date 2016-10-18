@@ -34,6 +34,10 @@
                     @if (User.IsInRole("Admin")) {
                         <li>@Html.ActionLink("Admin", "Index", "Reservations")</li>
                     }
+                    else if (User.IsInRole("Billing"))
+                    {
+                        <li>@Html.ActionLink("Billing", "Index", "Reservations")</li>
+                    }
                     @if (User.IsInRole("Super_Admin"))
                     {
                         <li>@Html.ActionLink("Users and Roles", "Users", "Roles")</li>

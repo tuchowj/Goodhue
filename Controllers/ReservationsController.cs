@@ -23,7 +23,7 @@ namespace Goodhue.Controllers
         private DepartmentDBContext departmentDb = new DepartmentDBContext();
 
         // GET: Reservations
-        [Authorize (Roles="Admin")]
+        [Authorize (Roles="Admin,Billing")]
         public ActionResult Index()
         {
             return View(db.Reservations.ToList());
@@ -530,6 +530,7 @@ namespace Goodhue.Controllers
                 r.EndDate > day).ToList());
         }
 
+        [Authorize(Roles = "Admin,Billing")]
         public void WriteCSV()
         {
             StringWriter sw = new StringWriter();
@@ -557,6 +558,7 @@ namespace Goodhue.Controllers
             Response.End();
         }
 
+        //add res from car schedule screen
         public ActionResult AddRes(int? carId, DateTime startDate, DateTime endDate)
         {
             if (endDate < startDate)
