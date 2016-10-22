@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
 
 namespace Goodhue.Controllers
@@ -26,7 +27,39 @@ namespace Goodhue.Controllers
         [Authorize (Roles="Admin,Billing")]
         public ActionResult Index()
         {
-            return View(db.Reservations.ToList());
+            return View(db.Reservations.Where(r => !r.IsActive).OrderBy(r => r.EndDate).ToList());
+        }
+
+        // POST: Reservations
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Index(int? carId, string username, string dept, DateTime? startDate, DateTime? endDate)
+        {
+            IEnumerable<Reservation> inactiveReservations = db.Reservations.Where(r => !r.IsActive);
+            if (carId.HasValue)
+            {
+                inactiveReservations = inactiveReservations.Where(r => r.CarId == carId);
+            }
+            if (username != "")
+            {
+                inactiveReservations = inactiveReservations.Where(r => r.Username == username);
+            }
+            if (dept != "")
+            {
+                inactiveReservations = inactiveReservations.Where(r => r.Department.Split(new char[] { ' ' })[0] == dept);
+            }
+            //filter for return date meeting input criteria
+            if (startDate.HasValue)
+            {
+                DateTime startDay = (DateTime)startDate;
+                inactiveReservations = inactiveReservations.Where(r => r.EndDate >= startDay);
+            }
+            if (endDate.HasValue)
+            {
+                DateTime endDay = (DateTime)endDate;
+                inactiveReservations = inactiveReservations.Where(r => r.EndDate <= endDay);
+            }
+            return View(inactiveReservations.OrderBy(r => r.EndDate).ToList());
         }
 
         // GET: Reservations
@@ -450,6 +483,7 @@ namespace Goodhue.Controllers
             return RedirectToAction("Schedule", new { id = reservation.CarId });
         }
 
+        // Nothing links here because it's dangerous
         // GET: Reservations/DeleteAll
         [Authorize(Roles = "Admin")]
         public ActionResult DeleteAll()
