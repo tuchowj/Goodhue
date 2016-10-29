@@ -17,7 +17,6 @@ namespace Goodhue.Controllers
     [Authorize]
     public class ReservationsController : Controller
     {
-        private static int oldOdometer;
         private ReservationDBContext db = new ReservationDBContext();
         private CarDBContext carDb = new CarDBContext();
         private CommentDBContext commentDb = new CommentDBContext();
@@ -103,7 +102,7 @@ namespace Goodhue.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(int? id, DateTime start, DateTime end, [Bind(Include = "ID,StartDate,EndDate,Destination,Department,Miles,TankFilled,CarID,IsActive")] Reservation reservation, string username, string grant)
+        public ActionResult Create(int? id, DateTime start, DateTime end, [Bind(Include = "ID,StartDate,EndDate,Destination,Department,Miles,TankFilled,StartOdo,EndOdo,CarID,IsActive")] Reservation reservation, string username, string grant)
         {
             Car car = carDb.Cars.Find(id);
             ViewBag.Car = car;
@@ -221,7 +220,6 @@ namespace Goodhue.Controllers
             {
                 return HttpNotFound();
             }
-            oldOdometer = car.Odometer;
             IEnumerable<Reservation> unreturnedReservations = db.Reservations.Where(r => (r.IsActive && (r.CarId == carId) && (r.EndDate <= reservation.StartDate)));
             if (unreturnedReservations.Any()) {
                 ViewBag.Car = car;
@@ -235,16 +233,25 @@ namespace Goodhue.Controllers
         // POST: Reservations/Return/5/2
         [HttpPost, ActionName("Return")]
         [ValidateAntiForgeryToken]
-        public ActionResult ReturnConfirmed(int? carId, int? reservationId, [Bind(Include = "ID,Description,Location,ImageURL,Odometer,OilChangeMiles,IsAvailable")] Car car, bool tankFilled, string comment)
+        public ActionResult ReturnConfirmed(int? carId, int? reservationId, [Bind(Include = "ID,Description,Location,ImageURL,Odometer,OilChangeMiles,IsAvailable")] Car car, int oldOdometer, bool tankFilled, string comment)
         {
+            Reservation returnReservation = db.Reservations.Find(reservationId);
             if (car.Odometer < oldOdometer)
             {
+                car.Odometer = oldOdometer;
+                ViewBag.Reservation = returnReservation;
                 ViewBag.Error = "Odometer cannot be less than before. If the old odometer is incorrect, contact an administrator.";
                 return View(car);
             }
 
-            Reservation returnReservation = db.Reservations.Find(reservationId);
-
+            if (!User.IsInRole("Admin") && (car.Odometer > oldOdometer + 1000))
+            {
+                car.Odometer = oldOdometer;
+                ViewBag.Reservation = returnReservation;
+                ViewBag.Error = "Non-admins cannot return a car with over 1000 miles driven. Please check to make sure you entered the correct odometer, or contact an administrator.";
+                return View(car);
+            }
+            
             //Edit Reservation Info
             returnReservation.IsActive = false;
             returnReservation.Miles = car.Odometer - oldOdometer;
@@ -278,7 +285,7 @@ namespace Goodhue.Controllers
                 {
                     if (account.UserManager.GetRoles(user.Id).Contains("Emailed_Comments"))
                     {
-                        mail.To.Add(user.Email);
+                        mail.To.Add(user.Email); //send comment email to all users in role
                     }
                 }
                 mail.Subject = "Car Pool Comment";
@@ -392,7 +399,7 @@ namespace Goodhue.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Username,StartDate,EndDate,Destination,Department,Miles,TankFilled,CarID,IsActive")] Reservation reservation, string grant)
+        public ActionResult Edit([Bind(Include = "ID,Username,StartDate,EndDate,Destination,Department,Miles,TankFilled,StartOdo,EndOdo,CarID,IsActive")] Reservation reservation, string grant)
         {
             if (ModelState.IsValid)
             {
@@ -435,7 +442,7 @@ namespace Goodhue.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditOld([Bind(Include = "ID,Username,StartDate,EndDate,Destination,Department,Miles,TankFilled,CarID,IsActive")] Reservation reservation, string grant)
+        public ActionResult EditOld([Bind(Include = "ID,Username,StartDate,EndDate,Destination,Department,Miles,TankFilled,StartOdo,EndOdo,CarID,IsActive")] Reservation reservation, string grant)
         {
             if (ModelState.IsValid)
             {
@@ -464,7 +471,7 @@ namespace Goodhue.Controllers
             {
                 return HttpNotFound();
             }
-            //Only Admin can return other user's reservations
+            //Only Admin can delete other user's reservations
             if (!User.IsInRole("Admin") && User.Identity.Name != reservation.Username)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);

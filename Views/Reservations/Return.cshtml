@@ -41,10 +41,13 @@
             <div class="col-md-10 result">@Html.DisplayFor(model => model.Odometer)</div>
         </div>
 
+        <input id="tankFilled" name="oldOdometer" type="hidden" value=@Model.Odometer>
         @Html.HiddenFor(model => model.ID)
         @Html.HiddenFor(model => model.Description)
         @Html.HiddenFor(model => model.Location)
         @Html.HiddenFor(model => model.ImageURL)
+        @Html.HiddenFor(model => model.OilChangeMiles)
+        @Html.HiddenFor(model => model.IsAvailable)
 
         <div class="form-group">
             <label class="control-label col-md-2">Ending Odometer</label>
@@ -67,9 +70,6 @@
                 <textarea class="form-control" rows="4" cols="50" id="comment" name="comment" placeholder="Optionally include any comments about the car for the fleet administrator including handling, cleanliness, washer fluid, wipers, etc."></textarea>
             </div>
         </div>
-
-        @Html.HiddenFor(model => model.OilChangeMiles)
-        @Html.HiddenFor(model => model.IsAvailable)
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
