@@ -26,7 +26,7 @@ namespace Goodhue.Controllers
         [Authorize (Roles="Admin,Billing")]
         public ActionResult Index()
         {
-            return View(db.Reservations.Where(r => !r.IsActive).OrderBy(r => r.EndDate).ToList());
+            return View(db.Reservations.Where(r => !r.IsActive).OrderByDescending(r => r.EndDate).ToList());
         }
 
         // POST: Reservations
@@ -58,7 +58,7 @@ namespace Goodhue.Controllers
                 DateTime endDay = (DateTime)endDate;
                 inactiveReservations = inactiveReservations.Where(r => r.EndDate <= endDay);
             }
-            return View(inactiveReservations.OrderBy(r => r.EndDate).ToList());
+            return View(inactiveReservations.OrderByDescending(r => r.EndDate).ToList());
         }
 
         // GET: Reservations

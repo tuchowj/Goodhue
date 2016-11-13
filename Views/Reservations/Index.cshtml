@@ -35,7 +35,10 @@
         </div>
         <div class="col-md-2">
             <label>Dept</label>
-            <input class="form-control text-box single-line" data-val="true" id="dept" name="dept" type="text" />
+            <select class="form-control single-line" id="dept" name="dept" type="text">
+                <option selected="selected" value="">N/A</option>
+                @{Html.RenderAction("ShowDepartments", new { defaultDept = "N/A" });}
+            </select>
         </div>
         <div class="col-md-2">
             <label>Start Date (Inclusive)</label>

@@ -53,8 +53,21 @@
             </div>
         </div>
 
-        @Html.HiddenFor(model => model.StartOdo)
-        @Html.HiddenFor(model => model.EndOdo)
+        <div class="form-group">
+            @Html.LabelFor(model => model.StartOdo, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.StartOdo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.StartOdo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.EndOdo, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.EndOdo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.EndOdo, "", new { @class = "text-danger" })
+            </div>
+        </div>
         @Html.HiddenFor(model => model.CarId)
         @Html.HiddenFor(model => model.IsActive)
 
