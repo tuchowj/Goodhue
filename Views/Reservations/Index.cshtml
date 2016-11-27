@@ -36,8 +36,8 @@
         <div class="col-md-2">
             <label>Dept</label>
             <select class="form-control single-line" id="dept" name="dept" type="text">
-                <option selected="selected" value="">N/A</option>
-                @{Html.RenderAction("ShowDepartments", new { defaultDept = "N/A" });}
+                <option selected="selected" value="">Any</option>
+                @{Html.RenderAction("ShowDepartments", new { defaultDept = "Any" });}
             </select>
         </div>
         <div class="col-md-2">
@@ -50,10 +50,15 @@
         </div>
         <div class="col-md-2">
             <br />
-            <input class="btn btn-primary" type="submit" value="Filter" /> @Html.ActionLink("Export to CSV", "WriteCSV")
+            <input class="btn btn-primary" type="submit" value="Filter" /> @*@Html.ActionLink("Export to CSV", "WriteCSV", new {reservations=Model })*@
         </div>
     }
 </div>
+@using (Html.BeginForm("WriteCSV", "Reservations", new { carId = ViewBag.carId, username = ViewBag.username, dept = ViewBag.dept,
+    startDateTime = ViewBag.startDate, endDateTime = ViewBag.endDate}))
+{
+    <input type="submit" value="Export To CSV" />
+}
 
 <table class="table sortable">
     <thead>

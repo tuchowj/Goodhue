@@ -34,6 +34,11 @@ namespace Goodhue.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Index(int? carId, string username, string dept, DateTime? startDate, DateTime? endDate)
         {
+            ViewBag.carId = carId;
+            ViewBag.username = username;
+            ViewBag.dept = dept;
+            ViewBag.startDate = startDate;
+            ViewBag.endDate = endDate;
             IEnumerable<Reservation> inactiveReservations = db.Reservations.Where(r => !r.IsActive);
             if (carId.HasValue)
             {
@@ -572,7 +577,7 @@ namespace Goodhue.Controllers
         }
 
         [Authorize(Roles = "Admin,Billing")]
-        public void WriteCSV()
+        public void WriteCSV(int? carId, string username, string dept, DateTime? startDate, DateTime? endDate)
         {
             StringWriter sw = new StringWriter();
             Response.ClearContent();
@@ -581,19 +586,42 @@ namespace Goodhue.Controllers
 
             sw.WriteLine("Car_ID,User_Email,Checkout_Date,Return_Date,Destination,Department,Start_Odo,End_Odo,Miles_Driven");
             IEnumerable<Reservation> inactiveReservations = db.Reservations.Where(r => !r.IsActive);
+            if (carId.HasValue)
+            {
+                inactiveReservations = inactiveReservations.Where(r => r.CarId == carId);
+            }
+            if (username != "" && username != null)
+            {
+                inactiveReservations = inactiveReservations.Where(r => r.Username == username);
+            }
+            if (dept != "" && username != null)
+            {
+                inactiveReservations = inactiveReservations.Where(r => r.Department.Split(new char[] { ' ' })[0] == dept);
+            }
+            //filter for return date meeting input criteria
+            if (startDate.HasValue)
+            {
+                DateTime startDay = (DateTime)startDate;
+                inactiveReservations = inactiveReservations.Where(r => r.EndDate >= startDay);
+            }
+            if (endDate.HasValue)
+            {
+                DateTime endDay = (DateTime)endDate;
+                inactiveReservations = inactiveReservations.Where(r => r.EndDate <= endDay);
+            }
             foreach (Reservation res in inactiveReservations)
             {
                 var id = res.CarId;
                 var user = res.Username.Replace(",", ""); //strip commas to sanitize input
-                var startDate = res.StartDate;
-                var endDate = res.EndDate;
+                var start = res.StartDate;
+                var end = res.EndDate;
                 var destination = res.Destination.Replace(",", "");
                 var department = res.Department.Replace(",", "");
                 var startOdo = res.StartOdo;
                 var endOdo = res.EndOdo;
                 var miles = res.Miles;
-                sw.WriteLine(string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8}", id, user, startDate,
-                    endDate, destination, department, startOdo, endOdo, miles));
+                sw.WriteLine(string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8}", id, user, start,
+                    end, destination, department, startOdo, endOdo, miles));
             }
             Response.Write(sw.ToString());
             Response.End();
