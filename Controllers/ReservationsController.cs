@@ -26,7 +26,14 @@ namespace Goodhue.Controllers
         [Authorize (Roles="Admin,Billing")]
         public ActionResult Index()
         {
-            return View(db.Reservations.Where(r => !r.IsActive).OrderByDescending(r => r.EndDate).ToList());
+            DateTime lastMonth = DateTime.Today.AddMonths(-1);
+            ViewBag.carId = "";
+            ViewBag.username = "";
+            ViewBag.dept = "Any";
+            ViewBag.startDate = lastMonth;
+            ViewBag.endDate = "mm/dd/yyyy";
+            IEnumerable<Reservation> inactiveReservations = db.Reservations.Where(r => !r.IsActive && r.EndDate > lastMonth);
+            return View(inactiveReservations.OrderByDescending(r => r.EndDate).ToList());
         }
 
         // POST: Reservations
@@ -37,8 +44,6 @@ namespace Goodhue.Controllers
             ViewBag.carId = carId;
             ViewBag.username = username;
             ViewBag.dept = dept;
-            ViewBag.startDate = startDate;
-            ViewBag.endDate = endDate;
             IEnumerable<Reservation> inactiveReservations = db.Reservations.Where(r => !r.IsActive);
             if (carId.HasValue)
             {
@@ -46,9 +51,9 @@ namespace Goodhue.Controllers
             }
             if (username != "")
             {
-                inactiveReservations = inactiveReservations.Where(r => r.Username == username);
+                inactiveReservations = inactiveReservations.Where(r => r.Username.ToLower() == username.ToLower());
             }
-            if (dept != "")
+            if (dept != "Any")
             {
                 inactiveReservations = inactiveReservations.Where(r => r.Department.Split(new char[] { ' ' })[0] == dept);
             }
@@ -57,11 +62,22 @@ namespace Goodhue.Controllers
             {
                 DateTime startDay = (DateTime)startDate;
                 inactiveReservations = inactiveReservations.Where(r => r.EndDate >= startDay);
+                ViewBag.startDate = startDay;
+            }
+            else
+            {
+                ViewBag.startDate = "mm/dd/yyyy";
             }
             if (endDate.HasValue)
             {
                 DateTime endDay = (DateTime)endDate;
+                endDay = endDay.AddHours(23).AddMinutes(59);
                 inactiveReservations = inactiveReservations.Where(r => r.EndDate <= endDay);
+                ViewBag.endDate = endDay;
+            }
+            else
+            {
+                ViewBag.endDate = "mm/dd/yyyy";
             }
             return View(inactiveReservations.OrderByDescending(r => r.EndDate).ToList());
         }
@@ -584,7 +600,6 @@ namespace Goodhue.Controllers
             Response.AddHeader("content-disposition", "attachment;filename=Reservations.csv");
             Response.ContentType = "text/csv";
 
-            sw.WriteLine("Car_ID,User_Email,Checkout_Date,Return_Date,Destination,Department,Start_Odo,End_Odo,Miles_Driven");
             IEnumerable<Reservation> inactiveReservations = db.Reservations.Where(r => !r.IsActive);
             if (carId.HasValue)
             {
@@ -592,9 +607,9 @@ namespace Goodhue.Controllers
             }
             if (username != "" && username != null)
             {
-                inactiveReservations = inactiveReservations.Where(r => r.Username == username);
+                inactiveReservations = inactiveReservations.Where(r => r.Username.ToLower() == username.ToLower());
             }
-            if (dept != "" && username != null)
+            if (dept != "Any" && dept != "" && dept != null)
             {
                 inactiveReservations = inactiveReservations.Where(r => r.Department.Split(new char[] { ' ' })[0] == dept);
             }
@@ -607,8 +622,10 @@ namespace Goodhue.Controllers
             if (endDate.HasValue)
             {
                 DateTime endDay = (DateTime)endDate;
+                endDay = endDay.AddHours(23).AddMinutes(59);
                 inactiveReservations = inactiveReservations.Where(r => r.EndDate <= endDay);
             }
+            sw.WriteLine("Car_ID,User_Email,Checkout_Date,Return_Date,Destination,Department,Start_Odo,End_Odo,Miles_Driven");
             foreach (Reservation res in inactiveReservations)
             {
                 var id = res.CarId;

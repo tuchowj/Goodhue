@@ -7,7 +7,7 @@
 
 
 <div class="row">
-    <h2 class="col-md-8">Reservations to be Charged</h2>
+    <h2 class="col-md-8">Billing/Administration</h2>
     <h2 class="col-md-2">
     @if (User.IsInRole("Admin"))
     {
@@ -27,39 +27,48 @@
         @Html.AntiForgeryToken()
         <div class="col-md-2">
             <label>Car ID</label>
-            <input class="form-control text-box single-line" data-val="true" id="carId" name="carId" type="number" />
+            <input class="form-control text-box single-line" data-val="true" id="carId" name="carId" type="number" value="@ViewBag.carId" />
         </div>
         <div class="col-md-2">
             <label>Username</label>
-            <input class="form-control text-box single-line" data-val="true" id="username" name="username" type="text" />
+            <input class="form-control text-box single-line" data-val="true" id="username" name="username" type="text" value="@ViewBag.username" />
         </div>
         <div class="col-md-2">
-            <label>Dept</label>
+            <label>Department</label>
             <select class="form-control single-line" id="dept" name="dept" type="text">
-                <option selected="selected" value="">Any</option>
-                @{Html.RenderAction("ShowDepartments", new { defaultDept = "Any" });}
+                <option value="Any">Any</option>
+                @{Html.RenderAction("ShowDepartments", new { defaultDept = @ViewBag.dept });}
             </select>
         </div>
         <div class="col-md-2">
-            <label>Start Date (Inclusive)</label>
-            <input class="form-control text-box single-line date" data-val="true" name="startDate" type="text" placeholder="mm/dd/yyyy" />
+            <label>Return start date</label>
+            <input class="form-control text-box single-line date" data-val="true" name="startDate" type="text" placeholder=@ViewBag.startDate />
         </div>
         <div class="col-md-2">
-            <label>End Date (Exclusive)</label>
-            <input class="form-control text-box single-line date" data-val="true" name="endDate" type="text" placeholder="mm/dd/yyyy" />
+            <label>Return end date</label>
+            <input class="form-control text-box single-line date" data-val="true" name="endDate" type="text" placeholder=@ViewBag.endDate />
         </div>
-        <div class="col-md-2">
+        <div class="col-md-1">
             <br />
-            <input class="btn btn-primary" type="submit" value="Filter" /> @*@Html.ActionLink("Export to CSV", "WriteCSV", new {reservations=Model })*@
+            <input class="btn btn-primary" type="submit" value="Filter" />
         </div>
     }
+    <div class="col-md-1">
+        <br />
+        @using (Html.BeginForm("WriteCSV", "Reservations", new
+                {
+                    carId = ViewBag.carId,
+                    username = ViewBag.username,
+                    dept = ViewBag.dept,
+                    startDate = ViewBag.startDate,
+                    endDate = ViewBag.endDate
+                }))
+        {
+            <input class="btn btn-link" type="submit" value="Export To CSV" />
+        }
+    </div>
+    
 </div>
-@using (Html.BeginForm("WriteCSV", "Reservations", new { carId = ViewBag.carId, username = ViewBag.username, dept = ViewBag.dept,
-    startDateTime = ViewBag.startDate, endDateTime = ViewBag.endDate}))
-{
-    <input type="submit" value="Export To CSV" />
-}
-
 <table class="table sortable">
     <thead>
         <tr>
