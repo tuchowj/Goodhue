@@ -279,6 +279,7 @@ namespace Goodhue.Controllers
             returnReservation.TankFilled = tankFilled;
             returnReservation.StartOdo = oldOdometer;
             returnReservation.EndOdo = car.Odometer;
+            returnReservation.EndDate = DateTime.Now;
             db.Entry(returnReservation).State = EntityState.Modified;
             db.SaveChanges();
 
@@ -420,7 +421,7 @@ namespace Goodhue.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Username,StartDate,EndDate,Destination,Department,Miles,TankFilled,StartOdo,EndOdo,CarID,IsActive")] Reservation reservation, string grant)
+        public ActionResult Edit([Bind(Include = "ID,Username,StartDate,EndDate,Destination,Department,Miles,TankFilled,StartOdo,EndOdo,CarID,IsActive")] Reservation reservation, string grant, string startDate, string endDate)
         {
             if (ModelState.IsValid)
             {
@@ -428,6 +429,11 @@ namespace Goodhue.Controllers
                 { //append grant info to dept field
                     reservation.Department = reservation.Department + " -- " + grant;
                 }
+                Console.WriteLine(startDate);
+                DateTime start = Convert.ToDateTime(startDate);
+                DateTime end = Convert.ToDateTime(endDate);
+                reservation.StartDate = start;
+                reservation.EndDate = end;
                 db.Entry(reservation).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Schedule", new {id = reservation.CarId});
@@ -592,6 +598,7 @@ namespace Goodhue.Controllers
                 r.EndDate > day).ToList());
         }
 
+        // Download billing data as Excel file
         [Authorize(Roles = "Admin,Billing")]
         public void WriteCSV(int? carId, string username, string dept, DateTime? startDate, DateTime? endDate)
         {

@@ -44,6 +44,21 @@
             </div>
         </div>
 
+        <div class="form-group">
+            <label class="control-label col-md-2">Checkout Date &amp; Time</label>
+            <div class="col-md-10">
+                <input class="form-control text-box single-line" data-val="true" id="editStartDate" name="startDate" type="text" placeholder="mm/dd/yyyy --:-- --" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Return Date &amp; Time</label>
+            <div class="col-md-10">
+                <input class="form-control text-box single-line" data-val="true" id="editEndDate" name="endDate" type="text" placeholder="mm/dd/yyyy --:-- --" />
+            </div>
+        </div>
+
+
+
         @Html.HiddenFor(model => model.Miles)
         @Html.HiddenFor(model => model.CarId)
         @Html.HiddenFor(model => model.IsActive)
@@ -56,10 +71,20 @@
     </div>
 }
 
+
 <div>
     @Html.ActionLink("Back to List", "Schedule", new { id = Model.CarId })
 </div>
 
+<script>
+    $(function () {
+        $('#editStartDate').val("@Html.DisplayFor(model => model.StartDate)");
+        $('#editEndDate').val("@Html.DisplayFor(model => model.EndDate)");
+    });
+    $('#editStartDate').bootstrapMaterialDatePicker({ format: 'MM/DD/YYYY hh:mm A', shortTime: true });
+    $('#editEndDate').bootstrapMaterialDatePicker({ format: 'MM/DD/YYYY hh:mm A', shortTime: true });
+</script>
+@*@Scripts.Render("~/Scripts/datetimepickers.js")*@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
