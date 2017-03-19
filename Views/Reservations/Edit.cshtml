@@ -47,17 +47,16 @@
         <div class="form-group">
             <label class="control-label col-md-2">Checkout Date &amp; Time</label>
             <div class="col-md-10">
-                <input class="form-control text-box single-line" data-val="true" id="editStartDate" name="startDate" type="text" placeholder="mm/dd/yyyy --:-- --" />
+                <input class="form-control text-box single-line" id="editStartDate" name="editStartDate" type="text" placeholder="mm/dd/yyyy --:-- --" />
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-md-2">Return Date &amp; Time</label>
             <div class="col-md-10">
-                <input class="form-control text-box single-line" data-val="true" id="editEndDate" name="endDate" type="text" placeholder="mm/dd/yyyy --:-- --" />
+                <input class="form-control text-box single-line" id="editEndDate" name="editEndDate" type="text" placeholder="mm/dd/yyyy --:-- --" />
+                <p class="text-danger field-validation-error">@ViewBag.Error</p>
             </div>
         </div>
-
-
 
         @Html.HiddenFor(model => model.Miles)
         @Html.HiddenFor(model => model.CarId)

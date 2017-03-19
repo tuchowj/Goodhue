@@ -82,7 +82,7 @@ namespace Goodhue.Controllers
             return View(inactiveReservations.OrderByDescending(r => r.EndDate).ToList());
         }
 
-        // GET: Reservations
+        // GET: Reservations/Schedule/2
         public ActionResult Schedule(int? id)
         {
             if (id == null)
@@ -416,29 +416,55 @@ namespace Goodhue.Controllers
             return View(reservation);
         }
 
-        // POST: Cars/Edit/5
+        // POST: Reservations/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Username,StartDate,EndDate,Destination,Department,Miles,TankFilled,StartOdo,EndOdo,CarID,IsActive")] Reservation reservation, string grant, string startDate, string endDate)
+        public ActionResult Edit([Bind(Include = "ID,Username,StartDate,EndDate,Destination,Department,Miles,TankFilled,StartOdo,EndOdo,CarID,IsActive")] Reservation reservation, string grant, DateTime editStartDate, DateTime editEndDate)
         {
+            Car car = carDb.Cars.Find(reservation.CarId);
             if (ModelState.IsValid)
             {
+                reservation.StartDate = editStartDate;
+                reservation.EndDate = editEndDate;
                 if (!(grant == null || grant == ""))
                 { //append grant info to dept field
                     reservation.Department = reservation.Department + " -- " + grant;
                 }
-                Console.WriteLine(startDate);
-                DateTime start = Convert.ToDateTime(startDate);
-                DateTime end = Convert.ToDateTime(endDate);
-                reservation.StartDate = start;
-                reservation.EndDate = end;
+
+                if (editEndDate < editStartDate) //note: a lot of duplicate code with AddRes()
+                {
+                    ViewBag.Car = car;
+                    ViewBag.Error = "Return time must be after checkout time";
+                    return View("Edit", reservation);
+                }
+
+                if (editStartDate < DateTime.Today)
+                {
+                    ViewBag.Car = car;
+                    ViewBag.Error = "Cannot reserve car before today";
+                    return View("Edit", reservation);
+                }
+                
+                List<Reservation> reservations = db.Reservations.Where(r => r.IsActive && r.CarId == reservation.CarId && r.ID != reservation.ID).ToList();
+                foreach (Reservation res in reservations)
+                {
+                    if ((editStartDate >= res.StartDate && editStartDate < res.EndDate) ||
+                        (editEndDate > res.StartDate && editEndDate <= res.EndDate) ||
+                        (editStartDate <= res.StartDate && editEndDate >= res.EndDate))
+                    {
+                        ViewBag.Car = car;
+                        ViewBag.Error = "Conflicts with reservation starting on " +
+                            res.StartDate + " and ending on " + res.EndDate;
+                        return View("Edit", reservation);
+                    }
+                }
+
                 db.Entry(reservation).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Schedule", new {id = reservation.CarId});
             }
-            Car car = carDb.Cars.Find(reservation.CarId);
             ViewBag.Car = car;
             return View(reservation);
         }
